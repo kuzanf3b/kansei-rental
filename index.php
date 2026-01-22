@@ -196,7 +196,7 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RentalKu - <?= ucfirst($page) ?></title>
+    <title>RJDM - <?= ucfirst($page) ?></title>
     <link rel="icon" type="image/png" href="./assets/car-tokyonight.png" />
 
     <!-- Bootstrap CSS -->
@@ -221,7 +221,7 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
         <nav class="top-navbar">
             <a href="index.php?page=dashboard" class="logo">
                 <i class="bi bi-car-front-fill"></i>
-                <span>RentalKu</span>
+                <span>Rental JDM</span>
             </a>
             <div class="user-section">
                 <div class="user-info">

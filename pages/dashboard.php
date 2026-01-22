@@ -38,7 +38,7 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
         <div class="row align-items-center">
             <div class="col-md-8">
                 <h2 style="color: #1a1b26;"><i class="bi bi-emoji-smile me-2"></i>Selamat Datang, <?= $_SESSION['username'] ?>!</h2>
-                <p class="mb-3" style="color: #24283b;">Kelola bisnis rental mobil Anda dengan mudah dan efisien.</p>
+                <p class="mb-3" style="color: #24283b;">Kelola bisnis rental mobil JDM Anda dengan mudah dan efisien.</p>
                 <div class="datetime-display" style="color: #1a1b26;">
                     <i class="bi bi-calendar-event me-2"></i>
                     <span id="currentDateTime">Loading...</span>
