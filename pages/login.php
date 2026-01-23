@@ -51,6 +51,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <div class="auth-wrapper">
+    <!-- Theme Switcher for Auth Pages -->
+    <button class="theme-switcher auth-theme-switcher" id="themeSwitcherAuth" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+        <i class="bi bi-moon-stars-fill" id="themeIconAuth"></i>
+    </button>
+
     <div class="auth-card animate__animated animate__fadeInUp">
         <div class="auth-logo">
             <i class="bi bi-car-front-fill"></i>
@@ -114,3 +119,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </div>
 </div>
+
+<script>
+    // Theme Switcher for Auth Pages
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateAuthThemeIcon(newTheme);
+    }
+
+    function updateAuthThemeIcon(theme) {
+        const themeIcon = document.getElementById('themeIconAuth');
+        if (themeIcon) {
+            if (theme === 'light') {
+                themeIcon.className = 'bi bi-sun-fill';
+            } else {
+                themeIcon.className = 'bi bi-moon-stars-fill';
+            }
+        }
+    }
+
+    // Initialize icon on load
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        updateAuthThemeIcon(savedTheme);
+    });
+</script>

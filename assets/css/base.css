@@ -3,7 +3,7 @@
    Core variables and base styles without gradients
    ===================================================== */
 
-/* TOKYO NIGHT THEME VARIABLES */
+/* TOKYO NIGHT THEME VARIABLES - DARK (Default) */
 :root {
   /* Sidebar dimensions */
   --sidebar-width: 60px;
@@ -12,18 +12,18 @@
   /* Primary Colors - Tokyo Night Palette */
   --primary-color: #7aa2f7;
   --secondary-color: #bb9af7;
-  --accent-color: #7dcfff;
+  --accent-color: #2ac3de;
 
   /* Semantic Colors */
   --success-color: #9ece6a;
   --warning-color: #e0af68;
   --danger-color: #f7768e;
-  --info-color: #7dcfff;
+  --info-color: #2ac3de;
 
   /* Background Colors */
   --bg-primary: #1a1b26;
-  --bg-secondary: #24283b;
-  --bg-card: #24283b;
+  --bg-secondary: #1f2335;
+  --bg-card: #1f2335;
   --bg-input: #414868;
   --bg-highlight: #292e42;
   --bg-hover: #343b58;
@@ -32,6 +32,7 @@
   --text-primary: #c0caf5;
   --text-secondary: #a9b1d6;
   --text-muted: #565f89;
+  --text-dark: #9aa5ce;
 
   /* Border Color */
   --border-color: #414868;
@@ -40,7 +41,8 @@
   --terminal-black: #414868;
   --comment: #565f89;
   --blue: #7aa2f7;
-  --cyan: #7dcfff;
+  --cyan: #2ac3de;
+  --teal: #b4f9f8;
   --magenta: #bb9af7;
   --green: #9ece6a;
   --yellow: #e0af68;
@@ -64,6 +66,79 @@
   --transition-fast: 150ms ease;
   --transition-normal: 200ms ease;
   --transition-slow: 300ms ease;
+}
+
+/* TOKYO NIGHT DAY - LIGHT THEME */
+[data-theme="light"] {
+  /* Primary Colors - Tokyo Night Day Palette */
+  --primary-color: #2e7de9;
+  --secondary-color: #9854f1;
+  --accent-color: #007197;
+
+  /* Semantic Colors */
+  --success-color: #587539;
+  --warning-color: #8c6c3e;
+  --danger-color: #f52a65;
+  --info-color: #007197;
+
+  /* Background Colors */
+  --bg-primary: #e1e2e7;
+  --bg-secondary: #d5d6db;
+  --bg-card: #d5d6db;
+  --bg-input: #c9cbd1;
+  --bg-highlight: #d5d6db;
+  --bg-hover: #c9cbd1;
+
+  /* Text Colors */
+  --text-primary: #3760bf;
+  --text-secondary: #6172b0;
+  --text-muted: #848cb5;
+  --text-dark: #3760bf;
+
+  /* Border Color */
+  --border-color: #c9cbd1;
+
+  /* Extended Tokyo Night Day Colors */
+  --terminal-black: #c9cbd1;
+  --comment: #848cb5;
+  --blue: #2e7de9;
+  --cyan: #007197;
+  --teal: #007197;
+  --magenta: #9854f1;
+  --green: #587539;
+  --yellow: #8c6c3e;
+  --red: #f52a65;
+  --orange: #8c6c3e;
+
+  /* Shadows - lighter for light theme */
+  --shadow-sm: 0 1px 2px 0 rgba(55, 96, 191, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(55, 96, 191, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(55, 96, 191, 0.15);
+  --shadow-xl: 0 20px 25px -5px rgba(55, 96, 191, 0.2);
+}
+
+/* Theme transition for smooth switching */
+body,
+.sidebar,
+.top-navbar,
+.main-content,
+.supa-card,
+.supa-stat-card,
+.modal-content,
+.dropdown-menu,
+.toast,
+input,
+select,
+textarea,
+.form-control,
+.form-select,
+.btn,
+.table {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 /* RESET & BASE */

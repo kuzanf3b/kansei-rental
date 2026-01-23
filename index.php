@@ -215,6 +215,14 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
     <link rel="stylesheet" href="./assets/css/components.css">
     <link rel="stylesheet" href="./assets/css/tables.css">
     <link rel="stylesheet" href="./assets/css/dashboard.css">
+
+    <!-- Initialize theme before page renders to prevent flash -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
 </head>
 
 <body class="<?= !in_array($page, $public_pages) ? 'dashboard-body' : '' ?>">
@@ -230,6 +238,10 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
                 <span>Rental JDM</span>
             </a>
             <div class="user-section">
+                <!-- Theme Switcher -->
+                <button class="theme-switcher" id="themeSwitcher" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                    <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+                </button>
                 <div class="user-info">
                     <span class="username"><?= $_SESSION['username'] ?></span>
                     <span class="role"><span class="online-badge"></span><?= ucfirst($_SESSION['user_level']) ?></span>
@@ -450,6 +462,36 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
 
         setInterval(updateDateTime, 60000);
         updateDateTime();
+
+        // Theme Switcher Functions
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('themeIcon');
+            if (themeIcon) {
+                if (theme === 'light') {
+                    themeIcon.className = 'bi bi-sun-fill';
+                } else {
+                    themeIcon.className = 'bi bi-moon-stars-fill';
+                }
+            }
+        }
+
+        // Initialize theme on page load
+        initTheme();
     </script>
 </body>
 

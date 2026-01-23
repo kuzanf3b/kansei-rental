@@ -11,6 +11,15 @@
   justify-content: center;
   padding: 20px;
   background: var(--bg-primary);
+  position: relative;
+}
+
+/* Theme Switcher for Auth Pages */
+.auth-theme-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
 }
 
 /* Auth Card */

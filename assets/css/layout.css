@@ -90,6 +90,50 @@
   margin-right: 6px;
 }
 
+/* ===== THEME SWITCHER ===== */
+.theme-switcher {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--bg-highlight);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  font-size: 1.1rem;
+}
+
+.theme-switcher:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+.theme-switcher:active {
+  transform: scale(0.95);
+}
+
+.theme-switcher i {
+  transition: transform 0.3s ease;
+}
+
+.theme-switcher:hover i {
+  transform: rotate(15deg);
+}
+
+/* Light theme specific adjustments for theme switcher */
+[data-theme="light"] .theme-switcher {
+  background: var(--bg-card);
+}
+
+[data-theme="light"] .theme-switcher:hover {
+  background: var(--bg-hover);
+}
+
 /* ===== SIDEBAR ===== */
 .sidebar {
   position: fixed;
