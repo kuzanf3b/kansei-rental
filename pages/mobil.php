@@ -308,7 +308,7 @@ $tersedia = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_mobil WHERE sta
 
                         <div class="col-md-6">
                             <label class="form-label"><i class="bi bi-calendar me-1"></i>Tahun</label>
-                            <input type="number" name="tahun" class="form-control form-control-lg" required min="2000" max="2030"
+                            <input type="number" name="tahun" class="form-control form-control-lg" required min="1800" max="2030"
                                 placeholder="2024"
                                 value="<?= $edit_data ? $edit_data['tahun'] : date('Y') ?>">
                         </div>

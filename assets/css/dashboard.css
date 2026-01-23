@@ -1,0 +1,643 @@
+/* =====================================================
+   DASHBOARD.CSS - Dashboard Page Specific Styles
+   Supabase style with Tokyo Night theme - No Gradients
+   ===================================================== */
+
+/* ===== DASHBOARD LAYOUT ===== */
+.supa-dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+.supa-header {
+  padding: 64px;
+}
+
+.supa-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.supa-header p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ===== DIVIDER ===== */
+.supa-divider {
+  height: 0.5px;
+  background: var(--border-color);
+  margin: 20px 0;
+  margin-bottom: 70px;
+  position: relative;
+}
+
+.supa-divider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 60px;
+  height: 1px;
+  background: var(--primary-color);
+}
+
+/* ===== STATS GRID ===== */
+.supa-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1200px) {
+  .supa-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .supa-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== STAT CARD ===== */
+.supa-stat-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all var(--transition-normal);
+}
+
+.supa-stat-card:hover {
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.supa-stat-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+.supa-stat-icon.primary {
+  background: rgba(122, 162, 247, 0.15);
+  color: var(--primary-color);
+}
+
+.supa-stat-icon.success {
+  background: rgba(158, 206, 106, 0.15);
+  color: var(--success-color);
+}
+
+.supa-stat-icon.warning {
+  background: rgba(224, 175, 104, 0.15);
+  color: var(--warning-color);
+}
+
+.supa-stat-icon.danger {
+  background: rgba(247, 118, 142, 0.15);
+  color: var(--danger-color);
+}
+
+.supa-stat-icon.info {
+  background: rgba(125, 207, 255, 0.15);
+  color: var(--info-color);
+}
+
+.supa-stat-icon.purple {
+  background: rgba(187, 154, 247, 0.15);
+  color: var(--secondary-color);
+}
+
+.supa-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.supa-stat-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.supa-stat-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.supa-stat-sub.positive {
+  color: var(--success-color);
+}
+
+.supa-stat-sub.negative {
+  color: var(--danger-color);
+}
+
+/* ===== ALERT BANNER ===== */
+.supa-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+}
+
+.supa-alert.warning {
+  background: rgba(224, 175, 104, 0.1);
+  border: 1px solid rgba(224, 175, 104, 0.3);
+  color: var(--warning-color);
+}
+
+.supa-alert.danger {
+  background: rgba(247, 118, 142, 0.1);
+  border: 1px solid rgba(247, 118, 142, 0.3);
+  color: var(--danger-color);
+}
+
+.supa-alert i {
+  font-size: 1.1rem;
+}
+
+.supa-alert-content {
+  flex: 1;
+}
+
+.supa-alert-content strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.supa-alert-content span {
+  opacity: 0.8;
+  font-size: 0.75rem;
+}
+
+.supa-alert .btn-sm {
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid currentColor;
+  color: inherit;
+  transition: all var(--transition-normal);
+}
+
+.supa-alert .btn-sm:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===== QUICK ACTIONS ===== */
+.supa-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 60px;
+}
+
+@media (max-width: 992px) {
+  .supa-quick-actions {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .supa-quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.supa-quick-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all var(--transition-normal);
+}
+
+.supa-quick-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+.supa-quick-btn i {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  transition: color var(--transition-normal);
+}
+
+.supa-quick-btn:hover i {
+  color: var(--primary-color);
+}
+
+/* ===== SUPABASE CARD ===== */
+.supa-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--transition-normal);
+}
+
+.supa-card:hover {
+  border-color: var(--primary-color);
+}
+
+.supa-card-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-secondary);
+}
+
+.supa-card-header h3 {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.supa-card-header h3 i {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.supa-card-body {
+  padding: 18px;
+}
+
+/* ===== SUPABASE BADGE ===== */
+.supa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.supa-badge.booking {
+  background: rgba(122, 162, 247, 0.15);
+  color: var(--primary-color);
+}
+
+.supa-badge.approve {
+  background: rgba(125, 207, 255, 0.15);
+  color: var(--info-color);
+}
+
+.supa-badge.ambil {
+  background: rgba(224, 175, 104, 0.15);
+  color: var(--warning-color);
+}
+
+.supa-badge.kembali {
+  background: rgba(158, 206, 106, 0.15);
+  color: var(--success-color);
+}
+
+/* ===== AVATAR ===== */
+.supa-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(122, 162, 247, 0.15);
+  color: var(--primary-color);
+}
+
+/* ===== PROGRESS BAR ===== */
+.supa-progress {
+  height: 8px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.supa-progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width var(--transition-slow);
+}
+
+.supa-progress-bar.success {
+  background: var(--success-color);
+}
+
+.supa-progress-bar.danger {
+  background: var(--danger-color);
+}
+
+.supa-progress-bar.primary {
+  background: var(--primary-color);
+}
+
+/* ===== INFO LIST ===== */
+.supa-info-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.supa-info-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.85rem;
+}
+
+.supa-info-list li:last-child {
+  border-bottom: none;
+}
+
+.supa-info-list .label {
+  color: var(--text-muted);
+}
+
+.supa-info-list .value {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.supa-info-list .value.success {
+  color: var(--success-color);
+}
+
+/* ===== RANK ITEM ===== */
+.supa-rank-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-normal);
+  margin-bottom: 8px;
+}
+
+.supa-rank-item:hover {
+  background: var(--bg-highlight);
+}
+
+.supa-rank-item:last-child {
+  margin-bottom: 0;
+}
+
+.supa-rank-num {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.supa-rank-num.gold {
+  background: rgba(224, 175, 104, 0.2);
+  color: var(--warning-color);
+}
+
+.supa-rank-num.silver {
+  background: rgba(169, 177, 214, 0.2);
+  color: var(--text-secondary);
+}
+
+.supa-rank-num.bronze {
+  background: rgba(255, 158, 100, 0.2);
+  color: var(--orange);
+}
+
+.supa-rank-num.default {
+  background: var(--bg-input);
+  color: var(--text-muted);
+}
+
+.supa-rank-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.supa-rank-info h6 {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.supa-rank-info span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.supa-rank-count {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+}
+
+/* ===== SECTION TITLE ===== */
+.supa-section-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-top: 100px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.supa-section-title i {
+  color: var(--text-muted);
+}
+
+/* ===== EMPTY STATE ===== */
+.supa-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+.supa-empty i {
+  font-size: 2.5rem;
+  opacity: 0.3;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.supa-empty p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+/* ===== LINK BUTTON ===== */
+.supa-link-btn {
+  font-size: 0.75rem;
+  color: var(--primary-color);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity var(--transition-normal);
+}
+
+.supa-link-btn:hover {
+  opacity: 0.8;
+  color: var(--primary-color);
+}
+
+/* ===== GRID LAYOUT ===== */
+.supa-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.supa-grid-2 {
+  grid-template-columns: 2fr 1fr;
+}
+
+@media (max-width: 992px) {
+  .supa-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== WELCOME BANNER ===== */
+.welcome-banner {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.welcome-banner h2 {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.datetime-display {
+  background: var(--bg-highlight);
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* ===== QUICK ACTION ===== */
+.quick-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all var(--transition-normal);
+  text-align: center;
+}
+
+.quick-action:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-lg);
+  color: var(--primary-color);
+}
+
+.quick-action i {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.quick-action h6 {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ===== ARMADA CARD ===== */
+.armada-card {
+  grid-column: span 2;
+}
+
+@media (max-width: 1200px) {
+  .armada-card {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 576px) {
+  .armada-card {
+    grid-column: span 1;
+  }
+}
+
+.armada-info {
+  font-size: 0.85rem;
+}
+
+.armada-percent {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

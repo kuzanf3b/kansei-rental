@@ -202,7 +202,7 @@ $selesai = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE 
                                     </td>
                                     <td>
                                         <div class="table-info-cell">
-                                            <div class="table-avatar" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                            <div class="table-avatar success">
                                                 <i class="bi bi-car-front-fill"></i>
                                             </div>
                                             <div class="info-text">

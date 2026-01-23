@@ -144,7 +144,7 @@ $total_petugas = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_user WHERE
                                     <td><span class="badge-modern badge-primary">#<?= $row['id_user'] ?></span></td>
                                     <td>
                                         <div class="table-info-cell">
-                                            <div class="table-avatar" style="background: linear-gradient(135deg, <?= $row['lvl'] == 'admin' ? '#ef4444, #dc2626' : '#3b82f6, #2563eb' ?>);">
+                                            <div class="table-avatar <?= $row['lvl'] == 'admin' ? 'danger' : 'info' ?>">
                                                 <?= strtoupper(substr($row['user'], 0, 1)) ?>
                                             </div>
                                             <div class="info-text">

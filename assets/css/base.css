@@ -1,0 +1,244 @@
+/* =====================================================
+   BASE.CSS - Tokyo Night + Supabase Style
+   Core variables and base styles without gradients
+   ===================================================== */
+
+/* TOKYO NIGHT THEME VARIABLES */
+:root {
+  /* Sidebar dimensions */
+  --sidebar-width: 60px;
+  --sidebar-expanded-width: 240px;
+
+  /* Primary Colors - Tokyo Night Palette */
+  --primary-color: #7aa2f7;
+  --secondary-color: #bb9af7;
+  --accent-color: #7dcfff;
+
+  /* Semantic Colors */
+  --success-color: #9ece6a;
+  --warning-color: #e0af68;
+  --danger-color: #f7768e;
+  --info-color: #7dcfff;
+
+  /* Background Colors */
+  --bg-primary: #1a1b26;
+  --bg-secondary: #24283b;
+  --bg-card: #24283b;
+  --bg-input: #414868;
+  --bg-highlight: #292e42;
+  --bg-hover: #343b58;
+
+  /* Text Colors */
+  --text-primary: #c0caf5;
+  --text-secondary: #a9b1d6;
+  --text-muted: #565f89;
+
+  /* Border Color */
+  --border-color: #414868;
+
+  /* Extended Tokyo Night Colors */
+  --terminal-black: #414868;
+  --comment: #565f89;
+  --blue: #7aa2f7;
+  --cyan: #7dcfff;
+  --magenta: #bb9af7;
+  --green: #9ece6a;
+  --yellow: #e0af68;
+  --red: #f7768e;
+  --orange: #ff9e64;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+}
+
+/* RESET & BASE */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg-primary);
+  min-height: 100vh;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
+/* Text Utilities */
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-success {
+  color: var(--success-color) !important;
+}
+
+.text-danger {
+  color: var(--danger-color) !important;
+}
+
+.text-warning {
+  color: var(--warning-color) !important;
+}
+
+.text-info {
+  color: var(--info-color) !important;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+/* Hr Line */
+hr {
+  border-color: var(--border-color);
+  opacity: 0.3;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Selection */
+::selection {
+  background: rgba(122, 162, 247, 0.3);
+  color: var(--text-primary);
+}
+
+/* ANIMATIONS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+/* Solid Background Colors - No Gradients */
+.bg-primary {
+  background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
+.bg-success {
+  background-color: var(--success-color) !important;
+}
+
+.bg-danger {
+  background-color: var(--danger-color) !important;
+}
+
+.bg-warning {
+  background-color: var(--warning-color) !important;
+}
+
+.bg-info {
+  background-color: var(--info-color) !important;
+}
+
+/* Flat color backgrounds - Supabase style */
+.bg-primary-soft {
+  background-color: rgba(122, 162, 247, 0.15) !important;
+  color: var(--primary-color) !important;
+}
+
+.bg-success-soft {
+  background-color: rgba(158, 206, 106, 0.15) !important;
+  color: var(--success-color) !important;
+}
+
+.bg-danger-soft {
+  background-color: rgba(247, 118, 142, 0.15) !important;
+  color: var(--danger-color) !important;
+}
+
+.bg-warning-soft {
+  background-color: rgba(224, 175, 104, 0.15) !important;
+  color: var(--warning-color) !important;
+}
+
+.bg-info-soft {
+  background-color: rgba(125, 207, 255, 0.15) !important;
+  color: var(--info-color) !important;
+}
+
+.bg-secondary-soft {
+  background-color: rgba(187, 154, 247, 0.15) !important;
+  color: var(--secondary-color) !important;
+}

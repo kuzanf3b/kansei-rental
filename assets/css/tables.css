@@ -1,0 +1,281 @@
+/* =====================================================
+   TABLES.CSS - Table Styles
+   Supabase style with Tokyo Night theme
+   ===================================================== */
+
+/* ===== BASE TABLE ===== */
+.table {
+  margin-bottom: 0;
+  color: var(--text-primary) !important;
+  --bs-table-bg: transparent !important;
+  --bs-table-color: var(--text-primary) !important;
+  --bs-table-border-color: var(--border-color) !important;
+  --bs-table-striped-bg: var(--bg-secondary) !important;
+  --bs-table-hover-bg: var(--bg-hover) !important;
+}
+
+.table th {
+  background-color: var(--bg-secondary) !important;
+  font-weight: 600;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 14px 16px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.table td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+}
+
+.table tbody tr {
+  border-color: var(--border-color) !important;
+  background-color: var(--bg-card) !important;
+  transition: background var(--transition-fast);
+}
+
+.table tbody tr:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+.table > :not(caption) > * > * {
+  background-color: transparent !important;
+  border-bottom-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ===== TABLE MODERN ===== */
+.table-modern {
+  color: var(--text-primary);
+}
+
+.table-modern thead {
+  background: var(--bg-highlight);
+}
+
+.table-modern thead th {
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.table-modern thead th i {
+  margin-right: 6px;
+  opacity: 0.7;
+}
+
+.table-modern tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background var(--transition-fast);
+}
+
+.table-modern tbody tr:hover {
+  background: var(--bg-highlight);
+}
+
+.table-modern tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table-modern tbody td {
+  padding: 14px 18px;
+  vertical-align: middle;
+  border: none;
+}
+
+/* ===== TABLE INFO CELL ===== */
+.table-info-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.table-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--bg-primary);
+  flex-shrink: 0;
+}
+
+.table-avatar.secondary {
+  background: var(--secondary-color);
+}
+
+.table-avatar.success {
+  background: var(--success-color);
+}
+
+.table-avatar.danger {
+  background: var(--danger-color);
+}
+
+.table-avatar.warning {
+  background: var(--warning-color);
+}
+
+.table-avatar.info {
+  background: var(--info-color);
+}
+
+.table-info-cell .info-text h6 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.table-info-cell .info-text small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+/* ===== NO DATA CELL ===== */
+.no-data-cell {
+  text-align: center;
+  padding: 48px 20px !important;
+  color: var(--text-muted);
+}
+
+.no-data-cell i {
+  font-size: 3.5rem;
+  opacity: 0.2;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.no-data-cell p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ===== SUPABASE TABLE STYLE ===== */
+.supa-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.supa-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+.supa-table td {
+  padding: 12px 16px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.supa-table tbody tr {
+  transition: background var(--transition-fast);
+}
+
+.supa-table tbody tr:hover {
+  background: var(--bg-highlight);
+}
+
+.supa-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== TABLE STATUS BADGES ===== */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-badge.booking {
+  background: rgba(122, 162, 247, 0.15);
+  color: var(--primary-color);
+}
+
+.status-badge.approve {
+  background: rgba(125, 207, 255, 0.15);
+  color: var(--info-color);
+}
+
+.status-badge.ambil {
+  background: rgba(224, 175, 104, 0.15);
+  color: var(--warning-color);
+}
+
+.status-badge.kembali {
+  background: rgba(158, 206, 106, 0.15);
+  color: var(--success-color);
+}
+
+.status-badge.lunas {
+  background: rgba(158, 206, 106, 0.15);
+  color: var(--success-color);
+}
+
+.status-badge.belum {
+  background: rgba(247, 118, 142, 0.15);
+  color: var(--danger-color);
+}
+
+/* ===== DATE DISPLAY ===== */
+.date-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.date-display i {
+  color: var(--text-muted);
+}
+
+.date-range {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+/* ===== TABLE RESPONSIVE ===== */
+.table-responsive {
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}

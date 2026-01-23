@@ -1,5 +1,5 @@
 <?php
-// Dashboard Page - Enhanced Version
+// Dashboard Page - Supabase Style with Tokyo Night Theme
 
 // Get statistics
 $mobil_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_mobil"))['total'];
@@ -32,311 +32,328 @@ $perlu_kembali = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as tota
 $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 100) : 0;
 ?>
 
-<div class="container-fluid">
-    <!-- Welcome Banner -->
-    <div class="welcome-banner animate__animated animate__fadeIn">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h2 style="color: #1a1b26;"><i class="bi bi-emoji-smile me-2"></i>Selamat Datang, <?= $_SESSION['username'] ?>!</h2>
-                <p class="mb-3" style="color: #24283b;">Kelola bisnis rental mobil JDM Anda dengan mudah dan efisien.</p>
-                <div class="datetime-display" style="color: #1a1b26;">
-                    <i class="bi bi-calendar-event me-2"></i>
-                    <span id="currentDateTime">Loading...</span>
-                </div>
-            </div>
-            <div class="col-md-4 text-end d-none d-md-block">
-                <i class="bi bi-car-front" style="font-size: 8rem; opacity: 0.2; color: #1a1b26;"></i>
-            </div>
-        </div>
+<div class="supa-dashboard">
+    <!-- Header -->
+    <div class="supa-header">
+        <h1>Selamat datang, <?= $_SESSION['username'] ?>!</h1>
+        <p id="currentDateTime">Loading...</p>
     </div>
 
-    <!-- Alert Notifications -->
+    <!-- Divider -->
+    <div class="supa-divider"></div>
+
+    <!-- Alerts -->
     <?php if ($pending_booking > 0 || $perlu_kembali > 0): ?>
-        <div class="row mb-4">
+        <div class="mb-4">
             <?php if ($pending_booking > 0): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="alert alert-warning d-flex align-items-center" role="alert">
-                        <i class="bi bi-exclamation-triangle-fill me-3" style="font-size: 1.5rem;"></i>
-                        <div>
-                            <strong><?= $pending_booking ?> Booking Menunggu</strong><br>
-                            <small>Ada booking yang perlu di-approve</small>
-                        </div>
-                        <a href="index.php?page=transaksi" class="btn btn-warning btn-sm ms-auto">Lihat</a>
+                <div class="supa-alert warning">
+                    <i class="bi bi-clock-fill"></i>
+                    <div class="supa-alert-content">
+                        <strong><?= $pending_booking ?> Booking Menunggu Persetujuan</strong>
+                        <span>Ada booking baru yang perlu di-approve</span>
                     </div>
+                    <a href="index.php?page=transaksi" class="btn btn-sm">Lihat</a>
                 </div>
             <?php endif; ?>
             <?php if ($perlu_kembali > 0): ?>
-                <div class="col-md-6 mb-3">
-                    <div class="alert alert-danger d-flex align-items-center" role="alert">
-                        <i class="bi bi-clock-fill me-3" style="font-size: 1.5rem;"></i>
-                        <div>
-                            <strong><?= $perlu_kembali ?> Terlambat Kembali</strong><br>
-                            <small>Ada mobil yang melewati batas pengembalian</small>
-                        </div>
-                        <a href="index.php?page=kembali" class="btn btn-danger btn-sm ms-auto">Proses</a>
+                <div class="supa-alert danger">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <div class="supa-alert-content">
+                        <strong><?= $perlu_kembali ?> Mobil Terlambat Kembali</strong>
+                        <span>Ada mobil yang melewati batas waktu pengembalian</span>
                     </div>
+                    <a href="index.php?page=kembali" class="btn btn-sm">Proses</a>
                 </div>
             <?php endif; ?>
         </div>
     <?php endif; ?>
 
-    <!-- Statistics Cards -->
-    <div class="row g-4 mb-4">
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="stat-card bg-primary-gradient animate__animated animate__fadeInUp">
-                <div class="position-relative">
-                    <h6 class="mb-1" style="color: #1a1b26;">Total Mobil</h6>
-                    <h2 class="mb-2 fw-bold" style="color: #1a1b26;"><?= $mobil_total ?></h2>
-                    <small style="color: #24283b;"><i class="bi bi-check-circle me-1"></i><?= $mobil_tersedia ?> tersedia</small>
-                    <i class="bi bi-car-front stat-icon"></i>
-                </div>
+    <!-- Stats Grid -->
+    <div class="supa-stats-grid">
+        <div class="supa-stat-card">
+            <div class="supa-stat-icon primary">
+                <i class="bi bi-car-front"></i>
+            </div>
+            <div class="supa-stat-label">Total Mobil</div>
+            <div class="supa-stat-value"><?= $mobil_total ?></div>
+            <div class="supa-stat-sub positive">
+                <i class="bi bi-check-circle"></i>
+                <?= $mobil_tersedia ?> tersedia
             </div>
         </div>
 
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="stat-card bg-success-gradient animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
-                <div class="position-relative">
-                    <h6 class="mb-1" style="color: #1a1b26;">Total Pendapatan</h6>
-                    <h2 class="mb-2 fw-bold" style="color: #1a1b26;">Rp <?= number_format($pendapatan / 1000000, 1) ?>M</h2>
-                    <small style="color: #24283b;"><i class="bi bi-graph-up me-1"></i>Lunas terbayar</small>
-                    <i class="bi bi-cash-stack stat-icon"></i>
-                </div>
+        <div class="supa-stat-card">
+            <div class="supa-stat-icon success">
+                <i class="bi bi-cash-stack"></i>
+            </div>
+            <div class="supa-stat-label">Total Pendapatan</div>
+            <div class="supa-stat-value">Rp <?= number_format($pendapatan / 1000000, 1) ?>M</div>
+            <div class="supa-stat-sub positive">
+                <i class="bi bi-graph-up-arrow"></i>
+                Lunas terbayar
             </div>
         </div>
 
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="stat-card bg-warning-gradient animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
-                <div class="position-relative">
-                    <h6 class="mb-1" style="color: #1a1b26;">Total Member</h6>
-                    <h2 class="mb-2 fw-bold" style="color: #1a1b26;"><?= $member_total ?></h2>
-                    <small style="color: #24283b;"><i class="bi bi-person-check me-1"></i>Member terdaftar</small>
-                    <i class="bi bi-people stat-icon"></i>
-                </div>
+        <div class="supa-stat-card">
+            <div class="supa-stat-icon warning">
+                <i class="bi bi-people"></i>
+            </div>
+            <div class="supa-stat-label">Total Member</div>
+            <div class="supa-stat-value"><?= $member_total ?></div>
+            <div class="supa-stat-sub">
+                <i class="bi bi-person-check"></i>
+                Member terdaftar
             </div>
         </div>
 
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="stat-card bg-info-gradient animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
-                <div class="position-relative">
-                    <h6 class="mb-1" style="color: #1a1b26;">Transaksi Aktif</h6>
-                    <h2 class="mb-2 fw-bold" style="color: #1a1b26;"><?= $transaksi_aktif ?></h2>
-                    <small style="color: #24283b;"><i class="bi bi-clock me-1"></i>Sedang berjalan</small>
-                    <i class="bi bi-cart-check stat-icon"></i>
-                </div>
+        <div class="supa-stat-card">
+            <div class="supa-stat-icon info">
+                <i class="bi bi-receipt"></i>
+            </div>
+            <div class="supa-stat-label">Transaksi Aktif</div>
+            <div class="supa-stat-value"><?= $transaksi_aktif ?></div>
+            <div class="supa-stat-sub">
+                <i class="bi bi-arrow-repeat"></i>
+                Sedang berjalan
             </div>
         </div>
     </div>
 
-    <!-- Second Row Stats -->
-    <div class="row g-4 mb-4">
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="stat-card bg-purple-gradient animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
-                <div class="position-relative">
-                    <h6 class="mb-1" style="color: #1a1b26;">Mobil Disewa</h6>
-                    <h2 class="mb-2 fw-bold" style="color: #1a1b26;"><?= $mobil_disewa ?></h2>
-                    <small style="color: #24283b;"><i class="bi bi-key me-1"></i>Sedang dipakai</small>
-                    <i class="bi bi-car-front-fill stat-icon"></i>
-                </div>
+    <!-- Secondary Stats -->
+    <div class="supa-stats-grid mb-4">
+        <div class="supa-stat-card">
+            <div class="supa-stat-icon purple">
+                <i class="bi bi-key"></i>
+            </div>
+            <div class="supa-stat-label">Mobil Disewa</div>
+            <div class="supa-stat-value"><?= $mobil_disewa ?></div>
+            <div class="supa-stat-sub">
+                <i class="bi bi-car-front-fill"></i>
+                Sedang dipakai
             </div>
         </div>
 
-        <div class="col-xl-3 col-lg-4 col-md-6">
-            <div class="stat-card bg-danger-gradient animate__animated animate__fadeInUp" style="animation-delay: 0.5s;">
-                <div class="position-relative">
-                    <h6 class="mb-1" style="color: #1a1b26;">Belum Lunas</h6>
-                    <h2 class="mb-2 fw-bold" style="color: #1a1b26;">Rp <?= number_format($belum_lunas / 1000, 0) ?>K</h2>
-                    <small style="color: #24283b;"><i class="bi bi-exclamation-circle me-1"></i>Perlu ditagih</small>
-                    <i class="bi bi-credit-card stat-icon"></i>
-                </div>
+        <div class="supa-stat-card">
+            <div class="supa-stat-icon danger">
+                <i class="bi bi-credit-card"></i>
+            </div>
+            <div class="supa-stat-label">Belum Lunas</div>
+            <div class="supa-stat-value">Rp <?= number_format($belum_lunas / 1000, 0) ?>K</div>
+            <div class="supa-stat-sub negative">
+                <i class="bi bi-exclamation-circle"></i>
+                Perlu ditagih
             </div>
         </div>
 
-        <div class="col-xl-6 col-lg-4 col-md-12">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h6 class="fw-semibold mb-3"><i class="bi bi-bar-chart me-2"></i>Ketersediaan Mobil</h6>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Tersedia: <?= $mobil_tersedia ?></span>
-                        <span>Disewa: <?= $mobil_disewa ?></span>
-                    </div>
-                    <div class="progress" style="height: 12px;">
-                        <div class="progress-bar bg-success" style="width: <?= $mobil_percentage ?>%"></div>
-                        <div class="progress-bar bg-danger" style="width: <?= 100 - $mobil_percentage ?>%"></div>
-                    </div>
-                    <small class="text-muted mt-2 d-block"><?= $mobil_percentage ?>% mobil tersedia untuk disewa</small>
-                </div>
+        <div class="supa-stat-card armada-card">
+            <div class="supa-stat-label mb-3">Ketersediaan Armada</div>
+            <div class="d-flex justify-content-between mb-2 armada-info">
+                <span class="text-success">Tersedia: <?= $mobil_tersedia ?></span>
+                <span class="text-danger">Disewa: <?= $mobil_disewa ?></span>
             </div>
+            <div class="supa-progress">
+                <div class="supa-progress-bar success" style="width: <?= $mobil_percentage ?>%;"></div>
+            </div>
+            <div class="armada-percent"><?= $mobil_percentage ?>% armada tersedia untuk disewa</div>
         </div>
     </div>
 
     <!-- Quick Actions -->
-    <div class="row g-4 mb-4">
-        <div class="col-12">
-            <h5 class="fw-bold mb-3"><i class="bi bi-lightning-charge me-2"></i>Aksi Cepat</h5>
-        </div>
-        <div class="col-lg-2 col-md-4 col-6">
-            <a href="index.php?page=transaksi" class="quick-action">
-                <i class="bi bi-plus-circle"></i>
-                <h6 class="mb-0">Transaksi Baru</h6>
-            </a>
-        </div>
-        <div class="col-lg-2 col-md-4 col-6">
-            <a href="index.php?page=mobil" class="quick-action">
-                <i class="bi bi-car-front-fill"></i>
-                <h6 class="mb-0">Tambah Mobil</h6>
-            </a>
-        </div>
-        <div class="col-lg-2 col-md-4 col-6">
-            <a href="index.php?page=member" class="quick-action">
-                <i class="bi bi-person-plus"></i>
-                <h6 class="mb-0">Tambah Member</h6>
-            </a>
-        </div>
-        <div class="col-lg-2 col-md-4 col-6">
-            <a href="index.php?page=kembali" class="quick-action">
-                <i class="bi bi-arrow-return-left"></i>
-                <h6 class="mb-0">Pengembalian</h6>
-            </a>
-        </div>
-        <div class="col-lg-2 col-md-4 col-6">
-            <a href="index.php?page=bayar" class="quick-action">
-                <i class="bi bi-cash"></i>
-                <h6 class="mb-0">Pembayaran</h6>
-            </a>
-        </div>
-        <div class="col-lg-2 col-md-4 col-6">
-            <a href="index.php?page=user" class="quick-action">
-                <i class="bi bi-gear"></i>
-                <h6 class="mb-0">Pengaturan</h6>
-            </a>
-        </div>
+    <h5 class="supa-section-title"><i class="bi bi-lightning-charge"></i> Aksi Cepat</h5>
+    <div class="supa-quick-actions">
+        <a href="index.php?page=transaksi" class="supa-quick-btn">
+            <i class="bi bi-plus-circle"></i>
+            Transaksi Baru
+        </a>
+        <a href="index.php?page=mobil" class="supa-quick-btn">
+            <i class="bi bi-car-front-fill"></i>
+            Tambah Mobil
+        </a>
+        <a href="index.php?page=member" class="supa-quick-btn">
+            <i class="bi bi-person-plus"></i>
+            Tambah Member
+        </a>
+        <a href="index.php?page=kembali" class="supa-quick-btn">
+            <i class="bi bi-arrow-return-left"></i>
+            Pengembalian
+        </a>
+        <a href="index.php?page=bayar" class="supa-quick-btn">
+            <i class="bi bi-wallet2"></i>
+            Pembayaran
+        </a>
+        <a href="index.php?page=user" class="supa-quick-btn">
+            <i class="bi bi-gear"></i>
+            Pengaturan
+        </a>
     </div>
 
-    <div class="row g-4">
-        <!-- Recent Transactions -->
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0" style="color: #1a1b26;"><i class="bi bi-clock-history me-2"></i>Transaksi Terbaru</h5>
-                    <a href="index.php?page=transaksi" class="btn btn-sm btn-light">Lihat Semua</a>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Member</th>
-                                    <th>Mobil</th>
-                                    <th>Tgl Booking</th>
-                                    <th>Status</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $query = "SELECT t.*, m.nama, mb.brand, mb.type 
-                                          FROM tbl_transaksi t 
-                                          LEFT JOIN tbl_member m ON t.nik = m.nik 
-                                          LEFT JOIN tbl_mobil mb ON t.nopol = mb.nopol 
-                                          ORDER BY t.id_transaksi DESC LIMIT 5";
-                                $result = mysqli_query($conn, $query);
+        <!-- Divider -->
+    <div class="supa-divider"></div>
 
-                                if (mysqli_num_rows($result) > 0):
-                                    while ($row = mysqli_fetch_assoc($result)):
-                                ?>
-                                        <tr>
-                                            <td><span class="badge bg-tn-secondary">#<?= $row['id_transaksi'] ?></span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar-circle bg-primary me-2">
-                                                        <?= strtoupper(substr($row['nama'], 0, 1)) ?>
-                                                    </div>
-                                                    <?= $row['nama'] ?>
-                                                </div>
-                                            </td>
-                                            <td><?= $row['brand'] . ' ' . $row['type'] ?></td>
-                                            <td><?= date('d M Y', strtotime($row['tgl_booking'])) ?></td>
-                                            <td>
-                                                <span class="badge status-<?= $row['status'] ?>">
-                                                    <i class="bi bi-<?=
-                                                                    $row['status'] == 'booking' ? 'clock' : ($row['status'] == 'approve' ? 'check' : ($row['status'] == 'ambil' ? 'car-front' : 'check-all'))
-                                                                    ?> me-1"></i>
-                                                    <?= ucfirst($row['status']) ?>
-                                                </span>
-                                            </td>
-                                            <td><strong>Rp <?= number_format($row['total'], 0, ',', '.') ?></strong></td>
-                                        </tr>
-                                    <?php
-                                    endwhile;
-                                else:
-                                    ?>
+    <!-- Main Content Grid -->
+    <div class="supa-grid supa-grid-2">
+        <!-- Recent Transactions -->
+        <div class="supa-card">
+            <div class="supa-card-header">
+                <h3><i class="bi bi-clock-history"></i> Transaksi Terbaru</h3>
+                <a href="index.php?page=transaksi" class="supa-link-btn">
+                    Lihat Semua <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            <div class="supa-card-body p-0">
+                <div class="table-responsive">
+                    <table class="supa-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Member</th>
+                                <th>Mobil</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $query = "SELECT t.*, m.nama, mb.brand, mb.type 
+                                      FROM tbl_transaksi t 
+                                      LEFT JOIN tbl_member m ON t.nik = m.nik 
+                                      LEFT JOIN tbl_mobil mb ON t.nopol = mb.nopol 
+                                      ORDER BY t.id_transaksi DESC LIMIT 5";
+                            $result = mysqli_query($conn, $query);
+
+                            if (mysqli_num_rows($result) > 0):
+                                while ($row = mysqli_fetch_assoc($result)):
+                                    $icon = match ($row['status']) {
+                                        'booking' => 'clock',
+                                        'approve' => 'check-circle',
+                                        'ambil' => 'car-front',
+                                        default => 'check-all'
+                                    };
+                            ?>
                                     <tr>
-                                        <td colspan="6" class="text-center py-4">
-                                            <i class="bi bi-inbox" style="font-size: 3rem; opacity: 0.3;"></i>
-                                            <p class="text-muted mb-0 mt-2">Belum ada transaksi</p>
+                                        <td><span class="text-muted">#<?= $row['id_transaksi'] ?></span></td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="supa-avatar">
+                                                    <?= strtoupper(substr($row['nama'], 0, 1)) ?>
+                                                </div>
+                                                <?= $row['nama'] ?>
+                                            </div>
+                                        </td>
+                                        <td><?= $row['brand'] . ' ' . $row['type'] ?></td>
+                                        <td><?= date('d M Y', strtotime($row['tgl_booking'])) ?></td>
+                                        <td>
+                                            <span class="supa-badge <?= $row['status'] ?>">
+                                                <i class="bi bi-<?= $icon ?>"></i>
+                                                <?= ucfirst($row['status']) ?>
+                                            </span>
                                         </td>
                                     </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
+                                <?php
+                                endwhile;
+                            else:
+                                ?>
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="supa-empty">
+                                            <i class="bi bi-inbox"></i>
+                                            <p>Belum ada transaksi</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <!-- Popular Cars & Info -->
-        <div class="col-lg-4">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h5 class="mb-0" style="color: #1a1b26;"><i class="bi bi-star me-2"></i>Mobil Populer</h5>
+        <!-- Sidebar Cards -->
+        <div class="d-flex flex-column gap-4">
+            <!-- Popular Cars -->
+            <div class="supa-card">
+                <div class="supa-card-header">
+                    <h3><i class="bi bi-star"></i> Mobil Populer</h3>
                 </div>
-                <div class="card-body">
+                <div class="supa-card-body">
                     <?php if (mysqli_num_rows($mobil_populer) > 0): ?>
                         <?php $rank = 1;
-                        while ($mp = mysqli_fetch_assoc($mobil_populer)): ?>
-                            <div class="info-card mb-3">
-                                <div class="info-icon <?= $rank == 1 ? 'bg-warning' : ($rank == 2 ? 'bg-secondary' : 'bg-light') ?>">
-                                    <?= $rank ?>
+                        while ($mp = mysqli_fetch_assoc($mobil_populer)):
+                            $rankClass = match ($rank) {
+                                1 => 'gold',
+                                2 => 'silver',
+                                3 => 'bronze',
+                                default => 'default'
+                            };
+                        ?>
+                            <div class="supa-rank-item">
+                                <div class="supa-rank-num <?= $rankClass ?>"><?= $rank ?></div>
+                                <div class="supa-rank-info">
+                                    <h6><?= $mp['brand'] . ' ' . $mp['type'] ?></h6>
+                                    <span><?= $mp['nopol'] ?></span>
                                 </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0"><?= $mp['brand'] . ' ' . $mp['type'] ?></h6>
-                                    <small class="text-muted"><?= $mp['nopol'] ?></small>
-                                </div>
-                                <span class="badge bg-tn-primary"><?= $mp['total_sewa'] ?>x</span>
+                                <div class="supa-rank-count"><?= $mp['total_sewa'] ?>x</div>
                             </div>
                         <?php $rank++;
                         endwhile; ?>
                     <?php else: ?>
-                        <p class="text-muted text-center mb-0">Belum ada data</p>
+                        <div class="supa-empty">
+                            <i class="bi bi-car-front"></i>
+                            <p>Belum ada data</p>
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
 
             <!-- System Info -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0" style="color: #1a1b26;"><i class="bi bi-info-circle me-2"></i>Informasi Sistem</h5>
+            <div class="supa-card">
+                <div class="supa-card-header">
+                    <h3><i class="bi bi-info-circle"></i> Informasi Sistem</h3>
                 </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Versi Sistem</span>
-                        <span class="fw-semibold">v2.0.0</span>
-                    </div>
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Total Transaksi</span>
-                        <span class="fw-semibold"><?= $transaksi_total ?></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-2 border-bottom">
-                        <span class="text-muted">Transaksi Selesai</span>
-                        <span class="fw-semibold text-success"><?= $transaksi_selesai ?></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-2">
-                        <span class="text-muted">User Login</span>
-                        <span class="fw-semibold"><?= $_SESSION['username'] ?></span>
-                    </div>
+                <div class="supa-card-body p-0">
+                    <ul class="supa-info-list px-4">
+                        <li>
+                            <span class="label">Versi Sistem</span>
+                            <span class="value">v2.0.0</span>
+                        </li>
+                        <li>
+                            <span class="label">Total Transaksi</span>
+                            <span class="value"><?= $transaksi_total ?></span>
+                        </li>
+                        <li>
+                            <span class="label">Transaksi Selesai</span>
+                            <span class="value success"><?= $transaksi_selesai ?></span>
+                        </li>
+                        <li>
+                            <span class="label">User Login</span>
+                            <span class="value"><?= $_SESSION['username'] ?></span>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Update datetime
+    function updateDateTime() {
+        const now = new Date();
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
+        };
+        const dateTimeElement = document.getElementById('currentDateTime');
+        if (dateTimeElement) {
+            dateTimeElement.textContent = now.toLocaleDateString('id-ID', options);
+        }
+    }
+
+    setInterval(updateDateTime, 60000);
+    updateDateTime();
+</script>
