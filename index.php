@@ -5,7 +5,7 @@ session_start();
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "rental";
+$db   = "rental_jdm";
 
 $conn = mysqli_connect($host, $user, $pass, $db);
 if (!$conn) {
