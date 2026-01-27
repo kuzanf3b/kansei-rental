@@ -6,14 +6,18 @@ if (is_post()) {
     $action = get_action();
 
     $nopol = post($conn, 'nopol');
-    $status = post($conn, 'status');
     $total = post($conn, 'total');
     $dp = post($conn, 'downpayment');
 
+    // Jika member, gunakan NIK dari session dan status default 'booking'
+    $is_member = ($_SESSION['user_level'] == 'member');
+    $nik = $is_member ? $_SESSION['user_id'] : post($conn, 'nik');
+    $status = $is_member ? 'booking' : post($conn, 'status');
+
     $data = [
-        'nik'         => post($conn, 'nik'),
+        'nik'         => $nik,
         'nopol'       => $nopol,
-        'tgl_booking' => post($conn, 'tgl_booking'),
+        'tgl_booking' => date('Y-m-d'), // Selalu tanggal hari ini
         'tgl_ambil'   => post($conn, 'tgl_ambil'),
         'tgl_kembali' => post($conn, 'tgl_kembali'),
         'supir'       => isset($_POST['supir']) ? 1 : 0,
@@ -31,7 +35,7 @@ if (is_post()) {
         redirect('index.php?page=transaksi&msg=added');
     }
 
-    if ($action == 'edit') {
+    if ($action == 'edit' && $_SESSION['user_level'] != 'member') {
         $id = post($conn, 'id_transaksi');
         db_update($conn, 'tbl_transaksi', $data, "id_transaksi='$id'");
 
@@ -44,8 +48,8 @@ if (is_post()) {
     }
 }
 
-// Handle Delete
-if (isset($_GET['delete'])) {
+// Handle Delete - Member tidak boleh hapus
+if (isset($_GET['delete']) && $_SESSION['user_level'] != 'member') {
     $id = get($conn, 'delete');
     $trans = db_get_row($conn, "SELECT nopol FROM tbl_transaksi WHERE id_transaksi='$id'");
 
@@ -58,16 +62,26 @@ if (isset($_GET['delete'])) {
 
 // Pagination & Data
 $page_num = isset($_GET['p']) ? (int)$_GET['p'] : 1;
-$paging = paginate($conn, 'tbl_transaksi', $limit, $page_num);
-$total_rows = $paging['total'];
-$total_pages = $paging['pages'];
+
+// Member hanya bisa melihat transaksinya sendiri
+$is_member = ($_SESSION['user_level'] == 'member');
+$where_member = $is_member ? "WHERE t.nik = '{$_SESSION['user_id']}'" : "";
+
+// Hitung total untuk pagination
+$count_query = $is_member
+    ? "SELECT COUNT(*) as total FROM tbl_transaksi WHERE nik = '{$_SESSION['user_id']}'"
+    : "SELECT COUNT(*) as total FROM tbl_transaksi";
+$total_rows = db_get_row($conn, $count_query)['total'];
+$total_pages = ceil($total_rows / $limit);
+$offset = ($page_num - 1) * $limit;
 
 $result = db_query($conn, "SELECT t.*, m.nama, mb.brand, mb.type 
     FROM tbl_transaksi t 
     LEFT JOIN tbl_member m ON t.nik = m.nik 
     LEFT JOIN tbl_mobil mb ON t.nopol = mb.nopol 
+    $where_member
     ORDER BY t.id_transaksi DESC 
-    LIMIT {$paging['offset']}, $limit");
+    LIMIT $offset, $limit");
 
 // Dropdown data
 $members = db_query($conn, "SELECT nik, nama FROM tbl_member ORDER BY nama");
@@ -247,19 +261,23 @@ $selesai = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE 
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="index.php?page=transaksi&edit=<?= $row['id_transaksi'] ?>"
-                                            class="btn-action btn-edit"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit Transaksi">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </a>
-                                        <a href="index.php?page=transaksi&delete=<?= $row['id_transaksi'] ?>"
-                                            class="btn-action btn-delete"
-                                            data-bs-toggle="tooltip"
-                                            title="Hapus Transaksi"
-                                            onclick="return confirm('Yakin hapus data ini?')">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </a>
+                                        <?php if ($_SESSION['user_level'] != 'member'): ?>
+                                            <a href="index.php?page=transaksi&edit=<?= $row['id_transaksi'] ?>"
+                                                class="btn-action btn-edit"
+                                                data-bs-toggle="tooltip"
+                                                title="Edit Transaksi">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                            <a href="index.php?page=transaksi&delete=<?= $row['id_transaksi'] ?>"
+                                                class="btn-action btn-delete"
+                                                data-bs-toggle="tooltip"
+                                                title="Hapus Transaksi"
+                                                data-confirm="Yakin hapus data transaksi ini?">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <span class="badge-modern badge-info">Lihat</span>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -327,20 +345,27 @@ $selesai = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE 
                     <?php endif; ?>
 
                     <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label"><i class="bi bi-person me-1"></i>Member</label>
-                            <select name="nik" class="form-select form-select-lg" required>
-                                <option value="">-- Pilih Member --</option>
-                                <?php
-                                mysqli_data_seek($members, 0);
-                                while ($m = mysqli_fetch_assoc($members)):
-                                ?>
-                                    <option value="<?= $m['nik'] ?>" <?= ($edit_data && $edit_data['nik'] == $m['nik']) ? 'selected' : '' ?>>
-                                        <?= $m['nama'] ?> (<?= $m['nik'] ?>)
-                                    </option>
-                                <?php endwhile; ?>
-                            </select>
-                        </div>
+                        <?php if ($_SESSION['user_level'] != 'member'): ?>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="bi bi-person me-1"></i>Member</label>
+                                <select name="nik" class="form-select form-select-lg" required>
+                                    <option value="">-- Pilih Member --</option>
+                                    <?php
+                                    mysqli_data_seek($members, 0);
+                                    while ($m = mysqli_fetch_assoc($members)):
+                                    ?>
+                                        <option value="<?= $m['nik'] ?>" <?= ($edit_data && $edit_data['nik'] == $m['nik']) ? 'selected' : '' ?>>
+                                            <?= $m['nama'] ?> (<?= $m['nik'] ?>)
+                                        </option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                        <?php else: ?>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="bi bi-person me-1"></i>Member</label>
+                                <input type="text" class="form-control form-control-lg" value="<?= $_SESSION['nama'] ?? $_SESSION['username'] ?>" readonly>
+                            </div>
+                        <?php endif; ?>
 
                         <div class="col-md-6">
                             <label class="form-label"><i class="bi bi-car-front me-1"></i>Mobil</label>
@@ -358,19 +383,18 @@ $selesai = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE 
                             </select>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label"><i class="bi bi-calendar-event me-1"></i>Tgl Booking</label>
-                            <input type="date" name="tgl_booking" class="form-control form-control-lg" required
-                                value="<?= $edit_data ? $edit_data['tgl_booking'] : date('Y-m-d') ?>">
+                            <input type="text" class="form-control form-control-lg" value="<?= date('d/m/Y') ?>" readonly>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label"><i class="bi bi-box-arrow-right me-1"></i>Tgl Ambil</label>
                             <input type="date" name="tgl_ambil" class="form-control form-control-lg" required id="tglAmbil"
-                                value="<?= $edit_data ? $edit_data['tgl_ambil'] : '' ?>">
+                                value="<?= $edit_data ? $edit_data['tgl_ambil'] : '' ?>" min="<?= date('Y-m-d') ?>">
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label"><i class="bi bi-box-arrow-in-left me-1"></i>Tgl Kembali</label>
                             <input type="date" name="tgl_kembali" class="form-control form-control-lg" required id="tglKembali"
                                 value="<?= $edit_data ? $edit_data['tgl_kembali'] : '' ?>">
@@ -386,15 +410,22 @@ $selesai = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE 
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label"><i class="bi bi-toggle-on me-1"></i>Status</label>
-                            <select name="status" class="form-select form-select-lg" required>
-                                <option value="booking" <?= ($edit_data && $edit_data['status'] == 'booking') ? 'selected' : '' ?>>⏳ Booking</option>
-                                <option value="approve" <?= ($edit_data && $edit_data['status'] == 'approve') ? 'selected' : '' ?>>✓ Approve</option>
-                                <option value="ambil" <?= ($edit_data && $edit_data['status'] == 'ambil') ? 'selected' : '' ?>>🚗 Ambil</option>
-                                <option value="kembali" <?= ($edit_data && $edit_data['status'] == 'kembali') ? 'selected' : '' ?>>✅ Kembali</option>
-                            </select>
-                        </div>
+                        <?php if ($_SESSION['user_level'] != 'member'): ?>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="bi bi-toggle-on me-1"></i>Status</label>
+                                <select name="status" class="form-select form-select-lg" required>
+                                    <option value="booking" <?= ($edit_data && $edit_data['status'] == 'booking') ? 'selected' : '' ?>>⏳ Booking</option>
+                                    <option value="approve" <?= ($edit_data && $edit_data['status'] == 'approve') ? 'selected' : '' ?>>✓ Approve</option>
+                                    <option value="ambil" <?= ($edit_data && $edit_data['status'] == 'ambil') ? 'selected' : '' ?>>🚗 Ambil</option>
+                                    <option value="kembali" <?= ($edit_data && $edit_data['status'] == 'kembali') ? 'selected' : '' ?>>✅ Kembali</option>
+                                </select>
+                            </div>
+                        <?php else: ?>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="bi bi-toggle-on me-1"></i>Status</label>
+                                <input type="text" class="form-control form-control-lg" value="⏳ Booking" readonly>
+                            </div>
+                        <?php endif; ?>
 
                         <div class="col-md-6">
                             <label class="form-label"><i class="bi bi-cash-stack me-1"></i>Total Biaya</label>

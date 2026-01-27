@@ -1,5 +1,9 @@
 <?php
 // User Page - CRUD Operations
+// Halaman ini hanya untuk admin
+if ($_SESSION['user_level'] != 'admin') {
+    redirect('index.php?page=dashboard');
+}
 
 // Handle POST (Add/Edit)
 if (is_post()) {
@@ -171,12 +175,12 @@ $total_petugas = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_user WHERE
                                             title="Edit">
                                             <i class="bi bi-pencil-fill"></i>
                                         </a>
-                                        <?php if ($row['id_user'] != $_SESSION['user']['id_user']): ?>
+                                        <?php if ($row['id_user'] != $_SESSION['user_id']): ?>
                                             <a href="index.php?page=user&delete=<?= $row['id_user'] ?>"
                                                 class="btn-action btn-delete"
                                                 data-bs-toggle="tooltip"
                                                 title="Hapus"
-                                                onclick="return confirm('Yakin hapus user ini?')">
+                                                data-confirm="Yakin hapus user ini?">
                                                 <i class="bi bi-trash-fill"></i>
                                             </a>
                                         <?php else: ?>

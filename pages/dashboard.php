@@ -1,20 +1,35 @@
 <?php
 // Dashboard Page - Supabase Style with Tokyo Night Theme
 
-// Get statistics
+$is_member = ($_SESSION['user_level'] == 'member');
+
+// Get statistics - berbeda untuk member
 $mobil_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_mobil"))['total'];
 $mobil_tersedia = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_mobil WHERE status='tersedia'"))['total'];
 $mobil_disewa = $mobil_total - $mobil_tersedia;
 $member_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_member"))['total'];
-$transaksi_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi"))['total'];
-$transaksi_aktif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status IN ('booking', 'approve', 'ambil')"))['total'];
-$transaksi_selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status = 'kembali'"))['total'];
 
-// Get total pendapatan
-$pendapatan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(total_bayar), 0) as total FROM tbl_bayar WHERE status='lunas'"))['total'];
-
-// Get pembayaran belum lunas
-$belum_lunas = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(total_bayar), 0) as total FROM tbl_bayar WHERE status='belum lunas'"))['total'];
+// Untuk member, hanya tampilkan transaksi miliknya
+if ($is_member) {
+    $member_nik = $_SESSION['user_id'];
+    $transaksi_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE nik='$member_nik'"))['total'];
+    $transaksi_aktif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE nik='$member_nik' AND status IN ('booking', 'approve', 'ambil')"))['total'];
+    $transaksi_selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE nik='$member_nik' AND status = 'kembali'"))['total'];
+    $pending_booking = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE nik='$member_nik' AND status='booking'"))['total'];
+    $perlu_kembali = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE nik='$member_nik' AND status='ambil' AND tgl_kembali < CURDATE()"))['total'];
+    $pendapatan = 0;
+    $belum_lunas = 0;
+} else {
+    $transaksi_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi"))['total'];
+    $transaksi_aktif = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status IN ('booking', 'approve', 'ambil')"))['total'];
+    $transaksi_selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status = 'kembali'"))['total'];
+    $pending_booking = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status='booking'"))['total'];
+    $perlu_kembali = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status='ambil' AND tgl_kembali < CURDATE()"))['total'];
+    // Get total pendapatan
+    $pendapatan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(total_bayar), 0) as total FROM tbl_bayar WHERE status='lunas'"))['total'];
+    // Get pembayaran belum lunas
+    $belum_lunas = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(total_bayar), 0) as total FROM tbl_bayar WHERE status='belum lunas'"))['total'];
+}
 
 // Get mobil paling sering disewa
 $mobil_populer = mysqli_query($conn, "SELECT mb.brand, mb.type, mb.nopol, COUNT(t.id_transaksi) as total_sewa 
@@ -23,10 +38,6 @@ $mobil_populer = mysqli_query($conn, "SELECT mb.brand, mb.type, mb.nopol, COUNT(
                                        GROUP BY mb.nopol 
                                        ORDER BY total_sewa DESC 
                                        LIMIT 5");
-
-// Get transaksi perlu diproses
-$pending_booking = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status='booking'"))['total'];
-$perlu_kembali = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status='ambil' AND tgl_kembali < CURDATE()"))['total'];
 
 // Calculate percentages
 $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 100) : 0;
@@ -49,8 +60,8 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
                 <div class="supa-alert warning">
                     <i class="bi bi-clock-fill"></i>
                     <div class="supa-alert-content">
-                        <strong><?= $pending_booking ?> Booking Menunggu Persetujuan</strong>
-                        <span>Ada booking baru yang perlu di-approve</span>
+                        <strong><?= $pending_booking ?> Booking Menunggu <?= $is_member ? 'Diproses' : 'Persetujuan' ?></strong>
+                        <span><?= $is_member ? 'Booking Anda sedang menunggu persetujuan' : 'Ada booking baru yang perlu di-approve' ?></span>
                     </div>
                     <a href="index.php?page=transaksi" class="btn btn-sm">Lihat</a>
                 </div>
@@ -60,9 +71,9 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
                     <i class="bi bi-exclamation-triangle-fill"></i>
                     <div class="supa-alert-content">
                         <strong><?= $perlu_kembali ?> Mobil Terlambat Kembali</strong>
-                        <span>Ada mobil yang melewati batas waktu pengembalian</span>
+                        <span><?= $is_member ? 'Segera kembalikan mobil yang Anda sewa' : 'Ada mobil yang melewati batas waktu pengembalian' ?></span>
                     </div>
-                    <a href="index.php?page=kembali" class="btn btn-sm">Proses</a>
+                    <a href="index.php?page=<?= $is_member ? 'transaksi' : 'kembali' ?>" class="btn btn-sm"><?= $is_member ? 'Lihat' : 'Proses' ?></a>
                 </div>
             <?php endif; ?>
         </div>
@@ -74,37 +85,63 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
             <div class="supa-stat-icon primary">
                 <i class="bi bi-car-front"></i>
             </div>
-            <div class="supa-stat-label">Total Mobil</div>
-            <div class="supa-stat-value"><?= $mobil_total ?></div>
+            <div class="supa-stat-label"><?= $is_member ? 'Mobil Tersedia' : 'Total Mobil' ?></div>
+            <div class="supa-stat-value"><?= $is_member ? $mobil_tersedia : $mobil_total ?></div>
             <div class="supa-stat-sub positive">
                 <i class="bi bi-check-circle"></i>
-                <?= $mobil_tersedia ?> tersedia
+                <?= $is_member ? 'Siap disewa' : $mobil_tersedia . ' tersedia' ?>
             </div>
         </div>
 
-        <div class="supa-stat-card">
-            <div class="supa-stat-icon success">
-                <i class="bi bi-cash-stack"></i>
+        <?php if (!$is_member): ?>
+            <div class="supa-stat-card">
+                <div class="supa-stat-icon success">
+                    <i class="bi bi-cash-stack"></i>
+                </div>
+                <div class="supa-stat-label">Total Pendapatan</div>
+                <div class="supa-stat-value">Rp <?= number_format($pendapatan / 1000000, 1) ?>M</div>
+                <div class="supa-stat-sub positive">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    Lunas terbayar
+                </div>
             </div>
-            <div class="supa-stat-label">Total Pendapatan</div>
-            <div class="supa-stat-value">Rp <?= number_format($pendapatan / 1000000, 1) ?>M</div>
-            <div class="supa-stat-sub positive">
-                <i class="bi bi-graph-up-arrow"></i>
-                Lunas terbayar
-            </div>
-        </div>
 
-        <div class="supa-stat-card">
-            <div class="supa-stat-icon warning">
-                <i class="bi bi-people"></i>
+            <div class="supa-stat-card">
+                <div class="supa-stat-icon warning">
+                    <i class="bi bi-people"></i>
+                </div>
+                <div class="supa-stat-label">Total Member</div>
+                <div class="supa-stat-value"><?= $member_total ?></div>
+                <div class="supa-stat-sub">
+                    <i class="bi bi-person-check"></i>
+                    Member terdaftar
+                </div>
             </div>
-            <div class="supa-stat-label">Total Member</div>
-            <div class="supa-stat-value"><?= $member_total ?></div>
-            <div class="supa-stat-sub">
-                <i class="bi bi-person-check"></i>
-                Member terdaftar
+        <?php else: ?>
+            <div class="supa-stat-card">
+                <div class="supa-stat-icon success">
+                    <i class="bi bi-receipt"></i>
+                </div>
+                <div class="supa-stat-label">Total Transaksi Saya</div>
+                <div class="supa-stat-value"><?= $transaksi_total ?></div>
+                <div class="supa-stat-sub positive">
+                    <i class="bi bi-check-circle"></i>
+                    <?= $transaksi_selesai ?> selesai
+                </div>
             </div>
-        </div>
+
+            <div class="supa-stat-card">
+                <div class="supa-stat-icon warning">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="supa-stat-label">Menunggu Approval</div>
+                <div class="supa-stat-value"><?= $pending_booking ?></div>
+                <div class="supa-stat-sub">
+                    <i class="bi bi-clock"></i>
+                    Booking pending
+                </div>
+            </div>
+        <?php endif; ?>
 
         <div class="supa-stat-card">
             <div class="supa-stat-icon info">
@@ -123,27 +160,29 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
     <div class="supa-stats-grid mb-4">
         <div class="supa-stat-card">
             <div class="supa-stat-icon purple">
-                <i class="bi bi-key"></i>
+                <i class="bi bi-<?= $is_member ? 'car-front' : 'key' ?>"></i>
             </div>
-            <div class="supa-stat-label">Mobil Disewa</div>
-            <div class="supa-stat-value"><?= $mobil_disewa ?></div>
+            <div class="supa-stat-label"><?= $is_member ? 'Transaksi Aktif' : 'Mobil Disewa' ?></div>
+            <div class="supa-stat-value"><?= $is_member ? $transaksi_aktif : $mobil_disewa ?></div>
             <div class="supa-stat-sub">
-                <i class="bi bi-car-front-fill"></i>
-                Sedang dipakai
+                <i class="bi bi-<?= $is_member ? 'arrow-repeat' : 'car-front-fill' ?>"></i>
+                <?= $is_member ? 'Sedang berjalan' : 'Sedang dipakai' ?>
             </div>
         </div>
 
-        <div class="supa-stat-card">
-            <div class="supa-stat-icon danger">
-                <i class="bi bi-credit-card"></i>
+        <?php if (!$is_member): ?>
+            <div class="supa-stat-card">
+                <div class="supa-stat-icon danger">
+                    <i class="bi bi-credit-card"></i>
+                </div>
+                <div class="supa-stat-label">Belum Lunas</div>
+                <div class="supa-stat-value">Rp <?= number_format($belum_lunas / 1000, 0) ?>K</div>
+                <div class="supa-stat-sub negative">
+                    <i class="bi bi-exclamation-circle"></i>
+                    Perlu ditagih
+                </div>
             </div>
-            <div class="supa-stat-label">Belum Lunas</div>
-            <div class="supa-stat-value">Rp <?= number_format($belum_lunas / 1000, 0) ?>K</div>
-            <div class="supa-stat-sub negative">
-                <i class="bi bi-exclamation-circle"></i>
-                Perlu ditagih
-            </div>
-        </div>
+        <?php endif; ?>
 
         <div class="supa-stat-card armada-card">
             <div class="supa-stat-label mb-3">Ketersediaan Armada</div>
@@ -163,31 +202,40 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
     <div class="supa-quick-actions">
         <a href="index.php?page=transaksi" class="supa-quick-btn">
             <i class="bi bi-plus-circle"></i>
-            Transaksi Baru
+            <?= $is_member ? 'Booking Mobil' : 'Transaksi Baru' ?>
         </a>
         <a href="index.php?page=mobil" class="supa-quick-btn">
             <i class="bi bi-car-front-fill"></i>
-            Tambah Mobil
+            <?= $is_member ? 'Lihat Mobil' : 'Tambah Mobil' ?>
         </a>
-        <a href="index.php?page=member" class="supa-quick-btn">
-            <i class="bi bi-person-plus"></i>
-            Tambah Member
-        </a>
-        <a href="index.php?page=kembali" class="supa-quick-btn">
-            <i class="bi bi-arrow-return-left"></i>
-            Pengembalian
-        </a>
-        <a href="index.php?page=bayar" class="supa-quick-btn">
-            <i class="bi bi-wallet2"></i>
-            Pembayaran
-        </a>
-        <a href="index.php?page=user" class="supa-quick-btn">
-            <i class="bi bi-gear"></i>
-            Pengaturan
-        </a>
+        <?php if (!$is_member): ?>
+            <a href="index.php?page=member" class="supa-quick-btn">
+                <i class="bi bi-person-plus"></i>
+                Tambah Member
+            </a>
+            <a href="index.php?page=kembali" class="supa-quick-btn">
+                <i class="bi bi-arrow-return-left"></i>
+                Pengembalian
+            </a>
+            <a href="index.php?page=bayar" class="supa-quick-btn">
+                <i class="bi bi-wallet2"></i>
+                Pembayaran
+            </a>
+            <?php if ($_SESSION['user_level'] == 'admin'): ?>
+                <a href="index.php?page=user" class="supa-quick-btn">
+                    <i class="bi bi-gear"></i>
+                    Pengaturan
+                </a>
+            <?php endif; ?>
+        <?php else: ?>
+            <a href="index.php?page=transaksi" class="supa-quick-btn">
+                <i class="bi bi-list-check"></i>
+                Riwayat Transaksi
+            </a>
+        <?php endif; ?>
     </div>
 
-        <!-- Divider -->
+    <!-- Divider -->
     <div class="supa-divider"></div>
 
     <!-- Main Content Grid -->
@@ -214,10 +262,13 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
                         </thead>
                         <tbody>
                             <?php
+                            // Member hanya lihat transaksinya sendiri
+                            $trans_where = $is_member ? "WHERE t.nik = '{$_SESSION['user_id']}'" : "";
                             $query = "SELECT t.*, m.nama, mb.brand, mb.type 
                                       FROM tbl_transaksi t 
                                       LEFT JOIN tbl_member m ON t.nik = m.nik 
                                       LEFT JOIN tbl_mobil mb ON t.nopol = mb.nopol 
+                                      $trans_where
                                       ORDER BY t.id_transaksi DESC LIMIT 5";
                             $result = mysqli_query($conn, $query);
 

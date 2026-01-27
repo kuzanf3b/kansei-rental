@@ -1,8 +1,8 @@
 <?php
 // Mobil Page - CRUD Operations
 
-// Handle POST (Add/Edit)
-if (is_post()) {
+// Handle POST (Add/Edit) - Hanya admin dan petugas
+if (is_post() && $_SESSION['user_level'] != 'member') {
     $action = get_action();
     $nopol = post($conn, 'nopol');
 
@@ -34,8 +34,8 @@ if (is_post()) {
     }
 }
 
-// Handle Delete
-if (isset($_GET['delete'])) {
+// Handle Delete - Hanya admin dan petugas
+if (isset($_GET['delete']) && $_SESSION['user_level'] != 'member') {
     $nopol = get($conn, 'delete');
     $result = db_delete($conn, 'tbl_mobil', "nopol='$nopol'", [
         'table' => 'tbl_transaksi',
@@ -87,9 +87,11 @@ $tersedia = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_mobil WHERE sta
                 </div>
             </div>
             <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                <button type="button" class="btn btn-primary btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalMobil">
-                    <i class="bi bi-plus-circle me-2"></i>Tambah Mobil
-                </button>
+                <?php if ($_SESSION['user_level'] != 'member'): ?>
+                    <button type="button" class="btn btn-primary btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalMobil">
+                        <i class="bi bi-plus-circle me-2"></i>Tambah Mobil
+                    </button>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -205,19 +207,23 @@ $tersedia = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_mobil WHERE sta
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="index.php?page=mobil&edit=<?= $row['nopol'] ?>"
-                                            class="btn-action btn-edit"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit Data">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </a>
-                                        <a href="index.php?page=mobil&delete=<?= $row['nopol'] ?>"
-                                            class="btn-action btn-delete"
-                                            data-bs-toggle="tooltip"
-                                            title="Hapus Data"
-                                            onclick="return confirm('Yakin hapus data ini?')">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </a>
+                                        <?php if ($_SESSION['user_level'] != 'member'): ?>
+                                            <a href="index.php?page=mobil&edit=<?= $row['nopol'] ?>"
+                                                class="btn-action btn-edit"
+                                                data-bs-toggle="tooltip"
+                                                title="Edit Data">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                            <a href="index.php?page=mobil&delete=<?= $row['nopol'] ?>"
+                                                class="btn-action btn-delete"
+                                                data-bs-toggle="tooltip"
+                                                title="Hapus Data"
+                                                data-confirm="Yakin hapus data mobil ini?">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <span class="text-muted">-</span>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

@@ -1,5 +1,9 @@
 <?php
 // Pembayaran Page - CRUD Operations
+// Halaman ini hanya untuk admin dan petugas
+if ($_SESSION['user_level'] == 'member') {
+    redirect('index.php?page=dashboard');
+}
 
 // Handle POST (Add/Edit)
 if (is_post()) {
@@ -224,7 +228,7 @@ $bayar_belum = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_bayar WHERE 
                                             class="btn-action btn-delete"
                                             data-bs-toggle="tooltip"
                                             title="Hapus"
-                                            onclick="return confirm('Yakin hapus data ini?')">
+                                            data-confirm="Yakin hapus data pembayaran ini?">
                                             <i class="bi bi-trash-fill"></i>
                                         </a>
                                     </td>

@@ -1,8 +1,8 @@
 <?php
 // Member Page - CRUD Operations
 
-// Handle POST (Add/Edit)
-if (is_post()) {
+// Handle POST (Add/Edit) - Hanya admin dan petugas
+if (is_post() && $_SESSION['user_level'] != 'member') {
     $action = get_action();
 
     $data = [
@@ -30,8 +30,8 @@ if (is_post()) {
     }
 }
 
-// Handle Delete
-if (isset($_GET['delete'])) {
+// Handle Delete - Hanya admin dan petugas
+if (isset($_GET['delete']) && $_SESSION['user_level'] != 'member') {
     $nik = get($conn, 'delete');
     $result = db_delete($conn, 'tbl_member', "nik='$nik'", [
         'table' => 'tbl_transaksi',
@@ -85,9 +85,11 @@ $perempuan = $total_rows - $laki;
                 </div>
             </div>
             <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                <button type="button" class="btn btn-primary btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalMember">
-                    <i class="bi bi-person-plus me-2"></i>Tambah Member
-                </button>
+                <?php if ($_SESSION['user_level'] != 'member'): ?>
+                    <button type="button" class="btn btn-primary btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalMember">
+                        <i class="bi bi-person-plus me-2"></i>Tambah Member
+                    </button>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -192,19 +194,23 @@ $perempuan = $total_rows - $laki;
                                         </span>
                                     </td>
                                     <td class="text-center">
-                                        <a href="index.php?page=member&edit=<?= $row['nik'] ?>"
-                                            class="btn-action btn-edit"
-                                            data-bs-toggle="tooltip"
-                                            title="Edit Member">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </a>
-                                        <a href="index.php?page=member&delete=<?= $row['nik'] ?>"
-                                            class="btn-action btn-delete"
-                                            data-bs-toggle="tooltip"
-                                            title="Hapus Member"
-                                            onclick="return confirm('Yakin hapus data ini?')">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </a>
+                                        <?php if ($_SESSION['user_level'] != 'member'): ?>
+                                            <a href="index.php?page=member&edit=<?= $row['nik'] ?>"
+                                                class="btn-action btn-edit"
+                                                data-bs-toggle="tooltip"
+                                                title="Edit Member">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                            <a href="index.php?page=member&delete=<?= $row['nik'] ?>"
+                                                class="btn-action btn-delete"
+                                                data-bs-toggle="tooltip"
+                                                title="Hapus Member"
+                                                data-confirm="Yakin hapus data member ini?">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <span class="text-muted">-</span>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

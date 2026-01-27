@@ -278,12 +278,14 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
                 <a class="nav-link <?= $page == 'transaksi' ? 'active' : '' ?>" href="index.php?page=transaksi">
                     <i class="bi bi-cart-fill"></i><span>Transaksi</span>
                 </a>
-                <a class="nav-link <?= $page == 'kembali' ? 'active' : '' ?>" href="index.php?page=kembali">
-                    <i class="bi bi-arrow-return-left"></i><span>Pengembalian</span>
-                </a>
-                <a class="nav-link <?= $page == 'bayar' ? 'active' : '' ?>" href="index.php?page=bayar">
-                    <i class="bi bi-cash-stack"></i><span>Pembayaran</span>
-                </a>
+                <?php if ($_SESSION['user_level'] != 'member'): ?>
+                    <a class="nav-link <?= $page == 'kembali' ? 'active' : '' ?>" href="index.php?page=kembali">
+                        <i class="bi bi-arrow-return-left"></i><span>Pengembalian</span>
+                    </a>
+                    <a class="nav-link <?= $page == 'bayar' ? 'active' : '' ?>" href="index.php?page=bayar">
+                        <i class="bi bi-cash-stack"></i><span>Pembayaran</span>
+                    </a>
+                <?php endif; ?>
 
                 <?php if ($_SESSION['user_level'] == 'admin'): ?>
                     <div class="nav-divider"></div>
@@ -329,6 +331,37 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
             </div>
             <div class="toast-body" id="toastMessage">
                 Pesan notifikasi...
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Modal Popup -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;">
+            <div class="modal-content confirm-modal-content" style="background: var(--bg-card, #1f2335); border: 1px solid var(--border-color, #414868); border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+                <button type="button" class="confirm-close-btn" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border: none; background: var(--bg-secondary, #1f2335); border-radius: 50%; color: var(--text-muted, #565f89); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+                <div class="confirm-modal-body" style="padding: 40px 32px 32px; text-align: center; background: var(--bg-card, #1f2335);">
+                    <div class="confirm-icon-wrapper" style="position: relative; width: 80px; height: 80px; margin: 0 auto 24px;">
+                        <div class="confirm-icon-bg" style="position: absolute; inset: 0; background: rgba(247, 118, 142, 0.15); border-radius: 50%;"></div>
+                        <div class="confirm-icon" style="position: absolute; inset: 0; background: #f7768e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #ffffff; box-shadow: 0 8px 24px rgba(247, 118, 142, 0.4);">
+                            <i class="bi bi-trash3"></i>
+                        </div>
+                    </div>
+                    <h4 class="confirm-title" style="color: var(--text-primary, #c0caf5); font-weight: 700; font-size: 1.35rem; margin-bottom: 12px;">Hapus Data?</h4>
+                    <p class="confirm-message" id="confirmMessage" style="color: var(--text-muted, #565f89); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</p>
+                    <div class="confirm-actions" style="display: flex; gap: 12px; justify-content: center;">
+                        <button type="button" class="confirm-btn confirm-btn-cancel" data-bs-dismiss="modal" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; min-width: 120px; background: var(--bg-secondary, #1f2335); color: var(--text-primary, #c0caf5); border: 1px solid var(--border-color, #414868); cursor: pointer; transition: all 0.2s ease;">
+                            <i class="bi bi-x-lg"></i>
+                            <span>Batal</span>
+                        </button>
+                        <a href="#" class="confirm-btn confirm-btn-delete" id="confirmAction" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; min-width: 120px; background: #f7768e; color: #ffffff; text-decoration: none; box-shadow: 0 4px 12px rgba(247, 118, 142, 0.3); transition: all 0.2s ease;">
+                            <i class="bi bi-trash3"></i>
+                            <span>Ya, Hapus</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -492,6 +525,28 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
 
         // Initialize theme on page load
         initTheme();
+
+        // Confirm Modal Handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const confirmModal = document.getElementById('confirmModal');
+            const confirmMessage = document.getElementById('confirmMessage');
+            const confirmAction = document.getElementById('confirmAction');
+
+            // Find all delete buttons with data-confirm attribute
+            document.querySelectorAll('[data-confirm]').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const message = this.getAttribute('data-confirm') || 'Apakah Anda yakin?';
+                    const href = this.getAttribute('href');
+
+                    confirmMessage.textContent = message;
+                    confirmAction.setAttribute('href', href);
+
+                    const modal = new bootstrap.Modal(confirmModal);
+                    modal.show();
+                });
+            });
+        });
     </script>
 </body>
 

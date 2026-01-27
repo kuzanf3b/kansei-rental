@@ -554,3 +554,305 @@
   color: var(--primary-color);
   font-size: 0.8rem;
 }
+
+/* ===== CONFIRM MODAL ===== */
+#confirmModal .modal-dialog {
+  max-width: 380px;
+  margin: 1.75rem auto;
+}
+
+#confirmModal .modal-content.confirm-modal-content {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+#confirmModal .confirm-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--bg-secondary);
+  border-radius: 50%;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+#confirmModal .confirm-close-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  transform: rotate(90deg);
+}
+
+#confirmModal .confirm-modal-body {
+  padding: 40px 32px 32px;
+  text-align: center;
+  background: var(--bg-card);
+}
+
+#confirmModal .confirm-icon-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+}
+
+#confirmModal .confirm-icon-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(247, 118, 142, 0.15);
+  border-radius: 50%;
+  animation: confirmPulseRing 2s ease-out infinite;
+}
+
+#confirmModal .confirm-icon-bg::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  background: rgba(247, 118, 142, 0.1);
+  border-radius: 50%;
+  animation: confirmPulseRing 2s ease-out infinite 0.5s;
+}
+
+#confirmModal .confirm-icon {
+  position: absolute;
+  inset: 0;
+  background: #f7768e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(247, 118, 142, 0.4);
+}
+
+@keyframes confirmPulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+#confirmModal .confirm-title {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+#confirmModal .confirm-message {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 28px;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#confirmModal .confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+#confirmModal .confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+#confirmModal .confirm-btn i {
+  font-size: 1rem;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#confirmModal .confirm-btn-cancel {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#confirmModal .confirm-btn-cancel:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary-color);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(122, 162, 247, 0.2);
+}
+
+#confirmModal .confirm-btn-cancel:hover i {
+  transform: rotate(-90deg);
+}
+
+#confirmModal .confirm-btn-cancel:active {
+  transform: translateY(0) scale(0.98);
+}
+
+#confirmModal .confirm-btn-delete {
+  background: #f7768e;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(247, 118, 142, 0.3);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#confirmModal .confirm-btn-delete:hover {
+  background: #e5687f;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(247, 118, 142, 0.4);
+  color: #ffffff !important;
+}
+
+#confirmModal .confirm-btn-delete:hover i {
+  transform: scale(1.2) rotate(-10deg);
+}
+
+#confirmModal .confirm-btn-delete:active {
+  transform: translateY(0);
+}
+
+/* ===== Modal Animations ===== */
+
+/* Modal slide in animation */
+#confirmModal.show .confirm-modal-content {
+  animation: confirmModalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes confirmModalSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Icon bounce animation */
+#confirmModal.show .confirm-icon {
+  animation: confirmIconBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s both;
+}
+
+@keyframes confirmIconBounce {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  80% {
+    transform: scale(0.95) rotate(-5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Icon shake animation */
+#confirmModal.show .confirm-icon i {
+  animation: iconShake 0.5s ease-in-out 0.6s;
+}
+
+@keyframes iconShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-3px) rotate(-5deg);
+  }
+  40% {
+    transform: translateX(3px) rotate(5deg);
+  }
+  60% {
+    transform: translateX(-3px) rotate(-5deg);
+  }
+  80% {
+    transform: translateX(3px) rotate(5deg);
+  }
+}
+
+/* Title fade in animation */
+#confirmModal.show .confirm-title {
+  animation: fadeInUp 0.4s ease-out 0.25s both;
+}
+
+/* Message fade in animation */
+#confirmModal.show .confirm-message {
+  animation: fadeInUp 0.4s ease-out 0.35s both;
+}
+
+/* Buttons fade in animation */
+#confirmModal.show .confirm-actions {
+  animation: fadeInUp 0.4s ease-out 0.45s both;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse ring animation for icon background */
+#confirmModal.show .confirm-icon-bg {
+  animation: confirmPulseRing 2s ease-out infinite 0.5s;
+}
+
+/* Close button hover animation */
+#confirmModal .confirm-close-btn {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#confirmModal .confirm-close-btn:hover {
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Button hover ripple effect */
+#confirmModal .confirm-btn-delete:hover i {
+  animation: deleteIconPulse 0.4s ease-in-out;
+}
+
+@keyframes deleteIconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
