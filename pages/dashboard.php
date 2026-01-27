@@ -239,151 +239,189 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
     <div class="supa-divider"></div>
 
     <!-- Main Content Grid -->
-    <div class="supa-grid supa-grid-2">
-        <!-- Recent Transactions -->
+    <?php if ($is_member): ?>
+        <!-- Member View: Only Popular Cars -->
         <div class="supa-card">
             <div class="supa-card-header">
-                <h3><i class="bi bi-clock-history"></i> Transaksi Terbaru</h3>
-                <a href="index.php?page=transaksi" class="supa-link-btn">
-                    Lihat Semua <i class="bi bi-arrow-right"></i>
-                </a>
+                <h3><i class="bi bi-star"></i> Mobil Populer</h3>
             </div>
-            <div class="supa-card-body p-0">
-                <div class="table-responsive">
-                    <table class="supa-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Member</th>
-                                <th>Mobil</th>
-                                <th>Tanggal</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            // Member hanya lihat transaksinya sendiri
-                            $trans_where = $is_member ? "WHERE t.nik = '{$_SESSION['user_id']}'" : "";
-                            $query = "SELECT t.*, m.nama, mb.brand, mb.type 
+            <div class="supa-card-body">
+                <?php if (mysqli_num_rows($mobil_populer) > 0): ?>
+                    <?php $rank = 1;
+                    while ($mp = mysqli_fetch_assoc($mobil_populer)):
+                        $rankClass = match ($rank) {
+                            1 => 'gold',
+                            2 => 'silver',
+                            3 => 'bronze',
+                            default => 'default'
+                        };
+                    ?>
+                        <div class="supa-rank-item">
+                            <div class="supa-rank-num <?= $rankClass ?>"><?= $rank ?></div>
+                            <div class="supa-rank-info">
+                                <h6><?= $mp['brand'] . ' ' . $mp['type'] ?></h6>
+                                <span><?= $mp['nopol'] ?></span>
+                            </div>
+                            <div class="supa-rank-count"><?= $mp['total_sewa'] ?>x</div>
+                        </div>
+                    <?php $rank++;
+                    endwhile; ?>
+                <?php else: ?>
+                    <div class="supa-empty">
+                        <i class="bi bi-car-front"></i>
+                        <p>Belum ada data</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php else: ?>
+        <!-- Admin/Staff View: Recent Transactions + Popular Cars -->
+        <div class="supa-grid supa-grid-2">
+            <!-- Recent Transactions -->
+            <div class="supa-card">
+                <div class="supa-card-header">
+                    <h3><i class="bi bi-clock-history"></i> Transaksi Terbaru</h3>
+                    <a href="index.php?page=transaksi" class="supa-link-btn">
+                        Lihat Semua <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="supa-card-body p-0">
+                    <div class="table-responsive">
+                        <table class="supa-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Member</th>
+                                    <th>Mobil</th>
+                                    <th>Tanggal</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $query = "SELECT t.*, m.nama, mb.brand, mb.type 
                                       FROM tbl_transaksi t 
                                       LEFT JOIN tbl_member m ON t.nik = m.nik 
                                       LEFT JOIN tbl_mobil mb ON t.nopol = mb.nopol 
-                                      $trans_where
                                       ORDER BY t.id_transaksi DESC LIMIT 5";
-                            $result = mysqli_query($conn, $query);
+                                $result = mysqli_query($conn, $query);
 
-                            if (mysqli_num_rows($result) > 0):
-                                while ($row = mysqli_fetch_assoc($result)):
-                                    $icon = match ($row['status']) {
-                                        'booking' => 'clock',
-                                        'approve' => 'check-circle',
-                                        'ambil' => 'car-front',
-                                        default => 'check-all'
-                                    };
-                            ?>
-                                    <tr>
-                                        <td><span class="text-muted">#<?= $row['id_transaksi'] ?></span></td>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-2">
-                                                <div class="supa-avatar">
-                                                    <?= strtoupper(substr($row['nama'], 0, 1)) ?>
+                                if (mysqli_num_rows($result) > 0):
+                                    while ($row = mysqli_fetch_assoc($result)):
+                                        $icon = match ($row['status']) {
+                                            'booking' => 'clock',
+                                            'approve' => 'check-circle',
+                                            'ambil' => 'car-front',
+                                            default => 'check-all'
+                                        };
+                                ?>
+                                        <tr>
+                                            <td><span class="text-muted">#<?= $row['id_transaksi'] ?></span></td>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div class="supa-avatar">
+                                                        <?= strtoupper(substr($row['nama'], 0, 1)) ?>
+                                                    </div>
+                                                    <?= $row['nama'] ?>
                                                 </div>
-                                                <?= $row['nama'] ?>
+                                            </td>
+                                            <td><?= $row['brand'] . ' ' . $row['type'] ?></td>
+                                            <td><?= date('d M Y', strtotime($row['tgl_booking'])) ?></td>
+                                            <td>
+                                                <span class="supa-badge <?= $row['status'] ?>">
+                                                    <i class="bi bi-<?= $icon ?>"></i>
+                                                    <?= ucfirst($row['status']) ?>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    endwhile;
+                                else:
+                                    ?>
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="supa-empty">
+                                                <i class="bi bi-inbox"></i>
+                                                <p>Belum ada transaksi</p>
                                             </div>
                                         </td>
-                                        <td><?= $row['brand'] . ' ' . $row['type'] ?></td>
-                                        <td><?= date('d M Y', strtotime($row['tgl_booking'])) ?></td>
-                                        <td>
-                                            <span class="supa-badge <?= $row['status'] ?>">
-                                                <i class="bi bi-<?= $icon ?>"></i>
-                                                <?= ucfirst($row['status']) ?>
-                                            </span>
-                                        </td>
                                     </tr>
-                                <?php
-                                endwhile;
-                            else:
-                                ?>
-                                <tr>
-                                    <td colspan="5">
-                                        <div class="supa-empty">
-                                            <i class="bi bi-inbox"></i>
-                                            <p>Belum ada transaksi</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Sidebar Cards -->
-        <div class="d-flex flex-column gap-4">
-            <!-- Popular Cars -->
-            <div class="supa-card">
-                <div class="supa-card-header">
-                    <h3><i class="bi bi-star"></i> Mobil Populer</h3>
-                </div>
-                <div class="supa-card-body">
-                    <?php if (mysqli_num_rows($mobil_populer) > 0): ?>
-                        <?php $rank = 1;
-                        while ($mp = mysqli_fetch_assoc($mobil_populer)):
-                            $rankClass = match ($rank) {
-                                1 => 'gold',
-                                2 => 'silver',
-                                3 => 'bronze',
-                                default => 'default'
-                            };
-                        ?>
-                            <div class="supa-rank-item">
-                                <div class="supa-rank-num <?= $rankClass ?>"><?= $rank ?></div>
-                                <div class="supa-rank-info">
-                                    <h6><?= $mp['brand'] . ' ' . $mp['type'] ?></h6>
-                                    <span><?= $mp['nopol'] ?></span>
+            <!-- Sidebar Cards -->
+            <div class="d-flex flex-column gap-4">
+                <!-- Popular Cars -->
+                <div class="supa-card">
+                    <div class="supa-card-header">
+                        <h3><i class="bi bi-star"></i> Mobil Populer</h3>
+                    </div>
+                    <div class="supa-card-body">
+                        <?php
+                        // Reset pointer for admin view
+                        mysqli_data_seek($mobil_populer, 0);
+                        if (mysqli_num_rows($mobil_populer) > 0): ?>
+                            <?php $rank = 1;
+                            while ($mp = mysqli_fetch_assoc($mobil_populer)):
+                                $rankClass = match ($rank) {
+                                    1 => 'gold',
+                                    2 => 'silver',
+                                    3 => 'bronze',
+                                    default => 'default'
+                                };
+                            ?>
+                                <div class="supa-rank-item">
+                                    <div class="supa-rank-num <?= $rankClass ?>"><?= $rank ?></div>
+                                    <div class="supa-rank-info">
+                                        <h6><?= $mp['brand'] . ' ' . $mp['type'] ?></h6>
+                                        <span><?= $mp['nopol'] ?></span>
+                                    </div>
+                                    <div class="supa-rank-count"><?= $mp['total_sewa'] ?>x</div>
                                 </div>
-                                <div class="supa-rank-count"><?= $mp['total_sewa'] ?>x</div>
+                            <?php $rank++;
+                            endwhile; ?>
+                        <?php else: ?>
+                            <div class="supa-empty">
+                                <i class="bi bi-car-front"></i>
+                                <p>Belum ada data</p>
                             </div>
-                        <?php $rank++;
-                        endwhile; ?>
-                    <?php else: ?>
-                        <div class="supa-empty">
-                            <i class="bi bi-car-front"></i>
-                            <p>Belum ada data</p>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
-            </div>
 
-            <!-- System Info -->
-            <div class="supa-card">
-                <div class="supa-card-header">
-                    <h3><i class="bi bi-info-circle"></i> Informasi Sistem</h3>
-                </div>
-                <div class="supa-card-body p-0">
-                    <ul class="supa-info-list px-4">
-                        <li>
-                            <span class="label">Versi Sistem</span>
-                            <span class="value">v2.0.0</span>
-                        </li>
-                        <li>
-                            <span class="label">Total Transaksi</span>
-                            <span class="value"><?= $transaksi_total ?></span>
-                        </li>
-                        <li>
-                            <span class="label">Transaksi Selesai</span>
-                            <span class="value success"><?= $transaksi_selesai ?></span>
-                        </li>
-                        <li>
-                            <span class="label">User Login</span>
-                            <span class="value"><?= $_SESSION['username'] ?></span>
-                        </li>
-                    </ul>
+                <!-- System Info -->
+                <div class="supa-card">
+                    <div class="supa-card-header">
+                        <h3><i class="bi bi-info-circle"></i> Informasi Sistem</h3>
+                    </div>
+                    <div class="supa-card-body p-0">
+                        <ul class="supa-info-list px-4">
+                            <li>
+                                <span class="label">Versi Sistem</span>
+                                <span class="value">v2.0.0</span>
+                            </li>
+                            <li>
+                                <span class="label">Total Transaksi</span>
+                                <span class="value"><?= $transaksi_total ?></span>
+                            </li>
+                            <li>
+                                <span class="label">Transaksi Selesai</span>
+                                <span class="value success"><?= $transaksi_selesai ?></span>
+                            </li>
+                            <li>
+                                <span class="label">User Login</span>
+                                <span class="value"><?= $_SESSION['username'] ?></span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
 </div>
 
 <script>
