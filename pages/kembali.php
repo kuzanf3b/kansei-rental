@@ -290,6 +290,94 @@ $dengan_denda = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_kembali WHE
     </div>
 </div>
 
+<!-- Data transaksi untuk JavaScript -->
+<?php
+// Siapkan data transaksi untuk JavaScript
+mysqli_data_seek($transaksis, 0); // Reset pointer
+$transaksi_data = [];
+while ($t = mysqli_fetch_assoc($transaksis)) {
+    $transaksi_data[$t['id_transaksi']] = [
+        'tgl_kembali' => $t['tgl_kembali'],
+        'total' => $t['total']
+    ];
+}
+mysqli_data_seek($transaksis, 0); // Reset pointer lagi untuk dropdown
+?>
+<script>
+    const transaksiData = <?= json_encode($transaksi_data) ?>;
+    const dendaPerHari = 100000;
+    let dendaKeterlambatan = 0;
+
+    function hitungDenda() {
+        const selectTransaksi = document.getElementById('id_transaksi');
+        const tglKembaliInput = document.getElementById('tgl_kembali_input');
+        const dendaInput = document.getElementById('denda_input');
+        const infoKeterlambatan = document.getElementById('info_keterlambatan');
+        const infoDendaOtomatis = document.getElementById('info_denda_otomatis');
+
+        if (!selectTransaksi || !tglKembaliInput || !dendaInput) return;
+
+        const idTransaksi = selectTransaksi.value;
+        const tglKembaliAktual = tglKembaliInput.value;
+
+        if (!idTransaksi || !tglKembaliAktual || !transaksiData[idTransaksi]) {
+            dendaInput.value = 0;
+            dendaKeterlambatan = 0;
+            if (infoKeterlambatan) infoKeterlambatan.innerHTML = '';
+            if (infoDendaOtomatis) infoDendaOtomatis.innerHTML = '';
+            return;
+        }
+
+        const tglSeharusnya = transaksiData[idTransaksi].tgl_kembali;
+        const dateSeharusnya = new Date(tglSeharusnya);
+        const dateAktual = new Date(tglKembaliAktual);
+
+        // Hitung selisih hari
+        const diffTime = dateAktual - dateSeharusnya;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays > 0) {
+            dendaKeterlambatan = diffDays * dendaPerHari;
+            dendaInput.value = dendaKeterlambatan;
+            if (infoKeterlambatan) {
+                infoKeterlambatan.innerHTML = `<span class="text-danger"><i class="bi bi-exclamation-triangle me-1"></i>Terlambat ${diffDays} hari</span>`;
+            }
+            if (infoDendaOtomatis) {
+                infoDendaOtomatis.innerHTML = `<span class="text-warning"><i class="bi bi-info-circle me-1"></i>Denda keterlambatan: Rp ${dendaKeterlambatan.toLocaleString('id-ID')} (${diffDays} hari × Rp ${dendaPerHari.toLocaleString('id-ID')})</span>`;
+            }
+        } else {
+            dendaKeterlambatan = 0;
+            dendaInput.value = 0;
+            if (infoKeterlambatan) {
+                infoKeterlambatan.innerHTML = `<span class="text-success"><i class="bi bi-check-circle me-1"></i>Tepat waktu</span>`;
+            }
+            if (infoDendaOtomatis) {
+                infoDendaOtomatis.innerHTML = '';
+            }
+        }
+
+        updateInfoDenda();
+    }
+
+    function updateInfoDenda() {
+        const dendaInput = document.getElementById('denda_input');
+        const infoDendaTambahan = document.getElementById('info_denda_tambahan');
+
+        if (!dendaInput || !infoDendaTambahan) return;
+
+        const totalDenda = parseInt(dendaInput.value) || 0;
+        const dendaTambahan = totalDenda - dendaKeterlambatan;
+
+        if (dendaTambahan > 0) {
+            infoDendaTambahan.innerHTML = `<span class="text-info"><i class="bi bi-plus-circle me-1"></i>Denda tambahan (kondisi mobil): Rp ${dendaTambahan.toLocaleString('id-ID')}</span>`;
+        } else if (dendaTambahan < 0) {
+            infoDendaTambahan.innerHTML = `<span class="text-danger"><i class="bi bi-exclamation-circle me-1"></i>Total denda tidak boleh kurang dari denda keterlambatan!</span>`;
+        } else {
+            infoDendaTambahan.innerHTML = '';
+        }
+    }
+</script>
+
 <!-- Modal Form -->
 <div class="modal fade" id="modalKembali" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
@@ -317,11 +405,11 @@ $dengan_denda = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_kembali WHE
                         <?php if (!$edit_data): ?>
                             <div class="col-12">
                                 <label class="form-label"><i class="bi bi-receipt me-1"></i>Transaksi</label>
-                                <select name="id_transaksi" class="form-select form-select-lg" required>
+                                <select name="id_transaksi" id="id_transaksi" class="form-select form-select-lg" required onchange="hitungDenda()">
                                     <option value="">-- Pilih Transaksi --</option>
                                     <?php while ($t = mysqli_fetch_assoc($transaksis)): ?>
-                                        <option value="<?= $t['id_transaksi'] ?>">
-                                            #<?= $t['id_transaksi'] ?> - <?= $t['nama'] ?> | <?= $t['brand'] ?> <?= $t['type'] ?>
+                                        <option value="<?= $t['id_transaksi'] ?>" data-tgl-kembali="<?= $t['tgl_kembali'] ?>">
+                                            #<?= $t['id_transaksi'] ?> - <?= $t['nama'] ?> | <?= $t['brand'] ?> <?= $t['type'] ?> (Batas: <?= date('d/m/Y', strtotime($t['tgl_kembali'])) ?>)
                                         </option>
                                     <?php endwhile; ?>
                                 </select>
@@ -330,8 +418,9 @@ $dengan_denda = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_kembali WHE
 
                         <div class="col-12">
                             <label class="form-label"><i class="bi bi-calendar-check me-1"></i>Tanggal Pengembalian</label>
-                            <input type="date" name="tgl_kembali" class="form-control form-control-lg" required
-                                value="<?= $edit_data ? $edit_data['tgl_kembali'] : date('Y-m-d') ?>">
+                            <input type="date" name="tgl_kembali" id="tgl_kembali_input" class="form-control form-control-lg" required
+                                value="<?= $edit_data ? $edit_data['tgl_kembali'] : date('Y-m-d') ?>" onchange="hitungDenda()">
+                            <div id="info_keterlambatan" class="mt-1"></div>
                         </div>
 
                         <div class="col-12">
@@ -341,14 +430,19 @@ $dengan_denda = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_kembali WHE
                         </div>
 
                         <div class="col-12">
-                            <label class="form-label"><i class="bi bi-exclamation-triangle me-1"></i>Denda (Rp)</label>
+                            <label class="form-label"><i class="bi bi-exclamation-triangle me-1"></i>Total Denda (Rp)</label>
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text">Rp</span>
-                                <input type="number" name="denda" class="form-control" required min="0"
-                                    placeholder="0"
+                                <input type="number" name="denda" id="denda_input" class="form-control" required min="0"
+                                    placeholder="0" oninput="updateInfoDenda()"
                                     value="<?= $edit_data ? $edit_data['denda'] : '0' ?>">
                             </div>
-                            <small class="text-muted">Isi 0 jika tidak ada denda</small>
+                            <div id="info_denda_otomatis" class="mt-1"></div>
+                            <div id="info_denda_tambahan" class="mt-1"></div>
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i>Denda keterlambatan: Rp 100.000/hari.
+                                Tambahkan denda jika kondisi mobil rusak.
+                            </small>
                         </div>
                     </div>
                 </div>

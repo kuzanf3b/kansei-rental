@@ -172,6 +172,16 @@
   color: var(--bg-primary);
 }
 
+.btn-action.btn-warning {
+  background: var(--warning-color);
+  color: var(--bg-primary);
+}
+
+.btn-action.btn-success {
+  background: var(--success-color);
+  color: var(--bg-primary);
+}
+
 .btn-action:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);

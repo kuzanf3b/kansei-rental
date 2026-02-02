@@ -50,13 +50,34 @@ $result = db_query($conn, "SELECT b.*, k.id_transaksi, t.nopol, m.nama, mb.brand
     ORDER BY b.id_bayar DESC 
     LIMIT {$paging['offset']}, $limit");
 
-// Dropdown - All Kembali (for payment)
-$kembalians = db_query($conn, "SELECT k.*, t.id_transaksi, t.nopol, t.total, m.nama, mb.brand, mb.type 
+// Dropdown - All Kembali (for payment) dengan info transaksi dan denda
+$kembalians = db_query($conn, "SELECT k.*, t.id_transaksi, t.nopol, t.total, t.downpayment, t.kekurangan, m.nama, mb.brand, mb.type 
     FROM tbl_kembali k 
     LEFT JOIN tbl_transaksi t ON k.id_transaksi = t.id_transaksi 
     LEFT JOIN tbl_member m ON t.nik = m.nik 
     LEFT JOIN tbl_mobil mb ON t.nopol = mb.nopol 
+    WHERE k.id_kembali NOT IN (SELECT id_kembali FROM tbl_bayar WHERE id_kembali IS NOT NULL)
     ORDER BY k.id_kembali DESC");
+
+// Siapkan data untuk JavaScript
+mysqli_data_seek($kembalians, 0);
+$kembali_data = [];
+while ($k = mysqli_fetch_assoc($kembalians)) {
+    // Total bayar = kekurangan transaksi + denda pengembalian
+    $total_bayar = ($k['kekurangan'] ?? 0) + ($k['denda'] ?? 0);
+    $kembali_data[$k['id_kembali']] = [
+        'total_transaksi' => $k['total'],
+        'downpayment' => $k['downpayment'],
+        'kekurangan' => $k['kekurangan'],
+        'denda' => $k['denda'],
+        'total_bayar' => $total_bayar,
+        'nama' => $k['nama'],
+        'brand' => $k['brand'],
+        'type' => $k['type'],
+        'nopol' => $k['nopol']
+    ];
+}
+mysqli_data_seek($kembalians, 0);
 
 // Get edit data
 $edit_data = isset($_GET['edit'])
@@ -276,7 +297,7 @@ $bayar_belum = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_bayar WHERE 
 
 <!-- Modal Form -->
 <div class="modal fade" id="modalBayar" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content modal-modern">
             <div class="modal-header">
                 <div class="d-flex align-items-center gap-3">
@@ -301,7 +322,7 @@ $bayar_belum = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_bayar WHERE 
                         <?php if (!$edit_data): ?>
                             <div class="col-12">
                                 <label class="form-label"><i class="bi bi-receipt me-1"></i>Data Pengembalian</label>
-                                <select name="id_kembali" class="form-select form-select-lg" required>
+                                <select name="id_kembali" id="id_kembali" class="form-select form-select-lg" required onchange="hitungTotalBayar()">
                                     <option value="">-- Pilih Pengembalian --</option>
                                     <?php while ($k = mysqli_fetch_assoc($kembalians)): ?>
                                         <option value="<?= $k['id_kembali'] ?>">
@@ -309,6 +330,38 @@ $bayar_belum = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_bayar WHERE 
                                         </option>
                                     <?php endwhile; ?>
                                 </select>
+                            </div>
+
+                            <!-- Info Detail Pembayaran -->
+                            <div class="col-12" id="info_pembayaran" style="display: none;">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="card-title mb-3"><i class="bi bi-info-circle me-1"></i>Rincian Pembayaran</h6>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <small class="text-muted">Total Transaksi:</small>
+                                                <div class="fw-bold" id="info_total_transaksi">Rp 0</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Down Payment:</small>
+                                                <div class="fw-bold text-success" id="info_dp">Rp 0</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Kekurangan:</small>
+                                                <div class="fw-bold text-warning" id="info_kekurangan">Rp 0</div>
+                                            </div>
+                                            <div class="col-6">
+                                                <small class="text-muted">Denda Keterlambatan:</small>
+                                                <div class="fw-bold text-danger" id="info_denda">Rp 0</div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold">TOTAL YANG HARUS DIBAYAR:</span>
+                                            <span class="fs-5 fw-bold text-primary" id="info_total_bayar">Rp 0</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         <?php endif; ?>
 
@@ -322,10 +375,13 @@ $bayar_belum = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_bayar WHERE 
                             <label class="form-label"><i class="bi bi-cash me-1"></i>Total Bayar</label>
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text">Rp</span>
-                                <input type="number" name="total_bayar" class="form-control" required min="1"
-                                    placeholder="0"
+                                <input type="number" name="total_bayar" id="total_bayar" class="form-control" required min="1"
+                                    placeholder="0" <?= $edit_data ? '' : 'readonly' ?>
                                     value="<?= $edit_data ? $edit_data['total_bayar'] : '' ?>">
                             </div>
+                            <?php if (!$edit_data): ?>
+                                <small class="text-muted">Total otomatis = Kekurangan Transaksi + Denda Keterlambatan</small>
+                            <?php endif; ?>
                         </div>
 
                         <div class="col-12">
@@ -354,6 +410,46 @@ $bayar_belum = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_bayar WHERE 
         </div>
     </div>
 </div>
+
+<!-- JavaScript untuk hitung total bayar otomatis -->
+<script>
+    const kembaliData = <?= json_encode($kembali_data) ?>;
+
+    function formatRupiah(angka) {
+        return 'Rp ' + angka.toLocaleString('id-ID');
+    }
+
+    function hitungTotalBayar() {
+        const selectKembali = document.getElementById('id_kembali');
+        const totalBayarInput = document.getElementById('total_bayar');
+        const infoPembayaran = document.getElementById('info_pembayaran');
+
+        if (!selectKembali || !totalBayarInput) return;
+
+        const idKembali = selectKembali.value;
+
+        if (!idKembali || !kembaliData[idKembali]) {
+            totalBayarInput.value = '';
+            if (infoPembayaran) infoPembayaran.style.display = 'none';
+            return;
+        }
+
+        const data = kembaliData[idKembali];
+
+        // Update info pembayaran
+        if (infoPembayaran) {
+            infoPembayaran.style.display = 'block';
+            document.getElementById('info_total_transaksi').textContent = formatRupiah(parseFloat(data.total_transaksi) || 0);
+            document.getElementById('info_dp').textContent = formatRupiah(parseFloat(data.downpayment) || 0);
+            document.getElementById('info_kekurangan').textContent = formatRupiah(parseFloat(data.kekurangan) || 0);
+            document.getElementById('info_denda').textContent = formatRupiah(parseFloat(data.denda) || 0);
+            document.getElementById('info_total_bayar').textContent = formatRupiah(parseFloat(data.total_bayar) || 0);
+        }
+
+        // Set total bayar
+        totalBayarInput.value = data.total_bayar;
+    }
+</script>
 
 <?php if ($edit_data): ?>
     <script>

@@ -279,3 +279,53 @@
   background: var(--border-color);
   border-radius: 3px;
 }
+
+/* ===== STATUS BUTTON ===== */
+.btn-status {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 14px !important;
+  border-radius: 6px !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease !important;
+  border: none !important;
+}
+
+.btn-status:hover {
+  transform: scale(1.03);
+  opacity: 0.85;
+}
+
+.btn-status:active {
+  transform: scale(0.97);
+}
+
+/* Booking - Orange */
+.btn-status.badge-warning {
+  background-color: rgba(224, 175, 104, 0.25) !important;
+  color: #e0af68 !important;
+}
+
+/* Approve - Biru Muda */
+.btn-status.badge-info {
+  background-color: rgba(125, 207, 255, 0.25) !important;
+  color: #7dcfff !important;
+}
+
+/* Ambil - Biru */
+.btn-status.badge-primary {
+  background-color: rgba(122, 162, 247, 0.25) !important;
+  color: #7aa2f7 !important;
+}
+
+/* Kembali - Hijau */
+.btn-status.badge-success {
+  background-color: rgba(158, 206, 106, 0.25) !important;
+  color: #9ece6a !important;
+}
