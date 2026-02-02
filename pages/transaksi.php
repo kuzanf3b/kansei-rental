@@ -405,32 +405,32 @@ if ($is_member) {
 <div class="container-fluid">
     <!-- Alert Messages & Notifications -->
     <?php if ($error_msg || $success_msg || !empty($notifikasi)): ?>
-    <div class="notification-wrapper">
-        <?php if ($error_msg): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-circle"></i>
-                <span><?= $error_msg ?></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
+        <div class="notification-wrapper">
+            <?php if ($error_msg): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <span><?= $error_msg ?></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
 
-        <?php if ($success_msg): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle"></i>
-                <span><?= $success_msg ?></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
+            <?php if ($success_msg): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle"></i>
+                    <span><?= $success_msg ?></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endif; ?>
 
-        <!-- Notifikasi/Reminder -->
-        <?php foreach ($notifikasi as $notif): ?>
-            <div class="alert alert-<?= $notif['type'] ?> alert-dismissible fade show" role="alert">
-                <i class="bi bi-<?= $notif['icon'] ?>"></i>
-                <span><strong><?= $notif['title'] ?>:</strong> <?= $notif['message'] ?></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endforeach; ?>
-    </div>
+            <!-- Notifikasi/Reminder -->
+            <?php foreach ($notifikasi as $notif): ?>
+                <div class="alert alert-<?= $notif['type'] ?> alert-dismissible fade show" role="alert">
+                    <i class="bi bi-<?= $notif['icon'] ?>"></i>
+                    <span><strong><?= $notif['title'] ?>:</strong> <?= $notif['message'] ?></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php endforeach; ?>
+        </div>
     <?php endif; ?>
 
     <!-- Page Header -->
