@@ -197,7 +197,7 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RJDM - <?= ucfirst($page) ?></title>
-    <link rel="icon" type="image/png" href="./assets/car-tokyonight.png" />
+    <link rel="icon" type="image/svg+xml" href="./assets/car-white.svg" />
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -207,7 +207,7 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/base.css">
     <link rel="stylesheet" href="./assets/css/layout.css">

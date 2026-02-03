@@ -52,7 +52,7 @@
 .top-navbar .user-avatar {
   width: 36px;
   height: 36px;
-  background: var(--primary-color);
+  background: var(--accent-color);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;

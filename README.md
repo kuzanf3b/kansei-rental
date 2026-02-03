@@ -3,40 +3,45 @@
 Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (Japanese Domestic Market). Dibangun menggunakan **PHP** dan **CSS**.
 
 ## Fitur (contoh — sesuaikan)
+
 - Manajemen data kendaraan (tambah/ubah/hapus)
 - Manajemen pelanggan
 - Pencatatan transaksi sewa & pengembalian
 - Perhitungan total biaya sewa (berdasarkan durasi, denda, dll.)
-- Halaman admin & laporan (opsional)
+- Halaman admin & laporan
 
 ## Teknologi
+
 - **PHP** (backend)
 - **CSS** (tampilan)
-- **Database**: MySQL/MariaDB *(sesuaikan jika berbeda)*
+- **Database**: MySQL/MariaDB
 
 ## Persyaratan
-- PHP 7.4+ *(sesuaikan dengan versi yang dipakai)*
+
+- PHP 7.4+ _(sesuaikan dengan versi yang dipakai)_
 - Web server (Apache/Nginx)
-- MySQL/MariaDB *(jika menggunakan database)*
+- MySQL/MariaDB
 - Git
 
 ## Cara Menjalankan (Local)
+
 1. Clone repository:
+
    ```bash
    git clone https://github.com/kuzanf3b/rental-jdm.git
    cd rental-jdm
    ```
 
-2. Siapkan database *(jika ada)*:
+2. Siapkan database _(jika ada)_:
    - Buat database, misalnya: `rental_jdm`
-   - Import file SQL jika tersedia (misalnya `database.sql`) *(sesuaikan nama filenya)*
+   - Import file SQL (`rental_jdm.sql`)
 
 3. Konfigurasi koneksi database:
-   - Cari file konfigurasi (misalnya `config.php`, `koneksi.php`, atau `.env`) *(sesuaikan)*
+   - Cari file konfigurasi (`index.php`)
    - Isi host, user, password, dan nama database
 
 4. Jalankan via web server:
-   - Jika pakai XAMPP/Laragon: taruh folder project ke `htdocs/www` lalu akses:
+   - Jika pakai XAMPP/Laragon/WAMP: taruh folder project ke `/www` lalu akses:
      - `http://localhost/rental-jdm`
    - Atau gunakan built-in server PHP:
      ```bash
@@ -45,24 +50,26 @@ Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (J
      Lalu buka `http://localhost:8000`
 
 ## Struktur Folder (opsional)
+
 > Sesuaikan dengan struktur sebenarnya.
+
 - `assets/` — file CSS/gambar/js
 - `pages/` — halaman aplikasi
-- `config/` — konfigurasi
 - `index.php` — entry point aplikasi
 
 ## Akun Login (opsional)
+
 > Isi jika aplikasi memiliki autentikasi.
-- Admin: `admin / admin` *(contoh)*
-- User: `user / user` *(contoh)*
+
+- Admin: `admin / admin`
+- User: `user / user`
 
 ## Kontribusi
+
 Kontribusi terbuka. Silakan:
+
 1. Fork repo ini
 2. Buat branch fitur: `git checkout -b fitur/namafitur`
 3. Commit perubahan: `git commit -m "Tambah fitur ..."`
 4. Push ke branch: `git push origin fitur/namafitur`
 5. Buat Pull Request
-
-## Lisensi
-Tentukan lisensi project (MIT/Apache-2.0/dll). *(opsional)*
