@@ -44,9 +44,11 @@ Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (J
    - Jika pakai XAMPP/Laragon/WAMP: taruh folder project ke `/www` lalu akses:
      - `http://localhost/rental-jdm`
    - Atau gunakan built-in server PHP:
+     
      ```bash
      php -S localhost:8000
      ```
+     
      Lalu buka `http://localhost:8000`
 
 ## Struktur Folder (opsional)
