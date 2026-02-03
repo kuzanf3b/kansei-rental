@@ -343,7 +343,7 @@ $bayar_belum = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_bayar WHERE 
                                                 <div class="fw-bold" id="info_total_transaksi">Rp 0</div>
                                             </div>
                                             <div class="col-6">
-                                                <small class="text-muted">Down Payment:</small>
+                                                <small class="text-muted">Uang Muka :</small>
                                                 <div class="fw-bold text-success" id="info_dp">Rp 0</div>
                                             </div>
                                             <div class="col-6">

@@ -841,7 +841,7 @@ if ($is_member) {
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label"><i class="bi bi-wallet2 me-1"></i>Down Payment</label>
+                            <label class="form-label"><i class="bi bi-wallet2 me-1"></i>Uang Muka :</label>
                             <div class="input-group input-group-lg">
                                 <span class="input-group-text">Rp</span>
                                 <input type="number" name="downpayment" class="form-control" required min="0"
