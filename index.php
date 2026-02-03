@@ -233,74 +233,63 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
     <?php else: ?>
         <!-- Top Navbar -->
         <nav class="top-navbar">
+            <!-- Hamburger Menu for Mobile -->
+            <button class="hamburger" onclick="toggleNavMenu()">
+                <i class="bi bi-list"></i>
+            </button>
+
             <a href="index.php?page=dashboard" class="logo">
                 <i class="bi bi-car-front-fill"></i>
                 <span>Rental JDM</span>
             </a>
+
+            <!-- Navigation Menu -->
+            <div class="nav-menu" id="navMenu">
+                <a class="nav-link <?= $page == 'dashboard' ? 'active' : '' ?>" href="index.php?page=dashboard">
+                    <i class="bi bi-house-fill"></i><span>Home</span>
+                </a>
+                <a class="nav-link <?= $page == 'mobil' ? 'active' : '' ?>" href="index.php?page=mobil">
+                    <i class="bi bi-car-front-fill"></i><span>Mobil</span>
+                </a>
+                <?php if ($_SESSION['user_level'] != 'member'): ?>
+                    <a class="nav-link <?= $page == 'member' ? 'active' : '' ?>" href="index.php?page=member">
+                        <i class="bi bi-people-fill"></i><span>Member</span>
+                    </a>
+                <?php endif; ?>
+                <a class="nav-link <?= $page == 'transaksi' ? 'active' : '' ?>" href="index.php?page=transaksi">
+                    <i class="bi bi-receipt"></i><span>Transaksi <?= $_SESSION['user_level'] == 'member' ? 'Saya' : '' ?></span>
+                </a>
+                <?php if ($_SESSION['user_level'] != 'member'): ?>
+                    <a class="nav-link <?= $page == 'kembali' ? 'active' : '' ?>" href="index.php?page=kembali">
+                        <i class="bi bi-arrow-return-left"></i><span>Kembali</span>
+                    </a>
+                    <a class="nav-link <?= $page == 'bayar' ? 'active' : '' ?>" href="index.php?page=bayar">
+                        <i class="bi bi-cash-stack"></i><span>Bayar</span>
+                    </a>
+                <?php endif; ?>
+                <?php if ($_SESSION['user_level'] == 'admin'): ?>
+                    <a class="nav-link <?= $page == 'user' ? 'active' : '' ?>" href="index.php?page=user">
+                        <i class="bi bi-person-gear"></i><span>User</span>
+                    </a>
+                <?php endif; ?>
+            </div>
+
             <div class="user-section">
-                <!-- Theme Switcher -->
                 <button class="theme-switcher" id="themeSwitcher" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
                     <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
                 </button>
                 <div class="user-info">
                     <span class="username"><?= $_SESSION['nama'] ?? $_SESSION['username'] ?></span>
-                    <span class="role"><span class="online-badge"></span><?= $_SESSION['username'] ?></span>
+                    <span class="role"><span class="online-badge"></span><?= ucfirst($_SESSION['user_level']) ?></span>
                 </div>
-                <div class="user-avatar">
+                <div class="user-avatar" title="<?= $_SESSION['username'] ?>">
                     <?= strtoupper(substr($_SESSION['username'], 0, 1)) ?>
                 </div>
+                <a href="index.php?page=logout" class="btn-logout" title="Logout">
+                    <i class="bi bi-box-arrow-left"></i>
+                </a>
             </div>
         </nav>
-
-        <!-- Hamburger Menu -->
-        <button class="hamburger" onclick="toggleSidebar()">
-            <i class="bi bi-list"></i>
-        </button>
-
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <nav class="nav flex-column">
-                <a class="nav-link <?= $page == 'dashboard' ? 'active' : '' ?>" href="index.php?page=dashboard">
-                    <i class="bi bi-grid-1x2-fill"></i><span>Dashboard</span>
-                </a>
-
-                <div class="nav-divider"></div>
-
-                <a class="nav-link <?= $page == 'mobil' ? 'active' : '' ?>" href="index.php?page=mobil">
-                    <i class="bi bi-car-front-fill"></i><span>Data Mobil</span>
-                </a>
-                <a class="nav-link <?= $page == 'member' ? 'active' : '' ?>" href="index.php?page=member">
-                    <i class="bi bi-people-fill"></i><span>Data Member</span>
-                </a>
-
-                <div class="nav-divider"></div>
-
-                <a class="nav-link <?= $page == 'transaksi' ? 'active' : '' ?>" href="index.php?page=transaksi">
-                    <i class="bi bi-cart-fill"></i><span>Transaksi</span>
-                </a>
-                <?php if ($_SESSION['user_level'] != 'member'): ?>
-                    <a class="nav-link <?= $page == 'kembali' ? 'active' : '' ?>" href="index.php?page=kembali">
-                        <i class="bi bi-arrow-return-left"></i><span>Pengembalian</span>
-                    </a>
-                    <a class="nav-link <?= $page == 'bayar' ? 'active' : '' ?>" href="index.php?page=bayar">
-                        <i class="bi bi-cash-stack"></i><span>Pembayaran</span>
-                    </a>
-                <?php endif; ?>
-
-                <?php if ($_SESSION['user_level'] == 'admin'): ?>
-                    <div class="nav-divider"></div>
-                    <a class="nav-link <?= $page == 'user' ? 'active' : '' ?>" href="index.php?page=user">
-                        <i class="bi bi-person-gear"></i><span>User Admin</span>
-                    </a>
-                <?php endif; ?>
-            </nav>
-
-            <div class="logout-section">
-                <a href="index.php?page=logout" class="btn-logout">
-                    <i class="bi bi-box-arrow-left"></i><span>Logout</span>
-                </a>
-            </div>
-        </div>
 
         <!-- Main Content -->
         <div class="main-content">
@@ -459,20 +448,27 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
             }
         });
 
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
+        function toggleNavMenu() {
+            document.getElementById('navMenu').classList.toggle('show');
         }
 
-        // Close sidebar when clicking outside on mobile
+        // Close nav menu when clicking outside on mobile
         document.addEventListener('click', function(e) {
-            const sidebar = document.getElementById('sidebar');
+            const navMenu = document.getElementById('navMenu');
             const hamburger = document.querySelector('.hamburger');
 
-            if (sidebar && hamburger && window.innerWidth <= 991) {
-                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                    sidebar.classList.remove('show');
+            if (navMenu && hamburger && window.innerWidth <= 768) {
+                if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                    navMenu.classList.remove('show');
                 }
             }
+        });
+
+        // Close nav menu when clicking a link
+        document.querySelectorAll('.nav-menu .nav-link').forEach(function(link) {
+            link.addEventListener('click', function() {
+                document.getElementById('navMenu').classList.remove('show');
+            });
         });
 
         // Update datetime

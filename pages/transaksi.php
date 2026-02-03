@@ -104,6 +104,15 @@ if (isset($_GET['msg'])) {
         case 'cancel_failed':
             $error_msg = 'Transaksi tidak dapat dibatalkan. Hanya transaksi dengan status booking/approve yang bisa dibatalkan.';
             break;
+        case 'booking_success':
+            $success_msg = 'Booking berhasil dibuat! Silakan tunggu konfirmasi dari admin.';
+            break;
+        case 'added':
+            $success_msg = 'Transaksi baru berhasil ditambahkan.';
+            break;
+        case 'updated':
+            $success_msg = 'Transaksi berhasil diperbarui.';
+            break;
     }
 }
 
@@ -439,13 +448,13 @@ if ($is_member) {
             <div class="col-md-6">
                 <div class="d-flex align-items-center gap-3">
                     <div class="page-icon">
-                        <i class="bi bi-cart-fill"></i>
+                        <i class="bi bi-receipt"></i>
                     </div>
                     <div>
-                        <h2 class="mb-0 fw-bold">Data Transaksi</h2>
+                        <h2 class="mb-0 fw-bold"><?= $is_member ? 'Transaksi Saya' : 'Data Transaksi' ?></h2>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="index.php?page=dashboard">Dashboard</a></li>
+                                <li class="breadcrumb-item"><a href="index.php?page=dashboard">Home</a></li>
                                 <li class="breadcrumb-item active">Transaksi</li>
                             </ol>
                         </nav>
@@ -453,9 +462,15 @@ if ($is_member) {
                 </div>
             </div>
             <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                <button type="button" class="btn btn-primary btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalTransaksi">
-                    <i class="bi bi-plus-circle me-2"></i>Transaksi Baru
-                </button>
+                <?php if (!$is_member): ?>
+                    <button type="button" class="btn btn-primary btn-lg px-4" data-bs-toggle="modal" data-bs-target="#modalTransaksi">
+                        <i class="bi bi-plus-circle me-2"></i>Transaksi Baru
+                    </button>
+                <?php else: ?>
+                    <a href="index.php?page=mobil" class="btn btn-primary btn-lg px-4">
+                        <i class="bi bi-car-front me-2"></i>Booking Mobil
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
