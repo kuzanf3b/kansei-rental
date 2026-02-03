@@ -46,7 +46,7 @@ $mobil_percentage = $mobil_total > 0 ? round(($mobil_tersedia / $mobil_total) * 
 <div class="supa-dashboard">
     <!-- Header -->
     <div class="supa-header">
-        <h1>Selamat datang, <?= $_SESSION['username'] ?>!</h1>
+        <h1>Selamat datang, <?= $_SESSION['nama'] ?? $_SESSION['username'] ?>!</h1>
         <p id="currentDateTime">Loading...</p>
     </div>
 

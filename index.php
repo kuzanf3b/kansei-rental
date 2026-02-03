@@ -243,8 +243,8 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
                     <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
                 </button>
                 <div class="user-info">
-                    <span class="username"><?= $_SESSION['username'] ?></span>
-                    <span class="role"><span class="online-badge"></span><?= ucfirst($_SESSION['user_level']) ?></span>
+                    <span class="username"><?= $_SESSION['nama'] ?? $_SESSION['username'] ?></span>
+                    <span class="role"><span class="online-badge"></span><?= $_SESSION['username'] ?></span>
                 </div>
                 <div class="user-avatar">
                     <?= strtoupper(substr($_SESSION['username'], 0, 1)) ?>

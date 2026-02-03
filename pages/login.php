@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['username'] = $user['user'];
             $_SESSION['user_level'] = $user['lvl'];
             $_SESSION['user_type'] = 'admin';
+            $_SESSION['nama'] = $user['user']; // Admin/petugas menggunakan username sebagai nama
 
             echo "<script>window.location='index.php?page=dashboard';</script>";
             exit;
