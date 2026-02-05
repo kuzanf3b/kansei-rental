@@ -61,6 +61,7 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-2xl: 20px;
+  --radius-full: 9999px;
 
   /* Transitions */
   --transition-fast: 150ms ease;

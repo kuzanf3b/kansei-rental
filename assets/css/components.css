@@ -333,7 +333,67 @@
   color: var(--primary-color);
 }
 
-/* ===== MODALS ===== */
+/* ===== MODALS - Enhanced Glassmorphism ===== */
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: var(--bg-highlight);
+  border-bottom: 1px solid var(--border-color);
+  padding: 20px 24px;
+}
+
+.modal-header .modal-title {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-header .btn-close {
+  background-size: 14px;
+  opacity: 0.6;
+  filter: invert(0.8);
+  transition: all 0.2s ease;
+}
+
+.modal-header .btn-close:hover {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+[data-theme="light"] .modal-header .btn-close {
+  filter: none;
+}
+
+.modal-body {
+  padding: 24px;
+  background: var(--bg-card);
+}
+
+.modal-footer {
+  background: var(--bg-highlight);
+  border-top: 1px solid var(--border-color);
+  padding: 16px 24px;
+  gap: 12px;
+}
+
+.modal-backdrop {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
 .modal-modern {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -534,13 +594,13 @@
 .mini-stat-icon {
   width: 48px;
   height: 48px;
-  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
   color: var(--bg-primary);
   flex-shrink: 0;
+  border-radius: var(--radius-lg);
 }
 
 /* Solid colors for stat icons - No gradients */
@@ -1238,20 +1298,22 @@ div + small.text-muted {
   margin-bottom: 40px;
 }
 
-/* Car Card Grid */
+/* Car Card Grid - Enhanced */
 .car-card-grid {
   position: relative;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
   overflow: hidden;
-  transition: all var(--transition-normal);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .car-card-grid:hover {
-  border-color: var(--primary-color);
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(122, 162, 247, 0.15);
+  border-color: transparent;
+  transform: translateY(-8px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 0 1px var(--primary-color);
 }
 
 .car-badge-grid {
@@ -1305,17 +1367,34 @@ div + small.text-muted {
   height: 180px;
   background: var(--bg-secondary);
   overflow: hidden;
+  position: relative;
+}
+
+.car-image-grid::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(26, 27, 38, 0.6), transparent);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+[data-theme="light"] .car-image-grid::after {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
 }
 
 .car-image-grid img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-slow);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .car-card-grid:hover .car-image-grid img {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 .car-content-grid {
@@ -2209,5 +2288,891 @@ div + small.text-muted {
 
   .info-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================
+   SCROLL ANIMATIONS
+   ===================================================== */
+
+/* Base animation state */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-on-scroll.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animation for grid items */
+.transaksi-grid .animate-on-scroll,
+.kembali-grid .animate-on-scroll,
+.bayar-grid .animate-on-scroll,
+.cars-grid-container .animate-on-scroll {
+  transition-delay: calc(var(--animation-order, 0) * 0.08s);
+}
+
+/* Fade up animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scale in animation */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Slide in from left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Bounce in */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =====================================================
+   TRANSAKSI GRID VIEW STYLES - IMPROVED
+   ===================================================== */
+
+.transaksi-grid-page,
+.kembali-grid-page,
+.bayar-grid-page {
+  padding: 0;
+}
+
+.transaksi-grid,
+.kembali-grid,
+.bayar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 28px;
+}
+
+/* Transaction Card - Improved */
+.transaksi-card,
+.kembali-card,
+.bayar-card {
+  background: var(--bg-card);
+  border: none;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.transaksi-card:hover,
+.kembali-card:hover,
+.bayar-card:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+}
+
+/* Status Border Colors with Glow - removed borders, using box-shadow only */
+.transaksi-card.status-booking {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--warning-color);
+}
+
+.transaksi-card.status-approve {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--info-color);
+}
+
+.transaksi-card.status-ambil {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--primary-color);
+}
+
+.transaksi-card.status-kembali {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--success-color);
+}
+
+.transaksi-card.status-cancel {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--danger-color);
+}
+
+.kembali-card.has-denda {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--danger-color);
+}
+
+.kembali-card.no-denda {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--success-color);
+}
+
+.bayar-card.status-lunas {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--success-color);
+}
+
+.bayar-card.status-belum,
+.bayar-card.status-pending {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 4px 0 0 var(--danger-color);
+}
+
+/* Card Image - Enhanced with Overlay */
+.transaksi-card-image,
+.kembali-card-image,
+.bayar-card-image {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+
+.transaksi-card-image::after,
+.kembali-card-image::after,
+.bayar-card-image::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(26, 27, 38, 0.7), transparent);
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+[data-theme="light"] .transaksi-card-image::after,
+[data-theme="light"] .kembali-card-image::after,
+[data-theme="light"] .bayar-card-image::after {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.transaksi-card:hover .transaksi-card-image::after,
+.kembali-card:hover .kembali-card-image::after,
+.bayar-card:hover .bayar-card-image::after {
+  opacity: 0.6;
+}
+
+.transaksi-card-image img,
+.kembali-card-image img,
+.bayar-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transaksi-card:hover .transaksi-card-image img,
+.kembali-card:hover .kembali-card-image img,
+.bayar-card:hover .bayar-card-image img {
+  transform: scale(1.1);
+}
+
+/* Status Badge on Image */
+.transaksi-card-image .status-badge,
+.kembali-card-image .denda-badge,
+.kembali-card-image .ok-badge,
+.bayar-card-image .status-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  backdrop-filter: blur(10px);
+}
+
+.status-badge.badge-warning {
+  background: rgba(224, 175, 104, 0.9);
+  color: var(--bg-primary);
+}
+
+.status-badge.badge-info {
+  background: rgba(125, 207, 255, 0.9);
+  color: var(--bg-primary);
+}
+
+.status-badge.badge-primary {
+  background: rgba(122, 162, 247, 0.9);
+  color: var(--bg-primary);
+}
+
+.status-badge.badge-success {
+  background: rgba(158, 206, 106, 0.9);
+  color: var(--bg-primary);
+}
+
+.status-badge.badge-danger {
+  background: rgba(247, 118, 142, 0.9);
+  color: var(--bg-primary);
+}
+
+.kembali-card-image .denda-badge {
+  background: rgba(247, 118, 142, 0.9);
+  color: var(--bg-primary);
+}
+
+.kembali-card-image .ok-badge {
+  background: rgba(158, 206, 106, 0.9);
+  color: var(--bg-primary);
+}
+
+/* Bayar Status Badges */
+.status-badge.lunas {
+  background: rgba(158, 206, 106, 0.95);
+  color: var(--bg-primary);
+  box-shadow: 0 2px 8px rgba(158, 206, 106, 0.4);
+}
+
+.status-badge.belum-lunas {
+  background: rgba(247, 118, 142, 0.95);
+  color: var(--bg-primary);
+  box-shadow: 0 2px 8px rgba(247, 118, 142, 0.4);
+}
+
+/* Supir Badge */
+.transaksi-card-image .supir-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(187, 154, 247, 0.9);
+  color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Card Body */
+.transaksi-card-body,
+.kembali-card-body,
+.bayar-card-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Car Info */
+.transaksi-card-body .car-info,
+.kembali-card-body .car-info,
+.bayar-card-body .car-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.transaksi-card-body .car-name,
+.kembali-card-body .car-name,
+.bayar-card-body .car-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.transaksi-card-body .car-nopol,
+.kembali-card-body .car-nopol,
+.bayar-card-body .car-nopol {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+}
+
+/* Member Info */
+.transaksi-card-body .member-info,
+.kembali-card-body .member-info,
+.bayar-card-body .member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+}
+
+.transaksi-card-body .member-avatar,
+.kembali-card-body .member-avatar,
+.bayar-card-body .member-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.transaksi-card-body .member-details,
+.kembali-card-body .member-details,
+.bayar-card-body .member-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.transaksi-card-body .member-name,
+.kembali-card-body .member-name,
+.bayar-card-body .member-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.transaksi-card-body .member-phone,
+.kembali-card-body .member-phone,
+.bayar-card-body .member-phone {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Rental Details */
+.rental-details,
+.return-details,
+.payment-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rental-dates,
+.return-dates {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg-highlight);
+  border-radius: var(--radius-lg);
+}
+
+.date-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.date-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.date-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.date-separator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.date-separator i {
+  font-size: 1rem;
+  color: var(--primary-color);
+}
+
+/* Rental Total */
+.rental-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  border-radius: var(--radius-lg);
+  color: white;
+}
+
+.total-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.total-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* Kondisi Mobil */
+.kondisi-mobil {
+  padding: 10px 12px;
+  background: var(--bg-highlight);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+}
+
+.kondisi-label {
+  color: var(--text-muted);
+  margin-right: 8px;
+}
+
+.kondisi-value {
+  color: var(--text-primary);
+}
+
+/* Biaya Info */
+.biaya-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.biaya-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.biaya-item .biaya-label {
+  color: var(--text-muted);
+}
+
+.biaya-item .biaya-value {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.biaya-item.denda .biaya-value {
+  color: var(--danger-color);
+}
+
+.biaya-item.total {
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+}
+
+.biaya-item.total .biaya-label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.biaya-item.total .biaya-value {
+  font-size: 1rem;
+  color: var(--primary-color);
+}
+
+/* Payment Date */
+.payment-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg-highlight);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.payment-date i {
+  color: var(--success-color);
+}
+
+/* Card Actions */
+.transaksi-card-actions,
+.kembali-card-actions,
+.bayar-card-actions {
+  padding: 16px 20px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Action Buttons */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: none;
+  cursor: pointer;
+}
+
+.btn-action.btn-status {
+  background: var(--primary-color);
+  color: white;
+  flex: 1;
+}
+
+.btn-action.btn-status:hover {
+  background: #6b93e8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(122, 162, 247, 0.3);
+}
+
+.btn-action.btn-return {
+  background: linear-gradient(135deg, var(--success-color), #7ec49a);
+  color: white;
+  flex: 1;
+}
+
+.btn-action.btn-return:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(158, 206, 106, 0.3);
+}
+
+.btn-action.btn-payment {
+  background: linear-gradient(135deg, var(--accent-color), #9b7dd5);
+  color: white;
+  flex: 1;
+}
+
+.btn-action.btn-payment:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(187, 154, 247, 0.3);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.btn-icon.btn-edit {
+  background: var(--bg-highlight);
+  color: var(--primary-color);
+}
+
+.btn-icon.btn-edit:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-icon.btn-delete {
+  background: var(--bg-highlight);
+  color: var(--danger-color);
+}
+
+.btn-icon.btn-delete:hover {
+  background: var(--danger-color);
+  color: white;
+}
+
+/* Empty State - Enhanced */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--border-color);
+  margin-top: 24px;
+}
+
+.empty-state i {
+  font-size: 5rem;
+  margin-bottom: 24px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.8;
+}
+
+.empty-state h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  font-size: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Stats Cards - Enhanced */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card.stat-total:hover {
+  border-color: var(--primary-color);
+}
+
+.stat-card.stat-booking:hover {
+  border-color: var(--warning-color);
+}
+
+.stat-card.stat-approve:hover {
+  border-color: var(--info-color);
+}
+
+.stat-card.stat-ambil:hover {
+  border-color: var(--accent-color);
+}
+
+.stat-card.stat-kembali:hover {
+  border-color: var(--success-color);
+}
+
+.stat-card .stat-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.stat-card.stat-total .stat-icon {
+  background: var(--primary-color);
+}
+
+.stat-card.stat-booking .stat-icon {
+  background: var(--warning-color);
+}
+
+.stat-card.stat-approve .stat-icon {
+  background: var(--info-color);
+}
+
+.stat-card.stat-ambil .stat-icon {
+  background: var(--accent-color);
+}
+
+.stat-card.stat-kembali .stat-icon {
+  background: var(--success-color);
+}
+
+.stat-card .stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-card .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.stat-card .stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 4px 0 0 0;
+}
+
+/* Content Card */
+.content-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .transaksi-grid,
+  .kembali-grid,
+  .bayar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .transaksi-grid,
+  .kembali-grid,
+  .bayar-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-card .stat-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 1.2rem;
+  }
+
+  .stat-card .stat-value {
+    font-size: 1.25rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rental-dates,
+  .return-dates {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .date-item {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .date-separator {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
   }
 }

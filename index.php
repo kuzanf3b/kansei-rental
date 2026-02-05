@@ -452,6 +452,51 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
             document.getElementById('navMenu').classList.toggle('show');
         }
 
+        // Navbar scroll effect
+        const navbar = document.querySelector('.top-navbar');
+        if (navbar) {
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 20) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+        }
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    // Optional: unobserve after animation
+                    // animationObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Apply animation to elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements to animate on scroll
+            const animateElements = document.querySelectorAll(
+                '.stat-card, .transaksi-card, .kembali-card, .bayar-card, ' +
+                '.content-card, .card, .mini-stat-card, .mobil-card, ' +
+                '.page-header, .alert, .cars-grid-container > div'
+            );
+
+            animateElements.forEach((el, index) => {
+                el.classList.add('animate-on-scroll');
+                el.style.transitionDelay = `${index * 0.05}s`;
+                animationObserver.observe(el);
+            });
+        });
+
         // Close nav menu when clicking outside on mobile
         document.addEventListener('click', function(e) {
             const navMenu = document.getElementById('navMenu');

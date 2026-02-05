@@ -1060,7 +1060,7 @@
   text-align: center;
 }
 
-.stat-icon {
+.stat-item .stat-icon {
   width: 70px;
   height: 70px;
   margin: 0 auto 16px;
@@ -1072,7 +1072,7 @@
   justify-content: center;
 }
 
-.stat-icon i {
+.stat-item .stat-icon i {
   font-size: 1.8rem;
   color: var(--orange);
 }
