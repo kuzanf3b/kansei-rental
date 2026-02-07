@@ -282,13 +282,13 @@ if ($is_member) {
                                     <h5><i class="bi bi-cash-stack"></i> Pembayaran</h5>
 
                                     <div class="form-group">
-                                        <label><i class="bi bi-wallet2"></i> Down Payment (DP) <span class="text-danger">*</span></label>
+                                        <label><i class="bi bi-wallet2"></i> Down Payment (DP) <small class="text-muted">(opsional)</small></label>
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
                                             <input type="number" name="downpayment" id="downpayment" class="form-control"
-                                                min="0" required placeholder="Masukkan jumlah DP" onchange="hitungBiaya()">
+                                                min="0" value="0" placeholder="Masukkan jumlah DP (boleh kosong)" onchange="hitungBiaya()">
                                         </div>
-                                        <small class="text-muted">Minimal DP 30% dari total biaya</small>
+                                        <small class="text-muted">Dapat dikosongkan atau diisi sesuai keinginan</small>
                                     </div>
                                 </div>
 

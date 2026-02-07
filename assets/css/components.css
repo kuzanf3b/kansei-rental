@@ -2784,6 +2784,81 @@ div + small.text-muted {
   font-weight: 700;
 }
 
+/* Return Info Box - For Completed Transactions */
+.return-info-box {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.return-info-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-highlight);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: var(--success-color);
+}
+
+.return-info-header i {
+  font-size: 1rem;
+}
+
+.return-info-content {
+  padding: 12px 4px;
+}
+
+.return-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  font-size: 0.84rem;
+}
+
+.return-info-item .label {
+  color: var(--text-muted);
+}
+
+.return-info-item .value {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: right;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.return-info-item.denda .value {
+  color: var(--danger-color);
+}
+
+.return-info-item.total {
+  border-top: 1px solid var(--border-color);
+  margin-top: 8px;
+  background: var(--bg-highlight);
+  margin-left: -4px;
+  margin-right: -4px;
+  margin-bottom: -12px;
+  padding: 12px 16px;
+}
+
+.return-info-item.total .label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.return-info-item.total .value {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
 /* Kondisi Mobil */
 .kondisi-mobil {
   padding: 10px 12px;
@@ -2801,11 +2876,15 @@ div + small.text-muted {
   color: var(--text-primary);
 }
 
-/* Biaya Info */
+/* Biaya Info - Enhanced */
 .biaya-info {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  border: 1px solid var(--border-color);
 }
 
 .biaya-item {
@@ -2813,10 +2892,17 @@ div + small.text-muted {
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.biaya-item:last-child {
+  border-bottom: none;
 }
 
 .biaya-item .biaya-label {
   color: var(--text-muted);
+  font-weight: 500;
 }
 
 .biaya-item .biaya-value {
@@ -2829,34 +2915,136 @@ div + small.text-muted {
 }
 
 .biaya-item.total {
-  padding-top: 8px;
-  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 2px solid var(--border-color);
+  border-bottom: none;
+  background: var(--bg-highlight);
+  margin: 8px -12px -12px;
+  padding: 12px;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
 .biaya-item.total .biaya-label {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
 .biaya-item.total .biaya-value {
-  font-size: 1rem;
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* Biaya Breakdown Card - Enhanced for Bayar Page */
+.biaya-breakdown-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.breakdown-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-highlight);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
+.breakdown-header i {
   color: var(--primary-color);
 }
 
-/* Payment Date */
+.biaya-breakdown-card .biaya-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.biaya-breakdown-card .biaya-row:last-child {
+  border-bottom: none;
+}
+
+.biaya-breakdown-card .biaya-row .biaya-label {
+  color: var(--text-muted);
+}
+
+.biaya-breakdown-card .biaya-row .biaya-value {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.biaya-breakdown-card .biaya-row.total-tagihan {
+  background: var(--bg-highlight);
+  border-top: 2px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.biaya-breakdown-card .biaya-row.total-tagihan .biaya-label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.biaya-breakdown-card .biaya-row.total-tagihan .biaya-value {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.biaya-breakdown-card .biaya-row.dibayar .biaya-value {
+  color: var(--success-color);
+}
+
+.biaya-breakdown-card .biaya-row.sisa .biaya-value {
+  color: var(--warning-color);
+}
+
+/* Payment Status Badge in Card Footer */
+.payment-status-badge {
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.payment-status-badge.badge-lunas {
+  background: rgba(158, 206, 106, 0.15);
+  color: var(--success-color);
+  border: 1px solid rgba(158, 206, 106, 0.3);
+}
+
+.payment-status-badge.badge-belum {
+  background: rgba(247, 118, 142, 0.15);
+  color: var(--danger-color);
+  border: 1px solid rgba(247, 118, 142, 0.3);
+}
+
+/* Payment Date - Enhanced */
 .payment-date {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   background: var(--bg-highlight);
   border-radius: var(--radius-md);
   font-size: 0.85rem;
   color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
 .payment-date i {
   color: var(--success-color);
+  font-size: 1rem;
 }
 
 /* Card Actions */
@@ -2911,12 +3099,13 @@ div + small.text-muted {
 }
 
 .btn-action.btn-payment {
-  background: linear-gradient(135deg, var(--accent-color), #9b7dd5);
+  background: var(--accent-color);
   color: white;
   flex: 1;
 }
 
 .btn-action.btn-payment:hover {
+  background: #9b7dd5;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(187, 154, 247, 0.3);
 }

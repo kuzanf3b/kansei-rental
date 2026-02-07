@@ -130,20 +130,24 @@ $total_pages = ceil($total_data / $limit);
 
 // Query untuk mengambil data transaksi
 if ($is_member) {
-    $sql = "SELECT t.*, m.brand, m.type, m.nopol as mobil_nopol, m.harga, m.foto, mb.nama as nama_member, mb.telp
+    $sql = "SELECT t.*, m.brand, m.type, m.nopol as mobil_nopol, m.harga, m.foto, mb.nama as nama_member, mb.telp,
+            k.tgl_kembali as tgl_kembali_aktual, k.kondisi_mobil, k.denda
             FROM tbl_transaksi t
             JOIN tbl_mobil m ON t.nopol = m.nopol
             JOIN tbl_member mb ON t.nik = mb.nik
+            LEFT JOIN tbl_kembali k ON t.id_transaksi = k.id_transaksi
             WHERE t.nik = ?
             ORDER BY t.id_transaksi DESC
             LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("iii", $user['nik'], $limit, $offset);
 } else {
-    $sql = "SELECT t.*, m.brand, m.type, m.nopol as mobil_nopol, m.harga, m.foto, mb.nama as nama_member, mb.telp, mb.alamat
+    $sql = "SELECT t.*, m.brand, m.type, m.nopol as mobil_nopol, m.harga, m.foto, mb.nama as nama_member, mb.telp, mb.alamat,
+            k.tgl_kembali as tgl_kembali_aktual, k.kondisi_mobil, k.denda
             FROM tbl_transaksi t
             JOIN tbl_mobil m ON t.nopol = m.nopol
             JOIN tbl_member mb ON t.nik = mb.nik
+            LEFT JOIN tbl_kembali k ON t.id_transaksi = k.id_transaksi
             ORDER BY t.id_transaksi DESC
             LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
@@ -422,6 +426,36 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
                                 <span class="total-label">Total Biaya</span>
                                 <span class="total-value">Rp <?php echo number_format($row['total'], 0, ',', '.'); ?></span>
                             </div>
+
+                            <?php if ($row['status'] === 'kembali' && !empty($row['tgl_kembali_aktual'])): ?>
+                                <!-- Return Info for Completed Transactions -->
+                                <div class="return-info-box">
+                                    <div class="return-info-header">
+                                        <i class="bi bi-box-arrow-in-left"></i>
+                                        <span>Info Pengembalian</span>
+                                    </div>
+                                    <div class="return-info-content">
+                                        <div class="return-info-item">
+                                            <span class="label">Dikembalikan</span>
+                                            <span class="value"><?php echo date('d M Y', strtotime($row['tgl_kembali_aktual'])); ?></span>
+                                        </div>
+                                        <div class="return-info-item">
+                                            <span class="label">Kondisi</span>
+                                            <span class="value"><?php echo htmlspecialchars($row['kondisi_mobil'] ?? '-'); ?></span>
+                                        </div>
+                                        <?php if ($row['denda'] > 0): ?>
+                                            <div class="return-info-item denda">
+                                                <span class="label">Denda</span>
+                                                <span class="value text-danger">Rp <?php echo number_format($row['denda'], 0, ',', '.'); ?></span>
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="return-info-item total">
+                                            <span class="label">Total + Denda</span>
+                                            <span class="value">Rp <?php echo number_format($row['total'] + ($row['denda'] ?? 0), 0, ',', '.'); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 

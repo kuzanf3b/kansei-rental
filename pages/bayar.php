@@ -277,7 +277,11 @@ if ($kembali_result && mysqli_num_rows($kembali_result) > 0) {
                             <span>Dibayar: <?php echo $row['tgl_bayar'] ? date('d M Y', strtotime($row['tgl_bayar'])) : '-'; ?></span>
                         </div>
 
-                        <div class="biaya-breakdown">
+                        <div class="biaya-breakdown-card">
+                            <div class="breakdown-header">
+                                <i class="bi bi-receipt"></i>
+                                <span>Rincian Pembayaran</span>
+                            </div>
                             <div class="biaya-row">
                                 <span class="biaya-label">Biaya Sewa</span>
                                 <span class="biaya-value">Rp <?php echo number_format($row['biaya_sewa'], 0, ',', '.'); ?></span>
@@ -410,19 +414,23 @@ if ($kembali_result && mysqli_num_rows($kembali_result) > 0) {
                     </div>
 
                     <div class="mb-3" id="info_tagihan" style="display: none;">
-                        <div class="alert alert-info mb-0">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>Biaya Sewa:</span>
-                                <span id="display_sewa">-</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span>Denda:</span>
-                                <span id="display_denda">-</span>
-                            </div>
-                            <hr class="my-2">
-                            <div class="d-flex justify-content-between fw-bold">
-                                <span>Total Tagihan:</span>
-                                <span id="display_total">-</span>
+                        <div class="card border-0 shadow-sm" style="background: var(--bg-secondary); border-radius: 12px;">
+                            <div class="card-body p-3">
+                                <h6 class="mb-3 d-flex align-items-center gap-2" style="color: var(--text-primary);">
+                                    <i class="bi bi-receipt text-primary"></i> Rincian Biaya
+                                </h6>
+                                <div class="d-flex justify-content-between align-items-center py-2" style="border-bottom: 1px solid var(--border-color);">
+                                    <span style="color: var(--text-muted);">Biaya Sewa</span>
+                                    <span id="display_sewa" style="font-weight: 600; color: var(--text-primary);">-</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center py-2" style="border-bottom: 1px solid var(--border-color);">
+                                    <span style="color: var(--text-muted);">Denda</span>
+                                    <span id="display_denda" class="text-danger" style="font-weight: 600;">-</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center py-2 mt-2" style="background: var(--bg-highlight); margin: 8px -12px -12px; padding: 12px 16px; border-radius: 0 0 12px 12px;">
+                                    <span style="font-weight: 700; color: var(--text-primary);">Total Tagihan</span>
+                                    <span id="display_total" style="font-weight: 700; font-size: 1.1rem; color: var(--primary-color);">-</span>
+                                </div>
                             </div>
                         </div>
                     </div>

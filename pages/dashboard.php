@@ -254,7 +254,7 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
                             $foto = !empty($mobil['foto']) ? 'uploads/mobil/' . $mobil['foto'] : 'https://via.placeholder.com/300x200?text=' . urlencode($mobil['brand']);
                             $statusClass = $mobil['status'] == 'tersedia' ? 'available' : 'rented';
                         ?>
-                            <div class="car-card carousel-item">
+                            <div class="car-card">
                                 <div class="car-badge <?= $statusClass ?>">
                                     <?= ucfirst($mobil['status']) ?>
                                 </div>
