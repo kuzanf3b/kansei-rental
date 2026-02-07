@@ -5,19 +5,37 @@ $is_member = ($_SESSION['user_level'] == 'member');
 $nama_lengkap = $_SESSION['nama'] ?? $_SESSION['username'];
 
 // Get statistics
-$mobil_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_mobil"))['total'];
-$mobil_tersedia = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_mobil WHERE status='tersedia'"))['total'];
-$member_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_member"))['total'];
-$transaksi_total = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi"))['total'];
-$transaksi_selesai = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status='kembali'"))['total'];
+$stat_mobil = mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_mobil");
+$mobil_total = $stat_mobil ? mysqli_fetch_assoc($stat_mobil)['total'] : 0;
 
-// Get mobil populer dengan foto
-$mobil_populer = mysqli_query($conn, "SELECT mb.*, COUNT(t.id_transaksi) as total_sewa 
-                                       FROM tbl_mobil mb 
-                                       LEFT JOIN tbl_transaksi t ON mb.nopol = t.nopol 
-                                       GROUP BY mb.nopol 
-                                       ORDER BY total_sewa DESC 
-                                       LIMIT 4");
+$stat_tersedia = mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_mobil WHERE status='tersedia'");
+$mobil_tersedia = $stat_tersedia ? mysqli_fetch_assoc($stat_tersedia)['total'] : 0;
+
+$stat_member = mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_member");
+$member_total = $stat_member ? mysqli_fetch_assoc($stat_member)['total'] : 0;
+
+$stat_transaksi_total = mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi");
+$transaksi_total = $stat_transaksi_total ? mysqli_fetch_assoc($stat_transaksi_total)['total'] : 0;
+
+$stat_transaksi_selesai = mysqli_query($conn, "SELECT COUNT(*) as total FROM tbl_transaksi WHERE status='kembali'");
+$transaksi_selesai = $stat_transaksi_selesai ? mysqli_fetch_assoc($stat_transaksi_selesai)['total'] : 0;
+
+// Get all mobil for carousel - simple query without JOIN
+$mobil_array = [];
+$mobil_list = mysqli_query($conn, "SELECT * FROM tbl_mobil ORDER BY nopol");
+
+if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
+    while ($m = mysqli_fetch_assoc($mobil_list)) {
+        // Get rental count for each car
+        $count_query = mysqli_query($conn, "SELECT COUNT(*) as cnt FROM tbl_transaksi WHERE nopol='" . mysqli_real_escape_string($conn, $m['nopol']) . "'");
+        $m['total_sewa'] = $count_query ? mysqli_fetch_assoc($count_query)['cnt'] : 0;
+        $mobil_array[] = $m;
+    }
+    // Sort by total_sewa descending
+    usort($mobil_array, function ($a, $b) {
+        return $b['total_sewa'] - $a['total_sewa'];
+    });
+}
 ?>
 
 <?php if ($is_member): ?>
@@ -212,7 +230,7 @@ $mobil_populer = mysqli_query($conn, "SELECT mb.*, COUNT(t.id_transaksi) as tota
             </div>
         </section>
 
-        <!-- Popular Cars Section -->
+        <!-- Popular Cars Carousel Section -->
         <section class="cars-section">
             <div class="section-header">
                 <div class="section-badge">
@@ -222,69 +240,90 @@ $mobil_populer = mysqli_query($conn, "SELECT mb.*, COUNT(t.id_transaksi) as tota
                 <h2 class="section-title">
                     Pilihan <span class="highlight">Mobil Terbaik</span> Kami
                 </h2>
+                <p class="section-subtitle">Scroll untuk melihat semua koleksi mobil JDM kami</p>
             </div>
-            <div class="cars-grid">
-                <?php
-                mysqli_data_seek($mobil_populer, 0);
-                if (mysqli_num_rows($mobil_populer) > 0): ?>
-                    <?php while ($mobil = mysqli_fetch_assoc($mobil_populer)):
-                        $foto = !empty($mobil['foto']) ? 'uploads/mobil/' . $mobil['foto'] : 'https://via.placeholder.com/300x200?text=' . urlencode($mobil['brand']);
-                        $statusClass = $mobil['status'] == 'tersedia' ? 'available' : 'rented';
-                    ?>
-                        <div class="car-card">
-                            <div class="car-badge <?= $statusClass ?>">
-                                <?= ucfirst($mobil['status']) ?>
-                            </div>
-                            <div class="car-favorite">
-                                <i class="bi bi-heart"></i>
-                            </div>
-                            <div class="car-image">
-                                <img src="<?= $foto ?>" alt="<?= $mobil['brand'] . ' ' . $mobil['type'] ?>">
-                            </div>
-                            <div class="car-info">
-                                <h3 class="car-name"><?= $mobil['brand'] . ' ' . $mobil['type'] ?></h3>
-                                <div class="car-rating">
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-fill"></i>
-                                    <i class="bi bi-star-half"></i>
-                                    <span>4.5 (<?= $mobil['total_sewa'] ?> rental)</span>
+
+            <!-- Infinite Carousel -->
+            <div class="cars-carousel-wrapper">
+                <div class="cars-carousel" id="carsCarouselMember">
+                    <?php if (count($mobil_array) > 0): ?>
+                        <?php
+                        // Duplicate items for infinite scroll effect
+                        $all_mobil = array_merge($mobil_array, $mobil_array, $mobil_array);
+                        foreach ($all_mobil as $mobil):
+                            $foto = !empty($mobil['foto']) ? 'uploads/mobil/' . $mobil['foto'] : 'https://via.placeholder.com/300x200?text=' . urlencode($mobil['brand']);
+                            $statusClass = $mobil['status'] == 'tersedia' ? 'available' : 'rented';
+                        ?>
+                            <div class="car-card carousel-item">
+                                <div class="car-badge <?= $statusClass ?>">
+                                    <?= ucfirst($mobil['status']) ?>
                                 </div>
-                                <div class="car-specs">
-                                    <div class="spec">
-                                        <i class="bi bi-calendar3"></i>
-                                        <span><?= $mobil['tahun'] ?></span>
-                                    </div>
-                                    <div class="spec">
-                                        <i class="bi bi-credit-card-2-front"></i>
-                                        <span><?= $mobil['nopol'] ?></span>
-                                    </div>
+                                <div class="car-favorite">
+                                    <i class="bi bi-heart"></i>
                                 </div>
-                                <div class="car-footer">
-                                    <div class="car-price">
-                                        <span class="price">Rp <?= number_format($mobil['harga'], 0, ',', '.') ?></span>
-                                        <span class="period">/hari</span>
+                                <div class="car-image">
+                                    <img src="<?= $foto ?>" alt="<?= $mobil['brand'] . ' ' . $mobil['type'] ?>" loading="lazy">
+                                </div>
+                                <div class="car-info">
+                                    <h3 class="car-name"><?= $mobil['brand'] . ' ' . $mobil['type'] ?></h3>
+                                    <div class="car-rating">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                        <span>4.5 (<?= $mobil['total_sewa'] ?> rental)</span>
                                     </div>
-                                    <?php if ($mobil['status'] == 'tersedia'): ?>
-                                        <a href="index.php?page=mobil&detail=<?= $mobil['nopol'] ?>" class="btn-book">
-                                            <span>Booking</span>
-                                            <i class="bi bi-arrow-right"></i>
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="btn-book disabled">Disewa</span>
-                                    <?php endif; ?>
+                                    <div class="car-specs">
+                                        <div class="spec">
+                                            <i class="bi bi-calendar3"></i>
+                                            <span><?= $mobil['tahun'] ?></span>
+                                        </div>
+                                        <div class="spec">
+                                            <i class="bi bi-credit-card-2-front"></i>
+                                            <span><?= $mobil['nopol'] ?></span>
+                                        </div>
+                                    </div>
+                                    <div class="car-footer">
+                                        <div class="car-price">
+                                            <span class="price">Rp <?= number_format($mobil['harga'], 0, ',', '.') ?></span>
+                                            <span class="period">/hari</span>
+                                        </div>
+                                        <?php if ($mobil['status'] == 'tersedia'): ?>
+                                            <a href="index.php?page=mobil&detail=<?= $mobil['nopol'] ?>" class="btn-book">
+                                                <span>Booking</span>
+                                                <i class="bi bi-arrow-right"></i>
+                                            </a>
+                                        <?php else: ?>
+                                            <span class="btn-book disabled">Disewa</span>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="no-cars">
+                            <i class="bi bi-car-front"></i>
+                            <p>Belum ada mobil tersedia</p>
                         </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <div class="no-cars">
-                        <i class="bi bi-car-front"></i>
-                        <p>Belum ada mobil tersedia</p>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </div>
+
+            <!-- Carousel Controls -->
+            <div class="carousel-controls">
+                <button class="carousel-btn prev" onclick="scrollCarouselMember(-1)" title="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <div class="carousel-indicator">
+                    <span>Geser untuk melihat lebih banyak</span>
+                    <i class="bi bi-arrow-left-right"></i>
+                </div>
+                <button class="carousel-btn next" onclick="scrollCarouselMember(1)" title="Next">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+
             <div class="cars-cta">
                 <a href="index.php?page=mobil" class="btn-hero primary">
                     <span>Lihat Semua Mobil</span>
@@ -293,6 +332,106 @@ $mobil_populer = mysqli_query($conn, "SELECT mb.*, COUNT(t.id_transaksi) as tota
             </div>
         </section>
     </div>
+
+    <script>
+        // Carousel functionality for Member Dashboard
+        const carouselMember = document.getElementById('carsCarouselMember');
+        let isDownMember = false;
+        let startXMember;
+        let scrollLeftMember;
+        let autoScrollIntervalMember;
+        let scrollSpeedMember = 1;
+        let isPausedMember = false;
+
+        // Auto scroll function
+        function startAutoScrollMember() {
+            autoScrollIntervalMember = setInterval(() => {
+                if (!isPausedMember && carouselMember) {
+                    carouselMember.scrollLeft += scrollSpeedMember;
+
+                    // Infinite scroll logic
+                    const maxScroll = carouselMember.scrollWidth - carouselMember.clientWidth;
+                    if (carouselMember.scrollLeft >= maxScroll - 10) {
+                        carouselMember.scrollLeft = carouselMember.scrollLeft / 3;
+                    }
+                    if (carouselMember.scrollLeft <= 10) {
+                        carouselMember.scrollLeft = carouselMember.scrollLeft + (maxScroll / 3);
+                    }
+                }
+            }, 30);
+        }
+
+        // Manual scroll with buttons
+        function scrollCarouselMember(direction) {
+            const scrollAmount = 350;
+            carouselMember.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+
+        // Mouse/touch events for drag scrolling
+        if (carouselMember) {
+            carouselMember.addEventListener('mousedown', (e) => {
+                isDownMember = true;
+                isPausedMember = true;
+                carouselMember.classList.add('active');
+                startXMember = e.pageX - carouselMember.offsetLeft;
+                scrollLeftMember = carouselMember.scrollLeft;
+            });
+
+            carouselMember.addEventListener('mouseleave', () => {
+                isDownMember = false;
+                carouselMember.classList.remove('active');
+                setTimeout(() => {
+                    isPausedMember = false;
+                }, 2000);
+            });
+
+            carouselMember.addEventListener('mouseup', () => {
+                isDownMember = false;
+                carouselMember.classList.remove('active');
+                setTimeout(() => {
+                    isPausedMember = false;
+                }, 2000);
+            });
+
+            carouselMember.addEventListener('mousemove', (e) => {
+                if (!isDownMember) return;
+                e.preventDefault();
+                const x = e.pageX - carouselMember.offsetLeft;
+                const walk = (x - startXMember) * 2;
+                carouselMember.scrollLeft = scrollLeftMember - walk;
+            });
+
+            // Touch events for mobile
+            carouselMember.addEventListener('touchstart', () => {
+                isPausedMember = true;
+            });
+
+            carouselMember.addEventListener('touchend', () => {
+                setTimeout(() => {
+                    isPausedMember = false;
+                }, 2000);
+            });
+
+            // Pause on hover
+            carouselMember.addEventListener('mouseenter', () => {
+                isPausedMember = true;
+            });
+
+            carouselMember.addEventListener('mouseleave', () => {
+                if (!isDownMember) {
+                    setTimeout(() => {
+                        isPausedMember = false;
+                    }, 1000);
+                }
+            });
+
+            // Start auto scroll
+            startAutoScrollMember();
+        }
+    </script>
 
 <?php else: ?>
     <!-- ============================================
@@ -366,9 +505,10 @@ $mobil_populer = mysqli_query($conn, "SELECT mb.*, COUNT(t.id_transaksi) as tota
             </div>
             <div class="admin-cars-grid">
                 <?php
-                mysqli_data_seek($mobil_populer, 0);
-                if (mysqli_num_rows($mobil_populer) > 0): ?>
-                    <?php while ($mobil = mysqli_fetch_assoc($mobil_populer)):
+                // Use only first 4 cars for admin view
+                $admin_mobil = array_slice($mobil_array, 0, 4);
+                if (count($admin_mobil) > 0): ?>
+                    <?php foreach ($admin_mobil as $mobil):
                         $foto = !empty($mobil['foto']) ? 'uploads/mobil/' . $mobil['foto'] : 'https://via.placeholder.com/300x200?text=' . urlencode($mobil['brand']);
                         $statusClass = $mobil['status'] == 'tersedia' ? 'available' : 'rented';
                     ?>
@@ -393,7 +533,7 @@ $mobil_populer = mysqli_query($conn, "SELECT mb.*, COUNT(t.id_transaksi) as tota
                                 </div>
                             </div>
                         </div>
-                    <?php endwhile; ?>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <div class="no-cars-admin">
                         <i class="bi bi-car-front"></i>

@@ -165,26 +165,38 @@ function upload_file($field, $target_dir)
 $limit = 5;
 
 // AUTH CHECK
-$page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
+$page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
-// Pages yang tidak perlu login
-$public_pages = ['login', 'register'];
+// Pages yang tidak perlu login (public pages)
+$public_pages = ['login', 'register', 'home'];
+
+// Pages yang memerlukan login
+$protected_pages = ['dashboard', 'mobil', 'member', 'transaksi', 'kembali', 'bayar', 'user'];
+
+// Cek apakah user adalah guest (belum login)
+$is_guest = !isset($_SESSION['user_id']);
 
 // Handle logout
 if ($page == 'logout') {
     session_destroy();
-    echo "<script>window.location='index.php?page=login';</script>";
+    echo "<script>window.location='index.php?page=home';</script>";
     exit;
 }
 
-// Cek apakah sudah login
-if (!isset($_SESSION['user_id']) && !in_array($page, $public_pages)) {
+// Jika guest mencoba akses halaman protected, redirect ke login
+if ($is_guest && in_array($page, $protected_pages)) {
     echo "<script>window.location='index.php?page=login';</script>";
     exit;
 }
 
 // Jika sudah login tapi akses login/register, redirect ke dashboard
-if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
+if (isset($_SESSION['user_id']) && in_array($page, ['login', 'register'])) {
+    echo "<script>window.location='index.php?page=dashboard';</script>";
+    exit;
+}
+
+// Jika sudah login tapi akses home, redirect ke dashboard
+if (isset($_SESSION['user_id']) && $page == 'home') {
     echo "<script>window.location='index.php?page=dashboard';</script>";
     exit;
 }
@@ -225,13 +237,49 @@ if (isset($_SESSION['user_id']) && in_array($page, $public_pages)) {
     </script>
 </head>
 
-<body class="<?= !in_array($page, $public_pages) ? 'dashboard-body' : '' ?>">
+<body class="<?= in_array($page, ['login', 'register']) ? '' : 'dashboard-body' ?>">
 
-    <?php if (in_array($page, $public_pages)): ?>
-        <!-- Public Pages (Login/Register) -->
+    <?php if (in_array($page, ['login', 'register'])): ?>
+        <!-- Auth Pages (Login/Register) -->
         <?php include "pages/{$page}.php"; ?>
+    <?php elseif ($page == 'home' && $is_guest): ?>
+        <!-- Guest Home Page with Navbar -->
+        <nav class="top-navbar">
+            <button class="hamburger" onclick="toggleNavMenu()">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <a href="index.php?page=home" class="logo">
+                <i class="bi bi-car-front-fill"></i>
+                <span>Rental JDM</span>
+            </a>
+
+            <div class="nav-menu" id="navMenu">
+                <a class="nav-link active" href="index.php?page=home">
+                    <i class="bi bi-house-fill"></i><span>Home</span>
+                </a>
+            </div>
+
+            <div class="user-section">
+                <button class="theme-switcher" id="themeSwitcher" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                    <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+                </button>
+                <a href="index.php?page=login" class="btn-auth-nav">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Login</span>
+                </a>
+                <a href="index.php?page=register" class="btn-auth-nav register">
+                    <i class="bi bi-person-plus"></i>
+                    <span>Register</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <?php include "pages/home.php"; ?>
+        </div>
     <?php else: ?>
-        <!-- Top Navbar -->
+        <!-- Logged In User - Top Navbar -->
         <nav class="top-navbar">
             <!-- Hamburger Menu for Mobile -->
             <button class="hamburger" onclick="toggleNavMenu()">
