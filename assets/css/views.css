@@ -75,7 +75,7 @@
   color: var(--warning-color);
 }
 
-.kanban-header-info-color {
+.kanban-header-info {
   background: linear-gradient(
     135deg,
     rgba(125, 211, 252, 0.2),
@@ -83,7 +83,7 @@
   );
   border-bottom-color: rgba(125, 211, 252, 0.3);
 }
-.kanban-header-info-color .kanban-header-content i {
+.kanban-header-info .kanban-header-content i {
   color: var(--info-color);
 }
 
@@ -1115,20 +1115,22 @@
 .kembali-list-actions {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: 10px; /* Gap lebih kecil agar compact */
+  padding: 16px 20px; /* Padding lebih besar */
   background: var(--bg-secondary);
   border-left: 1px solid var(--border-color);
   justify-content: center;
+  min-width: 180px; /* Lebih lebar untuk tombol yang lebih besar */
 }
 
 .list-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 10px 16px;
   border-radius: var(--radius-md);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
   transition: all var(--transition-fast);
@@ -1140,11 +1142,55 @@
 .list-btn-primary {
   background: var(--primary-color);
   color: var(--bg-primary);
+  padding: 14px 24px; /* Lebih besar */
+  font-size: 0.95rem; /* Font lebih besar */
+  font-weight: 600; /* Lebih bold */
+  box-shadow: 0 4px 12px rgba(122, 162, 247, 0.3); /* Shadow untuk depth */
+  position: relative;
+  overflow: hidden;
+  animation: pulse-shadow 2s ease-in-out infinite; /* Animasi pulse */
+}
+
+@keyframes pulse-shadow {
+  0%,
+  100% {
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(122, 162, 247, 0.5);
+  }
+}
+
+.list-btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.list-btn-primary:hover::before {
+  left: 100%;
 }
 
 .list-btn-primary:hover {
-  background: var(--primary-hover);
+  background: var(--accent-color);
   color: var(--bg-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(122, 162, 247, 0.4);
+  animation: none; /* Stop pulse on hover */
+}
+
+.list-btn-primary i {
+  font-size: 1.1rem; /* Icon lebih besar */
 }
 
 .list-btn-secondary {
@@ -1407,7 +1453,7 @@
   padding: 16px 28px; /* Padding lebih besar */
   border-radius: var(--radius-md);
   text-align: center;
-  min-width: 160px; /* Lebih lebar */
+  min-width: 180px; /* Lebih lebar */
   width: 180px; /* Lebar tetap lebih besar */
 }
 

@@ -20,7 +20,7 @@
 .card-header {
   background: var(--bg-secondary);
   color: var(--text-primary);
-  padding: 16px 20px;
+  padding: 18px 24px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -33,7 +33,7 @@
 .card-body {
   background: var(--bg-card);
   color: var(--text-primary);
-  padding: 20px;
+  padding: 24px;
 }
 
 /* Card Modern - Supabase Style */
@@ -48,13 +48,13 @@
 .card-modern .card-header {
   background: var(--bg-highlight);
   border-bottom: 1px solid var(--border-color);
-  padding: 16px 20px;
+  padding: 18px 24px;
 }
 
 .card-modern .card-header h5 {
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
 }
 
 .card-modern .card-header i {
@@ -62,7 +62,7 @@
 }
 
 .card-modern .card-body {
-  padding: 20px;
+  padding: 24px;
 }
 
 .card-modern .card-body.p-0 {
@@ -72,11 +72,11 @@
 /* ===== BUTTONS ===== */
 .btn {
   border-radius: var(--radius-md);
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-weight: 500;
   transition: all var(--transition-normal);
   border: none;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .btn-primary {
@@ -145,8 +145,8 @@
 
 /* Action Buttons - Icon only */
 .btn-action {
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -154,7 +154,7 @@
   border-radius: var(--radius-md);
   border: none;
   transition: all var(--transition-normal);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .btn-action.btn-edit {
@@ -189,10 +189,10 @@
 
 /* ===== BADGES ===== */
 .badge {
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: var(--radius-md);
   font-weight: 500;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .badge.bg-primary {
@@ -229,11 +229,11 @@
 .badge-modern {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 0.75rem;
-  gap: 4px;
+  font-size: 0.8rem;
+  gap: 5px;
 }
 
 .badge-modern.badge-primary {
@@ -270,11 +270,11 @@
 .form-control,
 .form-select {
   border-radius: var(--radius-md);
-  padding: 10px 14px;
+  padding: 12px 16px;
   border: 1px solid var(--border-color);
   background: var(--bg-input);
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: all var(--transition-normal);
 }
 
@@ -298,8 +298,8 @@
 .form-label {
   font-weight: 500;
   color: var(--text-primary);
-  font-size: 0.875rem;
-  margin-bottom: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
 }
 
 .form-check-input {
@@ -345,16 +345,16 @@
 .modal-header {
   background: var(--bg-highlight);
   border-bottom: 1px solid var(--border-color);
-  padding: 20px 24px;
+  padding: 22px 28px;
 }
 
 .modal-header .modal-title {
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .modal-header .btn-close {

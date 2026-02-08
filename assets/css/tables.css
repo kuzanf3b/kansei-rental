@@ -19,14 +19,14 @@
   font-weight: 600;
   color: var(--text-primary) !important;
   border-bottom: 1px solid var(--border-color) !important;
-  padding: 14px 16px;
-  font-size: 0.8rem;
+  padding: 16px 18px;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.3px;
 }
 
 .table td {
-  padding: 14px 16px;
+  padding: 16px 18px;
   vertical-align: middle;
   border-color: var(--border-color) !important;
   color: var(--text-primary) !important;
@@ -61,16 +61,16 @@
 .table-modern thead th {
   color: var(--text-muted);
   font-weight: 600;
-  padding: 14px 18px;
+  padding: 16px 20px;
   border-bottom: 1px solid var(--border-color);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
 }
 
 .table-modern thead th i {
-  margin-right: 6px;
+  margin-right: 8px;
   opacity: 0.7;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .table-modern tbody td {
-  padding: 14px 18px;
+  padding: 16px 20px;
   vertical-align: middle;
   border: none;
 }
