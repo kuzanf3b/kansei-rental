@@ -225,115 +225,109 @@ if ($kembali_result && mysqli_num_rows($kembali_result) > 0) {
     </div>
 </div>
 
-<!-- Grid View -->
-<div class="bayar-grid-page">
-    <div class="bayar-grid">
+<!-- Card List Vertical View -->
+<div class="bayar-cardlist-page">
+    <div class="bayar-cardlist">
         <?php
         while ($row = $result->fetch_assoc()):
             $gambar = $row['foto'] ? 'uploads/mobil/' . $row['foto'] : 'assets/img/car-placeholder.jpg';
             $total_tagihan = $row['biaya_sewa'] + $row['denda'];
-            $status_class = $row['status'] === 'lunas' ? 'status-lunas' : 'status-belum';
+            $sisa = $total_tagihan - $row['total_bayar'];
+            $is_lunas = $row['status'] === 'lunas';
         ?>
-            <div class="bayar-card <?php echo $status_class; ?>">
-                <!-- Car Image -->
-                <div class="bayar-card-image">
+            <div class="bayar-cardlist-item <?php echo $is_lunas ? 'status-lunas' : 'status-belum'; ?>">
+                <!-- Left: Thumbnail -->
+                <div class="bayar-cardlist-thumbnail">
                     <img src="<?php echo htmlspecialchars($gambar); ?>" alt="<?php echo htmlspecialchars($row['brand']); ?>">
-                    <?php if ($row['status'] === 'lunas'): ?>
-                        <div class="status-badge lunas">
-                            <i class="bi bi-check-circle"></i>
-                            LUNAS
-                        </div>
-                    <?php else: ?>
-                        <div class="status-badge belum-lunas">
-                            <i class="bi bi-hourglass-split"></i>
-                            BELUM LUNAS
-                        </div>
-                    <?php endif; ?>
+                    <div class="cardlist-status-badge <?php echo $is_lunas ? 'badge-lunas' : 'badge-belum'; ?>">
+                        <?php if ($is_lunas): ?>
+                            <i class="bi bi-check-circle"></i> LUNAS
+                        <?php else: ?>
+                            <i class="bi bi-hourglass-split"></i> BELUM
+                        <?php endif; ?>
+                    </div>
                 </div>
 
-                <!-- Card Body -->
-                <div class="bayar-card-body">
-                    <!-- Car Info -->
-                    <div class="car-info">
-                        <h3 class="car-name"><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></h3>
-                        <span class="car-nopol"><?php echo htmlspecialchars($row['mobil_nopol']); ?></span>
-                    </div>
-
-                    <!-- Member Info -->
-                    <div class="member-info">
-                        <div class="member-avatar">
-                            <?php echo strtoupper(substr($row['nama_member'], 0, 1)); ?>
+                <!-- Center: Content -->
+                <div class="bayar-cardlist-content">
+                    <!-- Header -->
+                    <div class="cardlist-header">
+                        <div class="cardlist-car-info">
+                            <h3><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></h3>
+                            <span class="cardlist-nopol"><?php echo htmlspecialchars($row['mobil_nopol']); ?></span>
                         </div>
-                        <div class="member-details">
-                            <span class="member-name"><?php echo htmlspecialchars($row['nama_member']); ?></span>
-                            <span class="member-phone"><i class="bi bi-phone"></i> <?php echo htmlspecialchars($row['telp']); ?></span>
-                        </div>
-                    </div>
-
-                    <!-- Payment Details -->
-                    <div class="payment-details">
-                        <div class="payment-date">
-                            <i class="bi bi-calendar-check"></i>
-                            <span>Dibayar: <?php echo $row['tgl_bayar'] ? date('d M Y', strtotime($row['tgl_bayar'])) : '-'; ?></span>
-                        </div>
-
-                        <div class="biaya-breakdown-card">
-                            <div class="breakdown-header">
-                                <i class="bi bi-receipt"></i>
-                                <span>Rincian Pembayaran</span>
+                        <div class="cardlist-member-info">
+                            <div class="cardlist-member-avatar"><?php echo strtoupper(substr($row['nama_member'], 0, 1)); ?></div>
+                            <div class="cardlist-member-details">
+                                <span class="cardlist-member-name"><?php echo htmlspecialchars($row['nama_member']); ?></span>
+                                <span class="cardlist-member-phone"><i class="bi bi-phone"></i> <?php echo htmlspecialchars($row['telp']); ?></span>
                             </div>
-                            <div class="biaya-row">
-                                <span class="biaya-label">Biaya Sewa</span>
-                                <span class="biaya-value">Rp <?php echo number_format($row['biaya_sewa'], 0, ',', '.'); ?></span>
+                        </div>
+                    </div>
+
+                    <!-- Payment Date -->
+                    <div class="cardlist-payment-date">
+                        <i class="bi bi-calendar-check"></i>
+                        <span>Dibayar: <strong><?php echo $row['tgl_bayar'] ? date('d M Y', strtotime($row['tgl_bayar'])) : '-'; ?></strong></span>
+                    </div>
+
+                    <!-- Payment Breakdown -->
+                    <div class="cardlist-breakdown">
+                        <div class="cardlist-breakdown-header">
+                            <i class="bi bi-receipt"></i>
+                            <span>Rincian Pembayaran</span>
+                        </div>
+                        <div class="cardlist-breakdown-body">
+                            <div class="breakdown-row">
+                                <span class="breakdown-label">Biaya Sewa</span>
+                                <span class="breakdown-value">Rp <?php echo number_format($row['biaya_sewa'], 0, ',', '.'); ?></span>
                             </div>
                             <?php if ($row['denda'] > 0): ?>
-                                <div class="biaya-row denda">
-                                    <span class="biaya-label">Denda</span>
-                                    <span class="biaya-value text-danger">Rp <?php echo number_format($row['denda'], 0, ',', '.'); ?></span>
+                                <div class="breakdown-row denda">
+                                    <span class="breakdown-label">Denda</span>
+                                    <span class="breakdown-value text-danger">Rp <?php echo number_format($row['denda'], 0, ',', '.'); ?></span>
                                 </div>
                             <?php endif; ?>
-                            <div class="biaya-row total-tagihan">
-                                <span class="biaya-label">Total Tagihan</span>
-                                <span class="biaya-value">Rp <?php echo number_format($total_tagihan, 0, ',', '.'); ?></span>
+                            <div class="breakdown-row total-tagihan">
+                                <span class="breakdown-label">Total Tagihan</span>
+                                <span class="breakdown-value">Rp <?php echo number_format($total_tagihan, 0, ',', '.'); ?></span>
                             </div>
-                            <div class="biaya-row dibayar">
-                                <span class="biaya-label">Dibayar</span>
-                                <span class="biaya-value text-success">Rp <?php echo number_format($row['total_bayar'], 0, ',', '.'); ?></span>
+                            <div class="breakdown-row dibayar">
+                                <span class="breakdown-label">Dibayar</span>
+                                <span class="breakdown-value text-success">Rp <?php echo number_format($row['total_bayar'], 0, ',', '.'); ?></span>
                             </div>
-                            <?php
-                            $sisa = $total_tagihan - $row['total_bayar'];
-                            if ($sisa > 0):
-                            ?>
-                                <div class="biaya-row sisa">
-                                    <span class="biaya-label">Sisa</span>
-                                    <span class="biaya-value text-warning">Rp <?php echo number_format($sisa, 0, ',', '.'); ?></span>
+                            <?php if ($sisa > 0): ?>
+                                <div class="breakdown-row sisa">
+                                    <span class="breakdown-label">Sisa</span>
+                                    <span class="breakdown-value text-warning">Rp <?php echo number_format($sisa, 0, ',', '.'); ?></span>
                                 </div>
                             <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card Actions -->
-                <div class="bayar-card-actions">
-                    <div class="payment-status-badge <?php echo $row['status'] === 'lunas' ? 'badge-lunas' : 'badge-belum'; ?>">
-                        <?php echo ucfirst($row['status']); ?>
+                <!-- Right: Actions -->
+                <div class="bayar-cardlist-actions">
+                    <div class="cardlist-final-status <?php echo $is_lunas ? 'final-lunas' : 'final-belum'; ?>">
+                        <span class="final-label">Status</span>
+                        <span class="final-value"><?php echo ucfirst($row['status']); ?></span>
                     </div>
-                    <div class="action-buttons">
-                        <button type="button" class="btn-icon btn-edit"
+                    <div class="cardlist-action-buttons">
+                        <button type="button" class="cardlist-btn cardlist-btn-edit btn-edit"
                             data-bs-toggle="modal" data-bs-target="#modalEdit"
                             data-id="<?php echo $row['id_bayar']; ?>"
                             data-kembali="<?php echo $row['id_kembali']; ?>"
                             data-tgl-bayar="<?php echo $row['tgl_bayar']; ?>"
                             data-total-bayar="<?php echo $row['total_bayar']; ?>"
-                            data-status="<?php echo $row['status']; ?>"
-                            title="Edit">
+                            data-status="<?php echo $row['status']; ?>">
                             <i class="bi bi-pencil"></i>
+                            <span>Edit</span>
                         </button>
                         <a href="index.php?page=bayar&delete=<?php echo $row['id_bayar']; ?>"
-                            class="btn-icon btn-delete"
-                            onclick="return confirm('Yakin ingin menghapus data pembayaran ini?')"
-                            title="Hapus">
+                            class="cardlist-btn cardlist-btn-delete"
+                            onclick="return confirm('Yakin ingin menghapus data pembayaran ini?')">
                             <i class="bi bi-trash"></i>
+                            <span>Hapus</span>
                         </a>
                     </div>
                 </div>

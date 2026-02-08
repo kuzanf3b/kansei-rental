@@ -264,9 +264,9 @@ if ($transaksi_result && mysqli_num_rows($transaksi_result) > 0) {
     </div>
 </div>
 
-<!-- Grid View -->
-<div class="kembali-grid-page">
-    <div class="kembali-grid">
+<!-- List View with Thumbnail -->
+<div class="kembali-list-page">
+    <div class="kembali-list">
         <?php
         while ($row = $result->fetch_assoc()):
             $gambar = $row['foto'] ? 'uploads/mobil/' . $row['foto'] : 'assets/img/car-placeholder.jpg';
@@ -282,111 +282,108 @@ if ($transaksi_result && mysqli_num_rows($transaksi_result) > 0) {
                 }
             }
         ?>
-            <div class="kembali-card <?php echo ($row['denda'] > 0) ? 'has-denda' : 'no-denda'; ?>">
-                <!-- Car Image -->
-                <div class="kembali-card-image">
+            <div class="kembali-list-item <?php echo ($row['denda'] > 0) ? 'has-denda' : 'no-denda'; ?>">
+                <!-- Thumbnail -->
+                <div class="kembali-list-thumbnail">
                     <img src="<?php echo htmlspecialchars($gambar); ?>" alt="<?php echo htmlspecialchars($row['brand']); ?>">
                     <?php if ($row['denda'] > 0): ?>
-                        <div class="denda-badge">
-                            <i class="bi bi-exclamation-triangle"></i>
-                            Denda
-                        </div>
+                        <div class="list-denda-badge"><i class="bi bi-exclamation-triangle"></i></div>
                     <?php else: ?>
-                        <div class="ok-badge">
-                            <i class="bi bi-check-circle"></i>
-                            OK
-                        </div>
+                        <div class="list-ok-badge"><i class="bi bi-check-circle"></i></div>
                     <?php endif; ?>
                 </div>
 
-                <!-- Card Body -->
-                <div class="kembali-card-body">
-                    <!-- Car Info -->
-                    <div class="car-info">
-                        <h3 class="car-name"><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></h3>
-                        <span class="car-nopol"><?php echo htmlspecialchars($row['mobil_nopol']); ?></span>
-                    </div>
-
-                    <!-- Member Info -->
-                    <div class="member-info">
-                        <div class="member-avatar">
-                            <?php echo strtoupper(substr($row['nama_member'], 0, 1)); ?>
+                <!-- Main Content -->
+                <div class="kembali-list-content">
+                    <!-- Header Row -->
+                    <div class="kembali-list-header">
+                        <div class="kembali-list-car">
+                            <h3><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></h3>
+                            <span class="list-nopol"><?php echo htmlspecialchars($row['mobil_nopol']); ?></span>
                         </div>
-                        <div class="member-details">
-                            <span class="member-name"><?php echo htmlspecialchars($row['nama_member']); ?></span>
-                            <span class="member-phone"><i class="bi bi-phone"></i> <?php echo htmlspecialchars($row['telp']); ?></span>
+                        <div class="kembali-list-member">
+                            <div class="list-member-avatar"><?php echo strtoupper(substr($row['nama_member'], 0, 1)); ?></div>
+                            <div class="list-member-info">
+                                <span class="list-member-name"><?php echo htmlspecialchars($row['nama_member']); ?></span>
+                                <span class="list-member-phone"><i class="bi bi-phone"></i> <?php echo htmlspecialchars($row['telp']); ?></span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Return Details -->
-                    <div class="return-details">
-                        <div class="return-dates">
-                            <div class="date-item">
-                                <span class="date-label">Batas Kembali</span>
-                                <span class="date-value"><?php echo $row['tgl_kembali_seharusnya'] ? date('d M Y', strtotime($row['tgl_kembali_seharusnya'])) : '-'; ?></span>
+                    <!-- Dates Row -->
+                    <div class="kembali-list-dates">
+                        <div class="list-date-box">
+                            <i class="bi bi-calendar-event"></i>
+                            <div class="list-date-info">
+                                <span class="list-date-label">Batas Kembali</span>
+                                <span class="list-date-value"><?php echo $row['tgl_kembali_seharusnya'] ? date('d M Y', strtotime($row['tgl_kembali_seharusnya'])) : '-'; ?></span>
                             </div>
-                            <div class="date-separator">
-                                <i class="bi bi-arrow-right"></i>
-                            </div>
-                            <div class="date-item">
-                                <span class="date-label">Dikembalikan</span>
-                                <span class="date-value <?php echo $late_days > 0 ? 'text-danger' : 'text-success'; ?>">
+                        </div>
+                        <div class="list-date-arrow"><i class="bi bi-arrow-right"></i></div>
+                        <div class="list-date-box <?php echo $late_days > 0 ? 'late' : 'ontime'; ?>">
+                            <i class="bi bi-calendar-check"></i>
+                            <div class="list-date-info">
+                                <span class="list-date-label">Dikembalikan</span>
+                                <span class="list-date-value">
                                     <?php echo $row['tgl_kembali'] ? date('d M Y', strtotime($row['tgl_kembali'])) : '-'; ?>
                                     <?php if ($late_days > 0): ?>
-                                        <small>(+<?php echo $late_days; ?> hari)</small>
+                                        <small class="text-danger">(+<?php echo $late_days; ?> hari)</small>
                                     <?php endif; ?>
                                 </span>
                             </div>
                         </div>
-
-                        <div class="kondisi-mobil">
-                            <span class="kondisi-label">Kondisi:</span>
-                            <span class="kondisi-value"><?php echo htmlspecialchars($row['kondisi_mobil']); ?></span>
+                        <div class="list-kondisi-box">
+                            <i class="bi bi-car-front"></i>
+                            <div class="list-kondisi-info">
+                                <span class="list-kondisi-label">Kondisi</span>
+                                <span class="list-kondisi-value"><?php echo htmlspecialchars($row['kondisi_mobil']); ?></span>
+                            </div>
                         </div>
+                    </div>
 
-                        <div class="biaya-info">
-                            <div class="biaya-item">
-                                <span class="biaya-label">Biaya Sewa</span>
-                                <span class="biaya-value">Rp <?php echo number_format($row['total'], 0, ',', '.'); ?></span>
-                            </div>
-                            <div class="biaya-item denda">
-                                <span class="biaya-label">Denda</span>
-                                <span class="biaya-value <?php echo $row['denda'] > 0 ? 'text-danger' : ''; ?>">
-                                    Rp <?php echo number_format($row['denda'], 0, ',', '.'); ?>
-                                </span>
-                            </div>
-                            <div class="biaya-item total">
-                                <span class="biaya-label">Total</span>
-                                <span class="biaya-value">Rp <?php echo number_format($row['total'] + $row['denda'], 0, ',', '.'); ?></span>
-                            </div>
+                    <!-- Total Row -->
+                    <div class="kembali-list-totals">
+                        <div class="list-total-item">
+                            <span class="list-total-label">Biaya Sewa</span>
+                            <span class="list-total-value">Rp <?php echo number_format($row['total'], 0, ',', '.'); ?></span>
+                        </div>
+                        <div class="list-total-separator">+</div>
+                        <div class="list-total-item <?php echo $row['denda'] > 0 ? 'has-denda' : ''; ?>">
+                            <span class="list-total-label">Denda</span>
+                            <span class="list-total-value <?php echo $row['denda'] > 0 ? 'text-danger' : ''; ?>">
+                                Rp <?php echo number_format($row['denda'], 0, ',', '.'); ?>
+                            </span>
+                        </div>
+                        <div class="list-total-separator">=</div>
+                        <div class="list-total-item total-final">
+                            <span class="list-total-label">Total</span>
+                            <span class="list-total-value">Rp <?php echo number_format($row['total'] + $row['denda'], 0, ',', '.'); ?></span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card Actions -->
-                <div class="kembali-card-actions">
-                    <a href="index.php?page=bayar&kembali_id=<?php echo $row['id_kembali']; ?>" class="btn-action btn-payment">
+                <!-- Actions -->
+                <div class="kembali-list-actions">
+                    <a href="index.php?page=bayar&kembali_id=<?php echo $row['id_kembali']; ?>" class="list-btn list-btn-primary">
                         <i class="bi bi-credit-card"></i>
-                        Proses Pembayaran
+                        <span>Proses Bayar</span>
                     </a>
-                    <div class="action-buttons">
-                        <button type="button" class="btn-icon btn-edit"
-                            data-bs-toggle="modal" data-bs-target="#modalEdit"
-                            data-id="<?php echo $row['id_kembali']; ?>"
-                            data-transaksi="<?php echo $row['id_transaksi']; ?>"
-                            data-tgl-kembali="<?php echo $row['tgl_kembali']; ?>"
-                            data-kondisi="<?php echo htmlspecialchars($row['kondisi_mobil']); ?>"
-                            data-denda="<?php echo $row['denda']; ?>"
-                            title="Edit">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <a href="index.php?page=kembali&delete=<?php echo $row['id_kembali']; ?>"
-                            class="btn-icon btn-delete"
-                            onclick="return confirm('Yakin ingin menghapus data pengembalian ini?')"
-                            title="Hapus">
-                            <i class="bi bi-trash"></i>
-                        </a>
-                    </div>
+                    <button type="button" class="list-btn list-btn-secondary btn-edit"
+                        data-bs-toggle="modal" data-bs-target="#modalEdit"
+                        data-id="<?php echo $row['id_kembali']; ?>"
+                        data-transaksi="<?php echo $row['id_transaksi']; ?>"
+                        data-tgl-kembali="<?php echo $row['tgl_kembali']; ?>"
+                        data-kondisi="<?php echo htmlspecialchars($row['kondisi_mobil']); ?>"
+                        data-denda="<?php echo $row['denda']; ?>">
+                        <i class="bi bi-pencil"></i>
+                        <span>Edit</span>
+                    </button>
+                    <a href="index.php?page=kembali&delete=<?php echo $row['id_kembali']; ?>"
+                        class="list-btn list-btn-danger"
+                        onclick="return confirm('Yakin ingin menghapus data pengembalian ini?')">
+                        <i class="bi bi-trash"></i>
+                        <span>Hapus</span>
+                    </a>
                 </div>
             </div>
         <?php endwhile; ?>

@@ -227,6 +227,7 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
     <link rel="stylesheet" href="./assets/css/components.css">
     <link rel="stylesheet" href="./assets/css/tables.css">
     <link rel="stylesheet" href="./assets/css/dashboard.css">
+    <link rel="stylesheet" href="./assets/css/views.css">
 
     <!-- Initialize theme before page renders to prevent flash -->
     <script>
