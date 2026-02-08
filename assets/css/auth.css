@@ -27,40 +27,40 @@
   background: var(--bg-card);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
-  padding: 40px;
+  padding: 48px;
   width: 100%;
-  max-width: 450px;
+  max-width: 480px;
   animation: fadeInUp 0.5s ease;
   border: 1px solid var(--border-color);
 }
 
 .auth-card.wide {
-  max-width: 550px;
+  max-width: 580px;
 }
 
 /* Auth Logo */
 .auth-logo {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
 .auth-logo i {
-  font-size: 3.5rem;
+  font-size: 4rem;
   color: var(--primary-color);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   display: block;
 }
 
 .auth-logo h2 {
   color: var(--text-primary);
   font-weight: 700;
-  font-size: 1.5rem;
-  margin-bottom: 4px;
+  font-size: 1.65rem;
+  margin-bottom: 6px;
 }
 
 .auth-logo p {
   color: var(--text-muted);
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   margin: 0;
 }
 
@@ -68,18 +68,18 @@
 .auth-card .form-label {
   font-weight: 500;
   color: var(--text-primary);
-  font-size: 0.875rem;
-  margin-bottom: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
 }
 
 .auth-card .form-control,
 .auth-card .form-select {
   border-radius: var(--radius-md);
-  padding: 12px 16px;
+  padding: 14px 18px;
   border: 1px solid var(--border-color);
   background: var(--bg-input);
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: all var(--transition-normal);
 }
 
@@ -102,7 +102,7 @@
   border-right: none;
   border-radius: var(--radius-md) 0 0 var(--radius-md);
   color: var(--text-muted);
-  padding: 12px 14px;
+  padding: 14px 16px;
 }
 
 .auth-card .input-group .form-control {
@@ -124,9 +124,9 @@
   background: var(--primary-color);
   border: none;
   border-radius: var(--radius-md);
-  padding: 12px 24px;
+  padding: 14px 28px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: all var(--transition-normal);
   color: var(--bg-primary);
 }

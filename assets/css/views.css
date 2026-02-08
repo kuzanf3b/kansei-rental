@@ -1,0 +1,1731 @@
+/* =====================================================
+   VIEWS.CSS - Custom View Styles
+   Kanban Board (FULL WIDTH), List View, Card List
+   ===================================================== */
+
+/* ===== KANBAN BOARD (Transaksi Page) - FULL WIDTH ===== */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 kolom sama rata */
+  gap: 20px;
+  width: 100%;
+  min-height: 600px;
+}
+
+.kanban-column {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 260px);
+  min-width: 0; /* Penting untuk prevent overflow */
+}
+
+.kanban-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border-color);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.kanban-header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0; /* Prevent overflow */
+}
+
+.kanban-header-content i {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.kanban-title {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kanban-count {
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* Header Colors */
+.kanban-header-warning {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 158, 67, 0.2),
+    rgba(255, 158, 67, 0.08)
+  );
+  border-bottom-color: rgba(255, 158, 67, 0.3);
+}
+.kanban-header-warning .kanban-header-content i {
+  color: var(--warning-color);
+}
+
+.kanban-header-info {
+  background: linear-gradient(
+    135deg,
+    rgba(125, 211, 252, 0.2),
+    rgba(125, 211, 252, 0.08)
+  );
+  border-bottom-color: rgba(125, 211, 252, 0.3);
+}
+.kanban-header-info .kanban-header-content i {
+  color: var(--info-color);
+}
+
+.kanban-header-primary {
+  background: linear-gradient(
+    135deg,
+    rgba(187, 154, 247, 0.2),
+    rgba(187, 154, 247, 0.08)
+  );
+  border-bottom-color: rgba(187, 154, 247, 0.3);
+}
+.kanban-header-primary .kanban-header-content i {
+  color: var(--primary-color);
+}
+
+.kanban-header-success {
+  background: linear-gradient(
+    135deg,
+    rgba(158, 206, 106, 0.2),
+    rgba(158, 206, 106, 0.08)
+  );
+  border-bottom-color: rgba(158, 206, 106, 0.3);
+}
+.kanban-header-success .kanban-header-content i {
+  color: var(--success-color);
+}
+
+.kanban-cards {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.kanban-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 20px;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.kanban-empty i {
+  font-size: 2.5rem;
+  opacity: 0.3;
+  margin-bottom: 12px;
+}
+
+/* Kanban Card */
+.kanban-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  transition: all var(--transition-fast);
+}
+
+.kanban-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  transform: translateY(-3px);
+}
+
+.kanban-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.kanban-car-img {
+  width: 72px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.kanban-car-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.kanban-car-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kanban-nopol {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.kanban-supir-badge {
+  background: var(--info-color);
+  color: var(--bg-primary);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+.kanban-card-member {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px dashed var(--border-color);
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.kanban-member-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.kanban-member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.kanban-member-name {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kanban-member-phone {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kanban-member-phone i {
+  margin-right: 4px;
+}
+
+.kanban-card-dates {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 14px 0;
+}
+
+.kanban-date {
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.kanban-date-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.kanban-date-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kanban-date-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  padding: 0 8px;
+  flex-shrink: 0;
+}
+
+.kanban-date-arrow i {
+  font-size: 1rem;
+}
+
+.kanban-card-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-highlight);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+}
+
+.kanban-total-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.kanban-total-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  white-space: nowrap;
+}
+
+.kanban-return-info {
+  background: var(--bg-secondary);
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+}
+
+.kanban-return-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  color: var(--text-secondary);
+}
+
+.kanban-return-row.text-danger span:last-child {
+  color: var(--danger-color);
+}
+
+.kanban-card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.kanban-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: none;
+  cursor: pointer;
+}
+
+/* Button color variants based on status */
+.kanban-btn-warning {
+  background: var(--warning-color);
+  color: var(--bg-primary);
+}
+
+.kanban-btn-warning:hover {
+  background: #e68a00;
+  color: var(--bg-primary);
+}
+
+.kanban-btn-info {
+  background: var(--info-color);
+  color: var(--bg-primary);
+}
+
+.kanban-btn-info:hover {
+  background: #5bc4e8;
+  color: var(--bg-primary);
+}
+
+.kanban-btn-primary {
+  background: var(--primary-color);
+  color: var(--bg-primary);
+}
+
+.kanban-btn-primary:hover {
+  background: var(--primary-hover);
+  color: var(--bg-primary);
+}
+
+.kanban-btn-success {
+  background: var(--success-color);
+  color: var(--bg-primary);
+}
+
+.kanban-btn-success:hover {
+  background: #7fb870;
+  color: var(--bg-primary);
+}
+
+.kanban-btn-danger {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  flex: 0 0 auto;
+  padding: 10px 12px;
+}
+
+.kanban-btn-danger:hover {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: white;
+}
+
+/* ===== MASONRY GRID (Transaksi Page) ===== */
+.masonry-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.masonry-section {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.masonry-section.section-warning {
+  border-top: 3px solid var(--warning-color);
+}
+.masonry-section.section-info {
+  border-top: 3px solid var(--info-color);
+}
+.masonry-section.section-primary {
+  border-top: 3px solid var(--primary-color);
+}
+.masonry-section.section-success {
+  border-top: 3px solid var(--success-color);
+}
+
+.masonry-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.section-header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.section-icon-warning {
+  background: rgba(255, 158, 67, 0.15);
+  color: var(--warning-color);
+}
+.section-icon-info {
+  background: rgba(125, 211, 252, 0.15);
+  color: var(--info-color);
+}
+.section-icon-primary {
+  background: rgba(187, 154, 247, 0.15);
+  color: var(--primary-color);
+}
+.section-icon-success {
+  background: rgba(158, 206, 106, 0.15);
+  color: var(--success-color);
+}
+
+.section-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.section-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Masonry Grid */
+.masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Masonry Card */
+.masonry-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.masonry-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transform: translateY(-4px);
+}
+
+.masonry-card.status-warning {
+  border-left: 4px solid var(--warning-color);
+}
+.masonry-card.status-info {
+  border-left: 4px solid var(--info-color);
+}
+.masonry-card.status-primary {
+  border-left: 4px solid var(--primary-color);
+}
+.masonry-card.status-success {
+  border-left: 4px solid var(--success-color);
+}
+
+/* Card Image */
+.masonry-card-image {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+}
+
+.masonry-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.masonry-status-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.masonry-status-badge.badge-warning {
+  background: var(--warning-color);
+  color: var(--bg-primary);
+}
+.masonry-status-badge.badge-info {
+  background: var(--info-color);
+  color: var(--bg-primary);
+}
+.masonry-status-badge.badge-primary {
+  background: var(--primary-color);
+  color: var(--bg-primary);
+}
+.masonry-status-badge.badge-success {
+  background: var(--success-color);
+  color: var(--bg-primary);
+}
+
+.masonry-supir-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--info-color);
+  color: var(--bg-primary);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Card Body */
+.masonry-card-body {
+  padding: 18px;
+}
+
+.masonry-car-info {
+  margin-bottom: 14px;
+}
+
+.masonry-car-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.masonry-nopol {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Member */
+.masonry-member {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-top: 1px dashed var(--border-color);
+  border-bottom: 1px dashed var(--border-color);
+}
+
+.masonry-member-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.masonry-member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.masonry-member-name {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.masonry-member-phone {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.masonry-member-phone i {
+  margin-right: 4px;
+}
+
+/* Dates */
+.masonry-dates {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0;
+  background: var(--bg-secondary);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+}
+
+.masonry-date-item {
+  text-align: center;
+}
+
+.masonry-date-item .date-label {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.masonry-date-item .date-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.masonry-date-separator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.masonry-date-separator i {
+  font-size: 1rem;
+  margin-bottom: 2px;
+}
+
+/* Total */
+.masonry-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-highlight);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  margin-top: 14px;
+}
+
+.masonry-total .total-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.masonry-total .total-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Return Info */
+.masonry-return-info {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+.masonry-return-info .return-info-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(158, 206, 106, 0.1);
+  color: var(--success-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.masonry-return-info .return-info-content {
+  padding: 12px 14px;
+}
+
+.masonry-return-info .return-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.masonry-return-info .return-row.denda span:last-child {
+  color: var(--danger-color);
+  font-weight: 600;
+}
+
+/* Card Actions */
+.masonry-card-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px 18px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.masonry-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: none;
+  cursor: pointer;
+}
+
+.masonry-btn-warning {
+  background: var(--warning-color);
+  color: var(--bg-primary);
+}
+.masonry-btn-warning:hover {
+  background: #e68a00;
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+}
+
+.masonry-btn-info {
+  background: var(--info-color);
+  color: var(--bg-primary);
+}
+.masonry-btn-info:hover {
+  background: #5bc4e8;
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+}
+
+.masonry-btn-success {
+  background: var(--success-color);
+  color: var(--bg-primary);
+}
+.masonry-btn-success:hover {
+  background: #7fb870;
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+}
+
+.masonry-btn-danger {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  flex: 0 0 auto;
+  padding: 12px 14px;
+}
+
+.masonry-btn-danger:hover {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.empty-state i {
+  font-size: 4rem;
+  opacity: 0.3;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ===== LIST VIEW WITH THUMBNAIL (Kembali Page) ===== */
+.kembali-list-page {
+  display: block;
+}
+
+.kembali-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kembali-list-item {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.kembali-list-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.kembali-list-item.has-denda {
+  border-left: 4px solid var(--warning-color);
+}
+
+.kembali-list-item.no-denda {
+  border-left: 4px solid var(--success-color);
+}
+
+/* Thumbnail */
+.kembali-list-thumbnail {
+  width: 180px;
+  min-height: 160px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.kembali-list-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.list-denda-badge,
+.list-ok-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.list-denda-badge {
+  background: var(--warning-color);
+  color: var(--bg-primary);
+}
+
+.list-ok-badge {
+  background: var(--success-color);
+  color: var(--bg-primary);
+}
+
+/* Content */
+.kembali-list-content {
+  flex: 1;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.kembali-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.kembali-list-car h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.list-nopol {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.kembali-list-member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.list-member-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.list-member-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-member-name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.list-member-phone {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.list-member-phone i {
+  margin-right: 4px;
+}
+
+/* Dates Row */
+.kembali-list-dates {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.list-date-box,
+.list-kondisi-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-secondary);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+}
+
+.list-date-box i,
+.list-kondisi-box i {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.list-date-box.late {
+  background: rgba(255, 107, 129, 0.1);
+}
+
+.list-date-box.late i {
+  color: var(--danger-color);
+}
+
+.list-date-box.ontime {
+  background: rgba(158, 206, 106, 0.1);
+}
+
+.list-date-box.ontime i {
+  color: var(--success-color);
+}
+
+.list-date-info,
+.list-kondisi-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.list-date-label,
+.list-kondisi-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.list-date-value,
+.list-kondisi-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.list-date-arrow {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* Totals Row */
+.kembali-list-totals {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-highlight);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  flex-wrap: wrap;
+}
+
+.list-total-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-total-item.total-final {
+  background: var(--primary-color);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  margin-left: auto;
+}
+
+.list-total-item.total-final .list-total-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.list-total-item.total-final .list-total-value {
+  color: white;
+}
+
+.list-total-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.list-total-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.list-total-separator {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* Actions */
+.kembali-list-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Gap lebih kecil agar compact */
+  padding: 16px 20px; /* Padding lebih besar */
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+  justify-content: center;
+  min-width: 180px; /* Lebih lebar untuk tombol yang lebih besar */
+}
+
+.list-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.list-btn-primary {
+  background: var(--primary-color);
+  color: var(--bg-primary);
+  padding: 14px 24px; /* Lebih besar */
+  font-size: 0.95rem; /* Font lebih besar */
+  font-weight: 600; /* Lebih bold */
+  box-shadow: 0 4px 12px rgba(122, 162, 247, 0.3); /* Shadow untuk depth */
+  position: relative;
+  overflow: hidden;
+  animation: pulse-shadow 2s ease-in-out infinite; /* Animasi pulse */
+}
+
+@keyframes pulse-shadow {
+  0%,
+  100% {
+    box-shadow: 0 4px 12px rgba(122, 162, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(122, 162, 247, 0.5);
+  }
+}
+
+.list-btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.list-btn-primary:hover::before {
+  left: 100%;
+}
+
+.list-btn-primary:hover {
+  background: var(--accent-color);
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(122, 162, 247, 0.4);
+  animation: none; /* Stop pulse on hover */
+}
+
+.list-btn-primary i {
+  font-size: 1.1rem; /* Icon lebih besar */
+}
+
+.list-btn-secondary {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.list-btn-secondary:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary-color);
+}
+
+.list-btn-danger {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+.list-btn-danger:hover {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: white;
+}
+
+/* ===== CARD LIST VERTICAL (Bayar Page) ===== */
+.bayar-cardlist-page {
+  display: block;
+}
+
+.bayar-cardlist {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bayar-cardlist-item {
+  display: flex;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.bayar-cardlist-item:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+.bayar-cardlist-item.status-lunas {
+  border-left: 5px solid var(--success-color);
+}
+
+.bayar-cardlist-item.status-belum {
+  border-left: 5px solid var(--warning-color);
+}
+
+/* Thumbnail */
+.bayar-cardlist-thumbnail {
+  width: 200px;
+  min-height: 220px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.bayar-cardlist-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardlist-status-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 120px;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.cardlist-status-badge.badge-lunas {
+  background: var(--success-color);
+  color: var(--bg-primary);
+}
+
+.cardlist-status-badge.badge-belum {
+  background: var(--warning-color);
+  color: var(--bg-primary);
+}
+
+/* Content */
+.bayar-cardlist-content {
+  flex: 1;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.cardlist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.cardlist-car-info h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cardlist-nopol {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.cardlist-member-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cardlist-member-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: var(--bg-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.cardlist-member-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardlist-member-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.cardlist-member-phone {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.cardlist-member-phone i {
+  margin-right: 4px;
+}
+
+/* Payment Date */
+.cardlist-payment-date {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.cardlist-payment-date i {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+/* Breakdown */
+.cardlist-breakdown {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.cardlist-breakdown-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--bg-highlight);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cardlist-breakdown-header i {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+}
+
+.cardlist-breakdown-body {
+  padding: 14px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+}
+
+.breakdown-row {
+  display: flex;
+  flex-direction: column;
+  min-width: 110px;
+}
+
+.breakdown-row.total-tagihan,
+.breakdown-row.dibayar {
+  padding-left: 18px;
+  border-left: 1px solid var(--border-color);
+}
+
+.breakdown-row.sisa {
+  padding-left: 18px;
+  border-left: 1px solid var(--border-color);
+}
+
+.breakdown-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.breakdown-value {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Actions */
+.bayar-cardlist-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Gap lebih besar */
+  padding: 20px;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+  justify-content: center;
+  align-items: center;
+  min-width: 180px; /* Lebih lebar agar proporsional */
+}
+
+.cardlist-final-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 28px; /* Padding lebih besar */
+  border-radius: var(--radius-md);
+  text-align: center;
+  min-width: 180px; /* Lebih lebar */
+  width: 180px; /* Lebar tetap lebih besar */
+}
+
+.cardlist-final-status.final-lunas {
+  background: rgba(158, 206, 106, 0.2);
+}
+
+.cardlist-final-status.final-belum {
+  background: rgba(255, 158, 67, 0.2);
+}
+
+.final-label {
+  font-size: 0.8rem; /* Sedikit lebih besar */
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px; /* Spacing */
+}
+
+.final-value {
+  font-size: 1.15rem; /* Lebih besar */
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap; /* Prevent line break */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.final-lunas .final-value {
+  color: var(--success-color);
+}
+
+.final-belum .final-value {
+  color: var(--warning-color);
+}
+
+.cardlist-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.cardlist-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.cardlist-btn-edit {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.cardlist-btn-edit:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary-color);
+}
+
+.cardlist-btn-delete {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+.cardlist-btn-delete:hover {
+  background: var(--danger-color);
+  border-color: var(--danger-color);
+  color: white;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Large Desktop (1400px+) - Tetap 4 kolom full width */
+@media (min-width: 1400px) {
+  .kanban-board {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Desktop (992px - 1399px) - 4 kolom lebih compact */
+@media (min-width: 992px) and (max-width: 1399px) {
+  .kanban-board {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .kanban-column-header {
+    padding: 16px 18px;
+  }
+
+  .kanban-title {
+    font-size: 1rem;
+  }
+}
+
+/* Tablet Landscape (768px - 991px) - 2 kolom */
+@media (min-width: 768px) and (max-width: 991px) {
+  .kanban-board {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .kanban-column {
+    max-height: 500px;
+  }
+
+  /* List view becomes stacked on tablets */
+  .kembali-list-item,
+  .bayar-cardlist-item {
+    flex-direction: column;
+  }
+
+  .kembali-list-thumbnail,
+  .bayar-cardlist-thumbnail {
+    width: 100%;
+    height: 200px;
+    min-height: auto;
+  }
+
+  .bayar-cardlist-content {
+    padding: 18px 20px;
+  }
+
+  .kembali-list-actions,
+  .bayar-cardlist-actions {
+    flex-direction: row;
+    border-left: none;
+    border-top: 1px solid var(--border-color);
+    padding: 16px 20px;
+  }
+
+  .cardlist-action-buttons {
+    flex-direction: row;
+  }
+
+  .kembali-list-dates {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .list-date-arrow {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+}
+
+/* Mobile (< 768px) - 1 kolom full */
+@media (max-width: 767px) {
+  .kanban-board {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .kanban-column {
+    max-height: 450px;
+  }
+
+  .kanban-column-header {
+    padding: 14px 16px;
+  }
+
+  .kanban-title {
+    font-size: 0.95rem;
+  }
+
+  .kanban-count {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+  }
+
+  .kembali-list-item,
+  .bayar-cardlist-item {
+    flex-direction: column;
+  }
+
+  .kembali-list-thumbnail,
+  .bayar-cardlist-thumbnail {
+    width: 100%;
+    height: 200px;
+    min-height: auto;
+  }
+
+  .kembali-list-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .kembali-list-totals {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .list-total-item.total-final {
+    margin-left: 0;
+    margin-top: 8px;
+  }
+
+  .cardlist-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cardlist-breakdown-body {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .breakdown-row.total-tagihan,
+  .breakdown-row.dibayar,
+  .breakdown-row.sisa {
+    padding-left: 0;
+    padding-top: 8px;
+    border-left: none;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .kembali-list-actions,
+  .bayar-cardlist-actions {
+    flex-direction: row;
+    border-left: none;
+    border-top: 1px solid var(--border-color);
+    padding: 16px 20px;
+  }
+
+  .cardlist-action-buttons {
+    flex-direction: row;
+  }
+
+  .kembali-list-dates {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .list-date-arrow {
+    transform: rotate(90deg);
+    align-self: center;
+  }
+}
+
+/* Very Small Mobile (< 480px) */
+@media (max-width: 479px) {
+  .kanban-card-header {
+    gap: 10px;
+  }
+
+  .kanban-car-img {
+    width: 60px;
+    height: 45px;
+  }
+
+  .kanban-car-info h4 {
+    font-size: 0.9rem;
+  }
+
+  .kanban-card-dates {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .kanban-date-arrow {
+    transform: rotate(90deg);
+  }
+}
