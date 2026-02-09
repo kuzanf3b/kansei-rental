@@ -15,7 +15,7 @@
 .card-header {
   background: var(--bg-secondary);
   color: var(--text-primary);
-  padding: 18px 24px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -28,7 +28,7 @@
 .card-body {
   background: var(--bg-card);
   color: var(--text-primary);
-  padding: 24px;
+  padding: 18px;
 }
 
 /* Card Modern - Supabase Style */
@@ -43,13 +43,13 @@
 .card-modern .card-header {
   background: var(--bg-highlight);
   border-bottom: 1px solid var(--border-color);
-  padding: 18px 24px;
+  padding: 14px 18px;
 }
 
 .card-modern .card-header h5 {
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
 }
 
 .card-modern .card-header i {
@@ -57,7 +57,7 @@
 }
 
 .card-modern .card-body {
-  padding: 24px;
+  padding: 18px;
 }
 
 .card-modern .card-body.p-0 {
@@ -67,11 +67,11 @@
 /* BUTTONS */
 .btn {
   border-radius: var(--radius-md);
-  padding: 12px 24px;
+  padding: 8px 18px;
   font-weight: 500;
   transition: all var(--transition-normal);
   border: none;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .btn-primary {
@@ -140,8 +140,8 @@
 
 /* Action Buttons - Icon only */
 .btn-action {
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   display: inline-flex;
   align-items: center;
@@ -149,7 +149,7 @@
   border-radius: var(--radius-md);
   border: none;
   transition: all var(--transition-normal);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .btn-action.btn-edit {
@@ -184,10 +184,10 @@
 
 /* BADGES */
 .badge {
-  padding: 7px 14px;
+  padding: 5px 10px;
   border-radius: var(--radius-md);
   font-weight: 500;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .badge.bg-primary {
@@ -224,11 +224,11 @@
 .badge-modern {
   display: inline-flex;
   align-items: center;
-  padding: 7px 14px;
+  padding: 5px 10px;
   border-radius: var(--radius-md);
   font-weight: 600;
-  font-size: 0.8rem;
-  gap: 5px;
+  font-size: 0.75rem;
+  gap: 4px;
 }
 
 .badge-modern.badge-primary {
@@ -3186,8 +3186,8 @@ div + small.text-muted {
 .stat-card {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 24px;
+  gap: 12px;
+  padding: 16px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
@@ -3222,13 +3222,13 @@ div + small.text-muted {
 }
 
 .stat-card .stat-icon {
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease;
@@ -3265,13 +3265,13 @@ div + small.text-muted {
 }
 
 .stat-card .stat-value {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
 .stat-card .stat-label {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
 }
 
@@ -3280,22 +3280,22 @@ div + small.text-muted {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 12px;
 }
 
 .page-title {
-  font-size: 1.75rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
 }
 
 .page-subtitle {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
-  margin: 4px 0 0 0;
+  margin: 2px 0 0 0;
 }
 
 /* Content Card */

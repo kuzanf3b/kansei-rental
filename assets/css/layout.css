@@ -21,7 +21,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 76px;
+  height: 60px;
   background: rgba(26, 27, 38, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -30,16 +30,16 @@
   flex-direction: row !important;
   flex-wrap: nowrap !important;
   align-items: center;
-  padding: 0 36px;
+  padding: 0 28px;
   z-index: 1001;
-  gap: 36px;
+  gap: 28px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .top-navbar.scrolled {
   background: rgba(26, 27, 38, 0.95);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  height: 68px;
+  height: 56px;
 }
 
 [data-theme="light"] .top-navbar {
@@ -56,12 +56,12 @@
   color: var(--primary-color);
   display: flex;
   align-items: center;
-  gap: 14px;
-  font-size: 1.4rem;
+  gap: 10px;
+  font-size: 1.2rem;
   font-weight: 700;
   text-decoration: none;
   flex-shrink: 0;
-  padding: 8px 0;
+  padding: 6px 0;
   transition: all 0.3s ease;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .top-navbar .logo i {
-  font-size: 1.75rem;
+  font-size: 1.4rem;
   background: linear-gradient(
     135deg,
     var(--primary-color),
@@ -92,8 +92,8 @@
   flex-direction: row !important;
   flex-wrap: nowrap !important;
   align-items: center;
-  gap: 4px;
-  height: 64px;
+  gap: 2px;
+  height: 52px;
   flex: 1;
   position: static;
   background: transparent;
@@ -104,14 +104,14 @@
 
 .top-navbar .nav-menu .nav-link {
   color: var(--text-secondary);
-  padding: 12px 18px;
+  padding: 8px 14px;
   border-radius: var(--radius-md);
   display: inline-flex !important;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 500;
   white-space: nowrap;
   width: auto;
@@ -310,9 +310,9 @@
 /* MAIN CONTENT */
 .main-content {
   margin-left: 0;
-  margin-top: 76px;
-  padding: 36px;
-  min-height: calc(100vh - 76px);
+  margin-top: 60px;
+  padding: 24px;
+  min-height: calc(100vh - 60px);
   background: var(--bg-primary);
   overflow-x: hidden;
 }

@@ -9,17 +9,17 @@
 .confirm-modal-content {
   background: var(--bg-card, #1f2335);
   border: 1px solid var(--border-color, #414868);
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .confirm-close-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
   border: none;
   background: var(--bg-secondary, #1f2335);
   border-radius: 50%;
@@ -30,6 +30,7 @@
   justify-content: center;
   z-index: 10;
   transition: all 0.2s ease;
+  font-size: 0.8rem;
 }
 
 .confirm-close-btn:hover {
@@ -38,16 +39,16 @@
 }
 
 .confirm-modal-body {
-  padding: 40px 32px 32px;
+  padding: 28px 24px 24px;
   text-align: center;
   background: var(--bg-card, #1f2335);
 }
 
 .confirm-icon-wrapper {
   position: relative;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 24px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 18px;
 }
 
 .confirm-icon-bg {
@@ -66,7 +67,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #ffffff;
   box-shadow: 0 8px 24px rgba(247, 118, 142, 0.4);
 }
@@ -74,20 +75,20 @@
 .confirm-title {
   color: var(--text-primary, #c0caf5);
   font-weight: 700;
-  font-size: 1.35rem;
-  margin-bottom: 12px;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
 }
 
 .confirm-message {
   color: var(--text-muted, #565f89);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 28px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 
 .confirm-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
 }
 
@@ -95,12 +96,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border-radius: 12px;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.9rem;
-  min-width: 120px;
+  font-size: 0.8rem;
+  min-width: 100px;
   text-decoration: none;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -137,22 +138,22 @@
 .status-modal-content {
   background: var(--bg-card, #1f2335);
   border: 1px solid var(--border-color, #414868);
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .status-modal-body {
-  padding: 40px 32px 32px;
+  padding: 28px 24px 24px;
   text-align: center;
   background: var(--bg-card, #1f2335);
 }
 
 .status-icon-wrapper {
   position: relative;
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 24px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 18px;
 }
 
 .status-icon-bg {
@@ -171,7 +172,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #ffffff;
   box-shadow: 0 8px 24px rgba(122, 162, 247, 0.4);
 }
@@ -179,15 +180,15 @@
 .status-title {
   color: var(--text-primary, #c0caf5);
   font-weight: 700;
-  font-size: 1.35rem;
-  margin-bottom: 12px;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
 }
 
 .status-message {
   color: var(--text-muted, #565f89);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 
 /* Status transition display */
@@ -195,32 +196,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding: 16px;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 12px;
   background: var(--bg-secondary, #1a1b26);
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .status-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 20px;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 16px;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #ffffff;
 }
 
 .status-arrow {
   color: var(--text-muted, #565f89);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .status-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
 }
 
@@ -228,12 +229,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border-radius: 12px;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 10px;
   font-weight: 600;
-  font-size: 0.9rem;
-  min-width: 120px;
+  font-size: 0.8rem;
+  min-width: 100px;
   text-decoration: none;
   transition: all 0.2s ease;
   cursor: pointer;

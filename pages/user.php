@@ -180,8 +180,8 @@ $total_petugas = db_get_row($conn, "SELECT COUNT(*) as total FROM tbl_user WHERE
                                                 class="btn-action btn-delete"
                                                 data-bs-toggle="tooltip"
                                                 title="Hapus"
-                                                data-confirm="Yakin ingin menghapus user <?= htmlspecialchars($row['username']) ?>?"
-                                                data-title="Hapus User?">
+                                                data-confirm="Yakin ingin menghapus <?= htmlspecialchars($row['user']) ?>?"
+                                                data-title="Hapus?">
                                                 <i class="bi bi-trash-fill"></i>
                                             </a>
                                         <?php else: ?>
