@@ -1,0 +1,318 @@
+/**
+ * Modal Styles for Rental JDM
+ * Custom styling for delete confirmation and status change modals
+ */
+
+/* ==============================================
+   Delete Confirmation Modal
+   ============================================== */
+.confirm-modal-content {
+  background: var(--bg-card, #1f2335);
+  border: 1px solid var(--border-color, #414868);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.confirm-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--bg-secondary, #1f2335);
+  border-radius: 50%;
+  color: var(--text-muted, #565f89);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.confirm-close-btn:hover {
+  background: var(--bg-hover, #292e42);
+  color: var(--text-primary, #c0caf5);
+}
+
+.confirm-modal-body {
+  padding: 40px 32px 32px;
+  text-align: center;
+  background: var(--bg-card, #1f2335);
+}
+
+.confirm-icon-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+}
+
+.confirm-icon-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(247, 118, 142, 0.15);
+  border-radius: 50%;
+  animation: pulse-bg 2s infinite;
+}
+
+.confirm-icon {
+  position: absolute;
+  inset: 0;
+  background: #f7768e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(247, 118, 142, 0.4);
+}
+
+.confirm-title {
+  color: var(--text-primary, #c0caf5);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: 12px;
+}
+
+.confirm-message {
+  color: var(--text-muted, #565f89);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 120px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.confirm-btn-cancel {
+  background: var(--bg-secondary, #1f2335);
+  color: var(--text-primary, #c0caf5);
+  border: 1px solid var(--border-color, #414868);
+}
+
+.confirm-btn-cancel:hover {
+  background: var(--bg-hover, #292e42);
+  border-color: var(--text-muted, #565f89);
+}
+
+.confirm-btn-delete {
+  background: #f7768e;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(247, 118, 142, 0.3);
+}
+
+.confirm-btn-delete:hover {
+  background: #ff8fa3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(247, 118, 142, 0.4);
+  color: #ffffff;
+}
+
+/* ==============================================
+   Status Change Modal
+   ============================================== */
+.status-modal-content {
+  background: var(--bg-card, #1f2335);
+  border: 1px solid var(--border-color, #414868);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.status-modal-body {
+  padding: 40px 32px 32px;
+  text-align: center;
+  background: var(--bg-card, #1f2335);
+}
+
+.status-icon-wrapper {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+}
+
+.status-icon-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(122, 162, 247, 0.15);
+  border-radius: 50%;
+  animation: pulse-bg 2s infinite;
+}
+
+.status-icon {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #7aa2f7, #7dcfff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(122, 162, 247, 0.4);
+}
+
+.status-title {
+  color: var(--text-primary, #c0caf5);
+  font-weight: 700;
+  font-size: 1.35rem;
+  margin-bottom: 12px;
+}
+
+.status-message {
+  color: var(--text-muted, #565f89);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Status transition display */
+.status-transition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding: 16px;
+  background: var(--bg-secondary, #1a1b26);
+  border-radius: 12px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+.status-arrow {
+  color: var(--text-muted, #565f89);
+  font-size: 1.5rem;
+}
+
+.status-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.status-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  min-width: 120px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.status-btn-cancel {
+  background: var(--bg-secondary, #1f2335);
+  color: var(--text-primary, #c0caf5);
+  border: 1px solid var(--border-color, #414868);
+}
+
+.status-btn-cancel:hover {
+  background: var(--bg-hover, #292e42);
+  border-color: var(--text-muted, #565f89);
+}
+
+.status-btn-confirm {
+  background: linear-gradient(135deg, #7aa2f7, #7dcfff);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 12px rgba(122, 162, 247, 0.3);
+}
+
+.status-btn-confirm:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(122, 162, 247, 0.4);
+  color: #ffffff;
+}
+
+/* ==============================================
+   Animations
+   ============================================== */
+@keyframes pulse-bg {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+/* Modal fade animation enhancement */
+.modal.fade .modal-dialog {
+  transform: scale(0.9) translateY(-20px);
+  transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+/* ==============================================
+   Responsive Styles
+   ============================================== */
+@media (max-width: 480px) {
+  .confirm-modal-body,
+  .status-modal-body {
+    padding: 32px 20px 24px;
+  }
+
+  .confirm-actions,
+  .status-actions {
+    flex-direction: column;
+  }
+
+  .confirm-btn,
+  .status-btn {
+    width: 100%;
+  }
+
+  .status-transition {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .status-arrow {
+    transform: rotate(90deg);
+  }
+}

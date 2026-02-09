@@ -380,7 +380,8 @@ if ($transaksi_result && mysqli_num_rows($transaksi_result) > 0) {
                     </button>
                     <a href="index.php?page=kembali&delete=<?php echo $row['id_kembali']; ?>"
                         class="list-btn list-btn-danger"
-                        onclick="return confirm('Yakin ingin menghapus data pengembalian ini?')">
+                        data-confirm="Yakin ingin menghapus data pengembalian untuk <?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?> - <?php echo htmlspecialchars($row['nama_member']); ?>?"
+                        data-title="Hapus Pengembalian?">
                         <i class="bi bi-trash"></i>
                         <span>Hapus</span>
                     </a>

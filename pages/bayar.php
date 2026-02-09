@@ -325,7 +325,8 @@ if ($kembali_result && mysqli_num_rows($kembali_result) > 0) {
                         </button>
                         <a href="index.php?page=bayar&delete=<?php echo $row['id_bayar']; ?>"
                             class="cardlist-btn cardlist-btn-delete"
-                            onclick="return confirm('Yakin ingin menghapus data pembayaran ini?')">
+                            data-confirm="Yakin ingin menghapus data pembayaran untuk <?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?> - <?php echo htmlspecialchars($row['nama_member']); ?>?"
+                            data-title="Hapus Pembayaran?">
                             <i class="bi bi-trash"></i>
                             <span>Hapus</span>
                         </a>

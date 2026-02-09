@@ -1,9 +1,4 @@
-/* =====================================================
-   VIEWS.CSS - Custom View Styles
-   Kanban Board (FULL WIDTH), List View, Card List
-   ===================================================== */
-
-/* ===== KANBAN BOARD (Transaksi Page) - FULL WIDTH ===== */
+/* KANBAN BOARD (Transaksi Page) - FULL WIDTH */
 .kanban-board {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 kolom sama rata */
@@ -411,7 +406,7 @@
   color: white;
 }
 
-/* ===== MASONRY GRID (Transaksi Page) ===== */
+/*   MASONRY GRID (Transaksi Page)   */
 .masonry-sections {
   display: flex;
   flex-direction: column;
@@ -857,7 +852,7 @@
   font-size: 0.95rem;
 }
 
-/* ===== LIST VIEW WITH THUMBNAIL (Kembali Page) ===== */
+/*   LIST VIEW WITH THUMBNAIL (Kembali Page)   */
 .kembali-list-page {
   display: block;
 }
@@ -1216,7 +1211,7 @@
   color: white;
 }
 
-/* ===== CARD LIST VERTICAL (Bayar Page) ===== */
+/*   CARD LIST VERTICAL (Bayar Page)   */
 .bayar-cardlist-page {
   display: block;
 }
@@ -1536,7 +1531,7 @@
   color: white;
 }
 
-/* ===== RESPONSIVE ===== */
+/*   RESPONSIVE   */
 
 /* Large Desktop (1400px+) - Tetap 4 kolom full width */
 @media (min-width: 1400px) {

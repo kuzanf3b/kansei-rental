@@ -1,9 +1,4 @@
-/* =====================================================
-   COMPONENTS.CSS - Cards, Buttons, Badges, Forms
-   Supabase style with Tokyo Night theme - No Gradients
-   ===================================================== */
-
-/* ===== CARDS ===== */
+/* CARDS */
 .card {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
@@ -69,7 +64,7 @@
   padding: 0 !important;
 }
 
-/* ===== BUTTONS ===== */
+/* BUTTONS */
 .btn {
   border-radius: var(--radius-md);
   padding: 12px 24px;
@@ -187,7 +182,7 @@
   box-shadow: var(--shadow-md);
 }
 
-/* ===== BADGES ===== */
+/* BADGES */
 .badge {
   padding: 7px 14px;
   border-radius: var(--radius-md);
@@ -266,7 +261,7 @@
   color: var(--info-color);
 }
 
-/* ===== FORMS ===== */
+/* FORMS */
 .form-control,
 .form-select {
   border-radius: var(--radius-md);
@@ -333,7 +328,7 @@
   color: var(--primary-color);
 }
 
-/* ===== MODALS - Enhanced Glassmorphism ===== */
+/* MODALS - Enhanced Glassmorphism */
 .modal-content {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -438,7 +433,7 @@
   background: rgba(0, 0, 0, 0.7);
 }
 
-/* ===== ALERTS ===== */
+/* ALERTS */
 .alert {
   border-radius: var(--radius-md);
   padding: 14px 18px;
@@ -522,7 +517,7 @@
   font-weight: 600;
 }
 
-/* ===== PAGINATION ===== */
+/* PAGINATION */
 .pagination {
   gap: 4px;
 }
@@ -556,7 +551,7 @@
   opacity: 0.5;
 }
 
-/* ===== TOAST ===== */
+/* TOAST */
 .toast.bg-success {
   background: var(--success-color) !important;
 }
@@ -573,7 +568,7 @@
   background: var(--info-color) !important;
 }
 
-/* ===== MINI STAT CARDS ===== */
+/* MINI STAT CARDS */
 .mini-stat-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -646,7 +641,7 @@
   font-size: 0.8rem;
 }
 
-/* ===== AVATAR ===== */
+/* AVATAR */
 .avatar-circle {
   width: 36px;
   height: 36px;
@@ -660,13 +655,13 @@
   color: var(--bg-primary);
 }
 
-/* ===== CURRENCY ===== */
+/* CURRENCY */
 .currency {
   color: var(--success-color);
   font-weight: 600;
 }
 
-/* ===== YEAR BADGE ===== */
+/* YEAR BADGE */
 .year-badge {
   display: inline-flex;
   align-items: center;
@@ -678,7 +673,7 @@
   font-size: 0.8rem;
 }
 
-/* ===== CONFIRM MODAL ===== */
+/* CONFIRM MODAL */
 #confirmModal .modal-dialog {
   max-width: 380px;
   margin: 1.75rem auto;
@@ -861,7 +856,7 @@
   transform: translateY(0);
 }
 
-/* ===== Modal Animations ===== */
+/* Modal Animations */
 
 /* Modal slide in animation */
 #confirmModal.show .confirm-modal-content {
@@ -980,7 +975,7 @@
   }
 }
 
-/* ===== ADDITIONAL UI FIXES ===== */
+/* ADDITIONAL UI FIXES */
 
 /* Action buttons spacing in table */
 .table td .btn-action {
@@ -1158,9 +1153,9 @@ div + small.text-muted {
   gap: 12px !important;
 }
 
-/* =====================================================
+/*===
    MOBIL GRID PAGE STYLES
-   ===================================================== */
+  === */
 
 /* Grid Page Layout */
 .mobil-grid-page {
@@ -1601,9 +1596,9 @@ div + small.text-muted {
   pointer-events: none;
 }
 
-/* =====================================================
+/*===
    MOBIL DETAIL PAGE STYLES
-   ===================================================== */
+  === */
 
 .mobil-detail-page {
   max-width: 1200px;
@@ -1999,9 +1994,9 @@ div + small.text-muted {
   color: var(--success-color);
 }
 
-/* =====================================================
+/*===
    BOOKING FORM ADDITIONAL STYLES
-   ===================================================== */
+  === */
 
 /* Supir Option */
 .supir-option {
@@ -2291,9 +2286,9 @@ div + small.text-muted {
   }
 }
 
-/* =====================================================
+/*===
    SCROLL ANIMATIONS
-   ===================================================== */
+  === */
 
 /* Base animation state */
 .animate-on-scroll {
@@ -2381,9 +2376,9 @@ div + small.text-muted {
   }
 }
 
-/* =====================================================
+/*===
    TRANSAKSI GRID VIEW STYLES - IMPROVED
-   ===================================================== */
+  === */
 
 .transaksi-grid-page,
 .kembali-grid-page,

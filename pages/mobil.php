@@ -6,9 +6,9 @@ $is_member = ($_SESSION['user_level'] == 'member');
 // Biaya supir per hari (Rp 150.000)
 $biaya_supir_per_hari = 150000;
 
-// ============================================
+//         ====
 // HANDLE BOOKING DARI MEMBER (POST dari detail view)
-// ============================================
+//         ====
 if (is_post() && $is_member && get_action() == 'booking') {
     $nopol = post($conn, 'nopol');
     $tgl_ambil = post($conn, 'tgl_ambil');
@@ -525,7 +525,8 @@ if ($is_member) {
                                     <a href="index.php?page=mobil&delete=<?= $mobil['nopol'] ?>"
                                         class="action-btn delete"
                                         title="Hapus"
-                                        data-confirm="Yakin hapus mobil <?= $mobil['brand'] . ' ' . $mobil['type'] ?>?">
+                                        data-confirm="Yakin ingin menghapus mobil <?= htmlspecialchars($mobil['brand'] . ' ' . $mobil['type']) ?>?"
+                                        data-title="Hapus Mobil?">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

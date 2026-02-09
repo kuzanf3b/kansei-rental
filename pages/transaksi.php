@@ -308,7 +308,9 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
                                     <?php if (in_array($row['status'], ['booking', 'approve'])): ?>
                                         <a href="index.php?page=transaksi&cancel=<?php echo $row['id_transaksi']; ?>"
                                             class="btn btn-sm btn-outline-danger"
-                                            onclick="return confirm('Yakin ingin membatalkan transaksi ini?')">
+                                            data-confirm="Yakin ingin membatalkan transaksi untuk <?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?>?"
+                                            data-title="Batalkan Transaksi?"
+                                            data-icon="bi-x-circle">
                                             <i class="bi bi-x-circle"></i> Batalkan
                                         </a>
                                     <?php else: ?>
@@ -342,23 +344,23 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
         'ambil' => [],
         'kembali' => []
     ];
-    
+
     while ($row = $result->fetch_assoc()) {
         if (isset($transaksi_by_status[$row['status']])) {
             $transaksi_by_status[$row['status']][] = $row;
         }
     }
-    
+
     $status_config = [
         'booking' => ['label' => 'Booking', 'icon' => 'bi-clock', 'color' => 'warning', 'next' => 'approve', 'action' => 'Setujui', 'btn_color' => 'warning'],
         'approve' => ['label' => 'Approved', 'icon' => 'bi-check-circle', 'color' => 'info', 'next' => 'ambil', 'action' => 'Konfirmasi Ambil', 'btn_color' => 'info'],
         'ambil' => ['label' => 'Sedang Disewa', 'icon' => 'bi-car-front', 'color' => 'primary', 'next' => 'kembali', 'action' => 'Catat Kembali', 'btn_color' => 'success'],
         'kembali' => ['label' => 'Selesai', 'icon' => 'bi-check-all', 'color' => 'success', 'next' => null, 'action' => null, 'btn_color' => null]
     ];
-    
+
     $total_trans = array_sum(array_map('count', $transaksi_by_status));
     ?>
-    
+
     <?php if ($total_trans === 0): ?>
         <div class="empty-state">
             <i class="bi bi-inbox"></i>
@@ -380,7 +382,7 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
                         </div>
                         <span class="kanban-count"><?php echo count($transaksi_by_status[$status]); ?></span>
                     </div>
-                    
+
                     <!-- Column Cards -->
                     <div class="kanban-cards">
                         <?php if (empty($transaksi_by_status[$status])): ?>
@@ -389,7 +391,7 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
                                 <span>Tidak ada transaksi</span>
                             </div>
                         <?php else: ?>
-                            <?php foreach ($transaksi_by_status[$status] as $row): 
+                            <?php foreach ($transaksi_by_status[$status] as $row):
                                 $gambar = $row['foto'] ? 'uploads/mobil/' . $row['foto'] : 'assets/img/car-placeholder.jpg';
                                 $hari = 1;
                                 if ($row['tgl_ambil'] && $row['tgl_kembali']) {
@@ -402,9 +404,9 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
                                 <div class="kanban-card">
                                     <!-- Card Header with Car Image -->
                                     <div class="kanban-card-header">
-                                        <img src="<?php echo htmlspecialchars($gambar); ?>" 
-                                             alt="<?php echo htmlspecialchars($row['brand']); ?>" 
-                                             class="kanban-car-img">
+                                        <img src="<?php echo htmlspecialchars($gambar); ?>"
+                                            alt="<?php echo htmlspecialchars($row['brand']); ?>"
+                                            class="kanban-car-img">
                                         <div class="kanban-car-info">
                                             <h4><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></h4>
                                             <span class="kanban-nopol"><?php echo htmlspecialchars($row['mobil_nopol']); ?></span>
@@ -471,21 +473,27 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
                                     <div class="kanban-card-actions">
                                         <?php if ($config['next']): ?>
                                             <?php if ($status === 'ambil'): ?>
-                                                <a href="index.php?page=kembali&transaksi_id=<?php echo $row['id_transaksi']; ?>" 
-                                                   class="kanban-btn kanban-btn-<?php echo $config['btn_color']; ?>">
+                                                <a href="index.php?page=kembali&transaksi_id=<?php echo $row['id_transaksi']; ?>"
+                                                    class="kanban-btn kanban-btn-<?php echo $config['btn_color']; ?>">
                                                     <i class="bi bi-box-arrow-in-left"></i> <?php echo $config['action']; ?>
                                                 </a>
                                             <?php else: ?>
-                                                <a href="index.php?page=transaksi&update_status=<?php echo $row['id_transaksi']; ?>" 
-                                                   class="kanban-btn kanban-btn-<?php echo $config['btn_color']; ?>"
-                                                   onclick="return confirm('Ubah status ke <?php echo ucfirst($config['next']); ?>?')">
+                                                <a href="index.php?page=transaksi&update_status=<?php echo $row['id_transaksi']; ?>"
+                                                    class="kanban-btn kanban-btn-<?php echo $config['btn_color']; ?>"
+                                                    data-status-change="true"
+                                                    data-current-status="<?php echo $status; ?>"
+                                                    data-new-status="<?php echo $config['next']; ?>"
+                                                    data-trans-id="<?php echo $row['id_transaksi']; ?>"
+                                                    data-car-info="<?php echo htmlspecialchars($row['brand'] . ' ' . $row['type'] . ' (' . $row['mobil_nopol'] . ')'); ?>"
+                                                    data-member-name="<?php echo htmlspecialchars($row['nama_member']); ?>">
                                                     <i class="bi bi-arrow-right-circle"></i> <?php echo $config['action']; ?>
                                                 </a>
                                             <?php endif; ?>
                                         <?php endif; ?>
-                                        <a href="index.php?page=transaksi&delete=<?php echo $row['id_transaksi']; ?>" 
-                                           class="kanban-btn kanban-btn-danger"
-                                           onclick="return confirm('Yakin ingin menghapus transaksi ini?')">
+                                        <a href="index.php?page=transaksi&delete=<?php echo $row['id_transaksi']; ?>"
+                                            class="kanban-btn kanban-btn-danger"
+                                            data-confirm="Yakin ingin menghapus transaksi untuk <?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?> - <?php echo htmlspecialchars($row['nama_member']); ?>?"
+                                            data-title="Hapus Transaksi?">
                                             <i class="bi bi-trash"></i>
                                         </a>
                                     </div>
@@ -527,3 +535,39 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
         </ul>
     </nav>
 <?php endif; ?>
+
+<!-- Status Change Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+        <div class="modal-content status-modal-content">
+            <button type="button" class="confirm-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <div class="status-modal-body">
+                <div class="status-icon-wrapper">
+                    <div class="status-icon-bg"></div>
+                    <div class="status-icon">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+                </div>
+                <h4 class="status-title" id="statusModalTitle">Ubah Status Transaksi</h4>
+                <p class="status-message" id="statusMessage">Apakah Anda yakin ingin mengubah status transaksi ini?</p>
+                <div class="status-transition">
+                    <span class="status-badge" id="currentStatusBadge">Booking</span>
+                    <span class="status-arrow"><i class="bi bi-arrow-right"></i></span>
+                    <span class="status-badge" id="newStatusBadge">Approved</span>
+                </div>
+                <div class="status-actions">
+                    <button type="button" class="status-btn status-btn-cancel" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i>
+                        <span>Batal</span>
+                    </button>
+                    <a href="#" class="status-btn status-btn-confirm" id="statusConfirmAction">
+                        <i class="bi bi-check-lg"></i>
+                        <span>Ya, Ubah</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

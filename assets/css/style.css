@@ -1,32 +1,32 @@
-/* =====================================================
+/*           ===
    STYLE.CSS - Main Stylesheet (Modular Import)
    Rental Mobil JDM - Tokyo Night + Supabase Style
    
    This file imports all modular CSS files for easier
    maintenance and organization.
-   ===================================================== */
+             === */
 
 /* Import Base - Variables & Reset */
-@import url('base.css');
+@import url("base.css");
 
 /* Import Layout - Sidebar, Navbar, Main Content */
-@import url('layout.css');
+@import url("layout.css");
 
 /* Import Auth - Login & Register Pages */
-@import url('auth.css');
+@import url("auth.css");
 
 /* Import Components - Cards, Buttons, Badges, Forms */
-@import url('components.css');
+@import url("components.css");
 
 /* Import Tables - Table Styles */
-@import url('tables.css');
+@import url("tables.css");
 
 /* Import Dashboard - Dashboard Specific Styles */
-@import url('dashboard.css');
+@import url("dashboard.css");
 
-/* =====================================================
+/*           ===
    ADDITIONAL UTILITIES
    Add any page-specific or utility styles below
-   ===================================================== */
+             === */
 
 /* Page-specific overrides can go here */

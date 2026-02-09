@@ -1,9 +1,4 @@
-/* =====================================================
-   TABLES.CSS - Table Styles
-   Supabase style with Tokyo Night theme
-   ===================================================== */
-
-/* ===== BASE TABLE ===== */
+/*   BASE TABLE   */
 .table {
   margin-bottom: 0;
   color: var(--text-primary) !important;
@@ -49,7 +44,7 @@
   color: var(--text-primary) !important;
 }
 
-/* ===== TABLE MODERN ===== */
+/*   TABLE MODERN   */
 .table-modern {
   color: var(--text-primary);
 }
@@ -93,7 +88,7 @@
   border: none;
 }
 
-/* ===== TABLE INFO CELL ===== */
+/*   TABLE INFO CELL   */
 .table-info-cell {
   display: flex;
   align-items: center;
@@ -146,7 +141,7 @@
   font-size: 0.75rem;
 }
 
-/* ===== NO DATA CELL ===== */
+/*   NO DATA CELL   */
 .no-data-cell {
   text-align: center;
   padding: 48px 20px !important;
@@ -166,7 +161,7 @@
   margin: 0;
 }
 
-/* ===== SUPABASE TABLE STYLE ===== */
+/*   SUPABASE TABLE STYLE   */
 .supa-table {
   width: 100%;
   border-collapse: collapse;
@@ -203,7 +198,7 @@
   border-bottom: none;
 }
 
-/* ===== TABLE STATUS BADGES ===== */
+/*   TABLE STATUS BADGES   */
 .status-badge {
   display: inline-flex;
   align-items: center;
@@ -244,7 +239,7 @@
   color: var(--danger-color);
 }
 
-/* ===== DATE DISPLAY ===== */
+/*   DATE DISPLAY   */
 .date-display {
   display: flex;
   align-items: center;
@@ -262,7 +257,7 @@
   color: var(--text-secondary);
 }
 
-/* ===== TABLE RESPONSIVE ===== */
+/*   TABLE RESPONSIVE   */
 .table-responsive {
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
@@ -280,7 +275,7 @@
   border-radius: 3px;
 }
 
-/* ===== STATUS BUTTON ===== */
+/*   STATUS BUTTON   */
 .btn-status {
   display: inline-flex !important;
   align-items: center !important;
