@@ -205,7 +205,8 @@ $perempuan = $total_rows - $laki;
                                                 class="btn-action btn-delete"
                                                 data-bs-toggle="tooltip"
                                                 title="Hapus Member"
-                                                data-confirm="Yakin hapus data member ini?">
+                                                data-confirm="Yakin ingin menghapus data member <?= htmlspecialchars($row['nama']) ?>?"
+                                                data-title="Hapus Member?">
                                                 <i class="bi bi-trash-fill"></i>
                                             </a>
                                         <?php else: ?>

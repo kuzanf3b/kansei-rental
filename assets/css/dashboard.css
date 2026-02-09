@@ -1,38 +1,33 @@
-/* =====================================================
-   DASHBOARD.CSS - Dashboard Page Specific Styles
-   Supabase style with Tokyo Night theme - No Gradients
-   ===================================================== */
-
-/* ===== DASHBOARD LAYOUT ===== */
+/* DASHBOARD LAYOUT */
 .supa-dashboard {
   max-width: 1400px;
   margin: 0 auto;
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 .supa-header {
-  padding: 72px;
+  padding: 48px;
 }
 
 .supa-header h1 {
-  font-size: 2.2rem;
+  font-size: 1.75rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .supa-header p {
   color: var(--text-muted);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   margin: 0;
 }
 
-/* ===== DIVIDER ===== */
+/* DIVIDER */
 .supa-divider {
   height: 0.5px;
   background: var(--border-color);
-  margin: 20px 0;
-  margin-bottom: 70px;
+  margin: 16px 0;
+  margin-bottom: 48px;
   position: relative;
 }
 
@@ -46,12 +41,12 @@
   background: var(--primary-color);
 }
 
-/* ===== STATS GRID ===== */
+/* STATS GRID */
 .supa-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 28px;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 @media (max-width: 1200px) {
@@ -66,12 +61,12 @@
   }
 }
 
-/* ===== STAT CARD ===== */
+/* STAT CARD */
 .supa-stat-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 24px;
+  padding: 18px;
   transition: all var(--transition-normal);
 }
 
@@ -81,14 +76,14 @@
 }
 
 .supa-stat-icon {
-  width: 46px;
-  height: 46px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  margin-bottom: 18px;
+  font-size: 1.1rem;
+  margin-bottom: 14px;
 }
 
 .supa-stat-icon.primary {
@@ -122,26 +117,26 @@
 }
 
 .supa-stat-label {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .supa-stat-value {
-  font-size: 1.6rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .supa-stat-sub {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .supa-stat-sub.positive {
@@ -152,7 +147,7 @@
   color: var(--danger-color);
 }
 
-/* ===== ALERT BANNER ===== */
+/* ALERT BANNER */
 .supa-alert {
   display: flex;
   align-items: center;
@@ -207,7 +202,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* ===== QUICK ACTIONS ===== */
+/* QUICK ACTIONS */
 .supa-quick-actions {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -260,7 +255,7 @@
   color: var(--primary-color);
 }
 
-/* ===== SUPABASE CARD ===== */
+/* SUPABASE CARD */
 .supa-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -301,7 +296,7 @@
   padding: 18px;
 }
 
-/* ===== SUPABASE BADGE ===== */
+/* SUPABASE BADGE */
 .supa-badge {
   display: inline-flex;
   align-items: center;
@@ -332,7 +327,7 @@
   color: var(--success-color);
 }
 
-/* ===== AVATAR ===== */
+/* AVATAR */
 .supa-avatar {
   width: 32px;
   height: 32px;
@@ -346,7 +341,7 @@
   color: var(--primary-color);
 }
 
-/* ===== PROGRESS BAR ===== */
+/* PROGRESS BAR */
 .supa-progress {
   height: 8px;
   background: var(--bg-primary);
@@ -373,7 +368,7 @@
   background: var(--primary-color);
 }
 
-/* ===== INFO LIST ===== */
+/* INFO LIST */
 .supa-info-list {
   list-style: none;
   padding: 0;
@@ -406,7 +401,7 @@
   color: var(--success-color);
 }
 
-/* ===== RANK ITEM ===== */
+/* RANK ITEM */
 .supa-rank-item {
   display: flex;
   align-items: center;
@@ -486,7 +481,7 @@
   color: var(--text-secondary);
 }
 
-/* ===== SECTION TITLE ===== */
+/* SECTION TITLE */
 .supa-section-title {
   font-size: 1.25rem;
   font-weight: 500;
@@ -502,7 +497,7 @@
   color: var(--text-muted);
 }
 
-/* ===== EMPTY STATE ===== */
+/* EMPTY STATE */
 .supa-empty {
   text-align: center;
   padding: 40px 20px;
@@ -521,7 +516,7 @@
   font-size: 0.85rem;
 }
 
-/* ===== LINK BUTTON ===== */
+/* LINK BUTTON */
 .supa-link-btn {
   font-size: 0.75rem;
   color: var(--primary-color);
@@ -537,7 +532,7 @@
   color: var(--primary-color);
 }
 
-/* ===== GRID LAYOUT ===== */
+/* GRID LAYOUT */
 .supa-grid {
   display: grid;
   gap: 24px;
@@ -553,7 +548,7 @@
   }
 }
 
-/* ===== WELCOME BANNER ===== */
+/* WELCOME BANNER */
 .welcome-banner {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -581,7 +576,7 @@
   font-size: 0.9rem;
 }
 
-/* ===== QUICK ACTION ===== */
+/* QUICK ACTION */
 .quick-action {
   display: flex;
   flex-direction: column;
@@ -616,7 +611,7 @@
   font-weight: 500;
 }
 
-/* ===== ARMADA CARD ===== */
+/* ARMADA CARD */
 .armada-card {
   grid-column: span 2;
 }
@@ -642,9 +637,9 @@
   color: var(--text-muted);
 }
 
-/* =====================================================
+/*===
    HOME PAGE STYLES - Landing Page Design
-   ===================================================== */
+  === */
 
 .home-page {
   max-width: 1400px;
@@ -652,7 +647,7 @@
   overflow-x: visible;
 }
 
-/* ===== SECTION BADGE ===== */
+/* SECTION BADGE */
 .section-badge {
   display: inline-flex;
   align-items: center;
@@ -698,7 +693,7 @@
   margin-bottom: 24px;
 }
 
-/* ===== HERO SECTION ===== */
+/* HERO SECTION */
 .hero-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -895,7 +890,7 @@
   font-size: 0.8rem;
 }
 
-/* ===== ABOUT SECTION ===== */
+/* ABOUT SECTION */
 .about-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1026,7 +1021,7 @@
   font-size: 1.1rem;
 }
 
-/* ===== STATS SECTION ===== */
+/* STATS SECTION */
 .stats-section {
   position: relative;
   padding: 60px 40px;
@@ -1095,7 +1090,7 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* ===== STEPS SECTION ===== */
+/* STEPS SECTION */
 .steps-section {
   padding: 80px 0;
 }
@@ -1163,7 +1158,7 @@
   margin: 0;
 }
 
-/* ===== CARS SECTION ===== */
+/* CARS SECTION */
 .cars-section {
   padding: 80px 20px;
   position: relative;
@@ -1385,7 +1380,7 @@
   display: block;
 }
 
-/* ===== RESPONSIVE HOME PAGE ===== */
+/* RESPONSIVE HOME PAGE */
 @media (max-width: 1200px) {
   .cars-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1499,9 +1494,9 @@
   }
 }
 
-/* =====================================================
+/*===
    ADMIN/PETUGAS DASHBOARD STYLES
-   ===================================================== */
+  === */
 
 .admin-dashboard {
   max-width: 1200px;
@@ -1910,9 +1905,9 @@
   }
 }
 
-/* =====================================================
+/*===
    INFINITE CAROUSEL STYLES
-   ===================================================== */
+  === */
 
 /* Carousel Wrapper */
 .cars-carousel-wrapper {

@@ -39,9 +39,9 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
 ?>
 
 <?php if ($is_member): ?>
-    <!-- ============================================
+    <!--         ====
      MEMBER VIEW - Full Landing Page
-     ============================================ -->
+             ==== -->
     <div class="home-page">
         <!-- Hero Section -->
         <section class="hero-section">
@@ -434,9 +434,9 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
     </script>
 
 <?php else: ?>
-    <!-- ============================================
+    <!--         ====
      ADMIN/PETUGAS VIEW - Simple Dashboard
-     ============================================ -->
+             ==== -->
     <div class="admin-dashboard">
         <!-- Welcome Section -->
         <section class="admin-welcome">

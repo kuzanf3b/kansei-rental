@@ -228,6 +228,7 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
     <link rel="stylesheet" href="./assets/css/tables.css">
     <link rel="stylesheet" href="./assets/css/dashboard.css">
     <link rel="stylesheet" href="./assets/css/views.css">
+    <link rel="stylesheet" href="./assets/css/modals.css">
 
     <!-- Initialize theme before page renders to prevent flash -->
     <script>
@@ -357,6 +358,9 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/modals.js"></script>
 
     <!-- Toast Container -->
     <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -376,25 +380,25 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
     <!-- Confirm Modal Popup -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 380px;">
-            <div class="modal-content confirm-modal-content" style="background: var(--bg-card, #1f2335); border: 1px solid var(--border-color, #414868); border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
-                <button type="button" class="confirm-close-btn" data-bs-dismiss="modal" aria-label="Close" style="position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border: none; background: var(--bg-secondary, #1f2335); border-radius: 50%; color: var(--text-muted, #565f89); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;">
+            <div class="modal-content confirm-modal-content">
+                <button type="button" class="confirm-close-btn" data-bs-dismiss="modal" aria-label="Close">
                     <i class="bi bi-x-lg"></i>
                 </button>
-                <div class="confirm-modal-body" style="padding: 40px 32px 32px; text-align: center; background: var(--bg-card, #1f2335);">
-                    <div class="confirm-icon-wrapper" style="position: relative; width: 80px; height: 80px; margin: 0 auto 24px;">
-                        <div class="confirm-icon-bg" style="position: absolute; inset: 0; background: rgba(247, 118, 142, 0.15); border-radius: 50%;"></div>
-                        <div class="confirm-icon" style="position: absolute; inset: 0; background: #f7768e; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #ffffff; box-shadow: 0 8px 24px rgba(247, 118, 142, 0.4);">
-                            <i class="bi bi-trash3"></i>
+                <div class="confirm-modal-body">
+                    <div class="confirm-icon-wrapper">
+                        <div class="confirm-icon-bg"></div>
+                        <div class="confirm-icon">
+                            <i class="bi bi-trash3" id="confirmModalIcon"></i>
                         </div>
                     </div>
-                    <h4 class="confirm-title" style="color: var(--text-primary, #c0caf5); font-weight: 700; font-size: 1.35rem; margin-bottom: 12px;">Hapus Data?</h4>
-                    <p class="confirm-message" id="confirmMessage" style="color: var(--text-muted, #565f89); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</p>
-                    <div class="confirm-actions" style="display: flex; gap: 12px; justify-content: center;">
-                        <button type="button" class="confirm-btn confirm-btn-cancel" data-bs-dismiss="modal" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; min-width: 120px; background: var(--bg-secondary, #1f2335); color: var(--text-primary, #c0caf5); border: 1px solid var(--border-color, #414868); cursor: pointer; transition: all 0.2s ease;">
+                    <h4 class="confirm-title" id="confirmModalTitle">Hapus Data?</h4>
+                    <p class="confirm-message" id="confirmMessage">Apakah Anda yakin ingin menghapus data ini? Tindakan ini tidak dapat dibatalkan.</p>
+                    <div class="confirm-actions">
+                        <button type="button" class="confirm-btn confirm-btn-cancel" data-bs-dismiss="modal">
                             <i class="bi bi-x-lg"></i>
                             <span>Batal</span>
                         </button>
-                        <a href="#" class="confirm-btn confirm-btn-delete" id="confirmAction" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 0.9rem; min-width: 120px; background: #f7768e; color: #ffffff; text-decoration: none; box-shadow: 0 4px 12px rgba(247, 118, 142, 0.3); transition: all 0.2s ease;">
+                        <a href="#" class="confirm-btn confirm-btn-delete" id="confirmAction">
                             <i class="bi bi-trash3"></i>
                             <span>Ya, Hapus</span>
                         </a>
@@ -403,241 +407,6 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
             </div>
         </div>
     </div>
-
-    <script>
-        // Initialize Tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl, {
-                trigger: 'hover'
-            });
-        });
-
-        // Toast Function
-        function showToast(type, message) {
-            const toastEl = document.getElementById('liveToast');
-            const toastIcon = document.getElementById('toastIcon');
-            const toastTitle = document.getElementById('toastTitle');
-            const toastMessage = document.getElementById('toastMessage');
-
-            // Remove previous classes
-            toastEl.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'bg-info');
-
-            // Set based on type
-            switch (type) {
-                case 'success':
-                    toastEl.classList.add('bg-success');
-                    toastIcon.className = 'bi bi-check-circle-fill me-2';
-                    toastTitle.textContent = 'Berhasil!';
-                    break;
-                case 'error':
-                    toastEl.classList.add('bg-danger');
-                    toastIcon.className = 'bi bi-x-circle-fill me-2';
-                    toastTitle.textContent = 'Error!';
-                    break;
-                case 'warning':
-                    toastEl.classList.add('bg-warning');
-                    toastIcon.className = 'bi bi-exclamation-triangle-fill me-2';
-                    toastTitle.textContent = 'Peringatan!';
-                    break;
-                case 'info':
-                    toastEl.classList.add('bg-info');
-                    toastIcon.className = 'bi bi-info-circle-fill me-2';
-                    toastTitle.textContent = 'Info';
-                    break;
-            }
-
-            toastMessage.textContent = message;
-
-            const toast = new bootstrap.Toast(toastEl);
-            toast.show();
-        }
-
-        // Check URL for messages
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const msg = urlParams.get('msg');
-
-            if (msg) {
-                let message = '';
-                let type = 'success';
-
-                switch (msg) {
-                    case 'added':
-                        message = 'Data berhasil ditambahkan!';
-                        break;
-                    case 'updated':
-                        message = 'Data berhasil diupdate!';
-                        break;
-                    case 'deleted':
-                        message = 'Data berhasil dihapus!';
-                        break;
-                    case 'error':
-                        message = 'Terjadi kesalahan!';
-                        type = 'error';
-                        break;
-                    case 'error_fk':
-                        const detail = urlParams.get('detail');
-                        message = 'Data tidak dapat dihapus karena masih digunakan di tabel ' + (detail || 'lain') + '!';
-                        type = 'error';
-                        break;
-                    default:
-                        message = msg;
-                }
-
-                showToast(type, message);
-
-                // Clean URL
-                const newUrl = window.location.href.split('?')[0] + '?page=' + urlParams.get('page');
-                if (urlParams.get('p')) {
-                    window.history.replaceState({}, document.title, newUrl + '&p=' + urlParams.get('p'));
-                } else {
-                    window.history.replaceState({}, document.title, newUrl);
-                }
-            }
-        });
-
-        function toggleNavMenu() {
-            document.getElementById('navMenu').classList.toggle('show');
-        }
-
-        // Navbar scroll effect
-        const navbar = document.querySelector('.top-navbar');
-        if (navbar) {
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 20) {
-                    navbar.classList.add('scrolled');
-                } else {
-                    navbar.classList.remove('scrolled');
-                }
-            });
-        }
-
-        // Scroll Animation Observer
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const animationObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-in');
-                    // Optional: unobserve after animation
-                    // animationObserver.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        // Apply animation to elements
-        document.addEventListener('DOMContentLoaded', function() {
-            // Elements to animate on scroll
-            const animateElements = document.querySelectorAll(
-                '.stat-card, .transaksi-card, .kembali-card, .bayar-card, ' +
-                '.content-card, .card, .mini-stat-card, .mobil-card, ' +
-                '.page-header, .alert, .cars-grid-container > div'
-            );
-
-            animateElements.forEach((el, index) => {
-                el.classList.add('animate-on-scroll');
-                el.style.transitionDelay = `${index * 0.05}s`;
-                animationObserver.observe(el);
-            });
-        });
-
-        // Close nav menu when clicking outside on mobile
-        document.addEventListener('click', function(e) {
-            const navMenu = document.getElementById('navMenu');
-            const hamburger = document.querySelector('.hamburger');
-
-            if (navMenu && hamburger && window.innerWidth <= 768) {
-                if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-                    navMenu.classList.remove('show');
-                }
-            }
-        });
-
-        // Close nav menu when clicking a link
-        document.querySelectorAll('.nav-menu .nav-link').forEach(function(link) {
-            link.addEventListener('click', function() {
-                document.getElementById('navMenu').classList.remove('show');
-            });
-        });
-
-        // Update datetime
-        function updateDateTime() {
-            const now = new Date();
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: '2-digit',
-                hour12: true
-            };
-            const dateTimeElement = document.getElementById('currentDateTime');
-            if (dateTimeElement) {
-                dateTimeElement.textContent = now.toLocaleDateString('id-ID', options);
-            }
-        }
-
-        setInterval(updateDateTime, 60000);
-        updateDateTime();
-
-        // Theme Switcher Functions
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
-        }
-
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            updateThemeIcon(newTheme);
-        }
-
-        function updateThemeIcon(theme) {
-            const themeIcon = document.getElementById('themeIcon');
-            if (themeIcon) {
-                if (theme === 'light') {
-                    themeIcon.className = 'bi bi-sun-fill';
-                } else {
-                    themeIcon.className = 'bi bi-moon-stars-fill';
-                }
-            }
-        }
-
-        // Initialize theme on page load
-        initTheme();
-
-        // Confirm Modal Handler
-        document.addEventListener('DOMContentLoaded', function() {
-            const confirmModal = document.getElementById('confirmModal');
-            const confirmMessage = document.getElementById('confirmMessage');
-            const confirmAction = document.getElementById('confirmAction');
-
-            // Find all delete buttons with data-confirm attribute
-            document.querySelectorAll('[data-confirm]').forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const message = this.getAttribute('data-confirm') || 'Apakah Anda yakin?';
-                    const href = this.getAttribute('href');
-
-                    confirmMessage.textContent = message;
-                    confirmAction.setAttribute('href', href);
-
-                    const modal = new bootstrap.Modal(confirmModal);
-                    modal.show();
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>

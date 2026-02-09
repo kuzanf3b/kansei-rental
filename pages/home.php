@@ -32,9 +32,7 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
 }
 ?>
 
-<!-- ============================================
-     GUEST VIEW - Full Landing Page
-     ============================================ -->
+<!-- GUEST VIEW - Full Landing Page
 <div class="home-page">
     <!-- Hero Section -->
     <section class="hero-section">
