@@ -535,7 +535,7 @@ if ($transaksi_result && mysqli_num_rows($transaksi_result) > 0) {
     // Data transaksi untuk JavaScript
     const transaksiData = <?php echo json_encode($transaksi_data); ?>;
     const dendaPerHari = 100000;
-    
+
     // Store minimum denda otomatis
     let dendaOtomatis = 0;
 
@@ -595,11 +595,11 @@ if ($transaksi_result && mysqli_num_rows($transaksi_result) > 0) {
     function validasiDenda() {
         const dendaInput = document.getElementById('denda');
         const infoDenda = document.getElementById('info_denda');
-        
+
         if (!dendaInput) return;
-        
+
         const dendaValue = parseFloat(dendaInput.value) || 0;
-        
+
         if (dendaOtomatis > 0 && dendaValue < dendaOtomatis) {
             // Tampilkan notifikasi error
             if (infoDenda) {
@@ -607,7 +607,7 @@ if ($transaksi_result && mysqli_num_rows($transaksi_result) > 0) {
             }
             // Reset ke nilai minimum
             dendaInput.value = dendaOtomatis;
-            
+
             // Shake effect untuk visual feedback
             dendaInput.classList.add('is-invalid');
             dendaInput.style.animation = 'shake 0.5s';
@@ -631,7 +631,7 @@ if ($transaksi_result && mysqli_num_rows($transaksi_result) > 0) {
             dendaInput.addEventListener('input', function() {
                 const infoDenda = document.getElementById('info_denda');
                 const dendaValue = parseFloat(this.value) || 0;
-                
+
                 if (dendaOtomatis > 0 && dendaValue < dendaOtomatis) {
                     if (infoDenda) {
                         infoDenda.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-circle me-1"></i>Denda tidak boleh kurang dari Rp ' + dendaOtomatis.toLocaleString('id-ID') + '</span>';
@@ -645,28 +645,28 @@ if ($transaksi_result && mysqli_num_rows($transaksi_result) > 0) {
                 }
             });
         }
-        
+
         // Validasi form sebelum submit
         const formKembali = document.querySelector('#modalKembali form');
         if (formKembali) {
             formKembali.addEventListener('submit', function(e) {
                 const dendaValue = parseFloat(document.getElementById('denda').value) || 0;
-                
+
                 if (dendaOtomatis > 0 && dendaValue < dendaOtomatis) {
                     e.preventDefault();
-                    
+
                     // Tampilkan alert error
                     alert('Error: Denda tidak boleh kurang dari denda keterlambatan!\n\nMinimum denda: Rp ' + dendaOtomatis.toLocaleString('id-ID'));
-                    
+
                     // Reset nilai dan fokus ke input
                     document.getElementById('denda').value = dendaOtomatis;
                     document.getElementById('denda').focus();
-                    
+
                     return false;
                 }
             });
         }
-        
+
         // Add CSS for shake animation
         const style = document.createElement('style');
         style.textContent = `
