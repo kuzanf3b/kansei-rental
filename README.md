@@ -53,15 +53,11 @@ Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (J
 
 ## Struktur Folder (opsional)
 
-> Sesuaikan dengan struktur sebenarnya.
-
-- `assets/` — file CSS/gambar/js
+- `assets/` — /gambar
 - `pages/` — halaman aplikasi
 - `index.php` — entry point aplikasi
 
 ## Akun Login (opsional)
-
-> Isi jika aplikasi memiliki autentikasi.
 
 - Admin: `admin / admin`
 - User: `user / user`
