@@ -1,6 +1,6 @@
 # Rental JDM
 
-Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (Japanese Domestic Market). Dibangun menggunakan **PHP** dan **CSS**.
+Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (Japanese Domestic Market). Dibangun menggunakan **PHP**, **CSS**, **JS**.
 
 ## Fitur (contoh — sesuaikan)
 
@@ -14,6 +14,7 @@ Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (J
 
 - **PHP** (backend)
 - **CSS** (tampilan)
+- **JS** (logic simple)
 - **Database**: MySQL/MariaDB
 
 ## Persyaratan
@@ -53,7 +54,8 @@ Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (J
 
 ## Struktur Folder (opsional)
 
-- `assets/` — /gambar
+- `assets/css` — CSS folder
+- `assets/js` — JS folder
 - `pages/` — halaman aplikasi
 - `index.php` — entry point aplikasi
 
