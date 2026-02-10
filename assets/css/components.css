@@ -1359,7 +1359,7 @@ div + small.text-muted {
 
 .car-image-grid {
   display: block;
-  height: 180px;
+  height: 220px;
   background: var(--bg-secondary);
   overflow: hidden;
   position: relative;
@@ -1393,7 +1393,7 @@ div + small.text-muted {
 }
 
 .car-content-grid {
-  padding: 20px;
+  padding: 24px 20px 28px;
 }
 
 .car-name-grid {
