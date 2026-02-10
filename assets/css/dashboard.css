@@ -1526,7 +1526,7 @@
 .welcome-icon {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  background: var(--secondary-color);
   border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
@@ -1616,19 +1616,19 @@
 }
 
 .admin-stat-card .stat-icon.primary {
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  background: var(--primary-color);
 }
 
 .admin-stat-card .stat-icon.success {
-  background: linear-gradient(135deg, #10b981, #34d399);
+  background: var(--success-color);
 }
 
 .admin-stat-card .stat-icon.warning {
-  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  background: var(--warning-color);
 }
 
 .admin-stat-card .stat-icon.info {
-  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+  background: var(--info-color);
 }
 
 .admin-stat-card .stat-info h3 {

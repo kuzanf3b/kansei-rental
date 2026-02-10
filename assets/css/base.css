@@ -144,13 +144,17 @@ textarea,
   box-sizing: border-box;
 }
 
+html {
+  font-size: 93%; /* Slightly smaller display (approx 13px base) */
+}
+
 body {
   font-family: "Poppins", sans-serif;
   background: var(--bg-primary);
   min-height: 100vh;
   color: var(--text-primary);
   line-height: 1.5;
-  font-size: 14px;
+  font-size: 0.875rem; /* ~13px at 93% base */
 }
 
 /* Typography */

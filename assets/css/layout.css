@@ -179,7 +179,7 @@
   background: linear-gradient(
     135deg,
     var(--primary-color),
-    var(--accent-color)
+    var(--secondary-color)
   );
   border-radius: var(--radius-md);
   display: flex;
