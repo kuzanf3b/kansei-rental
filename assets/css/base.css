@@ -145,7 +145,7 @@ textarea,
 }
 
 html {
-  font-size: 93%; /* Slightly smaller display (approx 13px base) */
+  font-size: 87%; /* Smaller display (approx 12px base) */
 }
 
 body {
@@ -154,7 +154,7 @@ body {
   min-height: 100vh;
   color: var(--text-primary);
   line-height: 1.5;
-  font-size: 0.875rem; /* ~13px at 93% base */
+  font-size: 0.875rem; /* ~12px at 87% base */
 }
 
 /* Typography */
