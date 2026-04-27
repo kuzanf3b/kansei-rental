@@ -1,5 +1,5 @@
 /**
- * Main JavaScript for Rental JDM
+ * Main JavaScript for Kansei Rental
  * Contains common functionality used across the website
  */
 
@@ -241,3 +241,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update datetime every minute
   setInterval(updateDateTime, 60000);
 });
+
+
+
+function toggleSidebarMenu() {
+  const sidebar = document.getElementById('sidebarMenu');
+  if (sidebar) {
+    sidebar.classList.toggle('show');
+  }
+}

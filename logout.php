@@ -24,3 +24,5 @@ session_destroy();
 // Redirect ke halaman login
 header("Location: pages/login.php");
 exit;
+
+

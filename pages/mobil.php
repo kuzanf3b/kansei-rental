@@ -670,3 +670,4 @@ if ($is_member) {
     <?php endif; ?>
 
 <?php endif; ?>
+
