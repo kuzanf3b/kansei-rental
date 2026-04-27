@@ -472,4 +472,3 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
 <?php
 mysqli_close($conn);
 ?>
-
