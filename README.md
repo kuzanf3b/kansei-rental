@@ -29,8 +29,8 @@ Aplikasi web **Kansei Rental** untuk pengelolaan penyewaan kendaraan bertema Kan
 1. Clone repository:
 
    ```bash
-   git clone https://github.com/kuzanf3b/rental-Kansei Rental.git
-   cd rental-Kansei Rental
+   git clone https://github.com/kuzanf3b/kansei-rental.git
+   cd kansei-rental
    ```
 
 2. Siapkan database _(jika ada)_:
@@ -43,7 +43,7 @@ Aplikasi web **Kansei Rental** untuk pengelolaan penyewaan kendaraan bertema Kan
 
 4. Jalankan via web server:
    - Jika pakai XAMPP/Laragon/WAMP: taruh folder project ke `/www` lalu akses:
-     - `http://localhost/rental-Kansei Rental`
+     - `http://localhost/kansei-rental`
    - Atau gunakan built-in server PHP:
 
      ```bash
@@ -73,5 +73,3 @@ Kontribusi terbuka. Silakan:
 3. Commit perubahan: `git commit -m "Tambah fitur ..."`
 4. Push ke branch: `git push origin fitur/namafitur`
 5. Buat Pull Request
-
-

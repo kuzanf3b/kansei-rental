@@ -208,7 +208,7 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RKansei Rental - <?= ucfirst($page) ?></title>
+    <title>Kansei Rental - <?= ucfirst($page) ?></title>
     <link rel="icon" type="image/svg+xml" href="./assets/car-white.svg" />
 
     <!-- Bootstrap CSS -->
