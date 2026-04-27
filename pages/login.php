@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="auth-card animate__animated animate__fadeInUp">
         <div class="auth-logo">
             <i class="bi bi-car-front-fill"></i>
-            <h2>Rental JDM</h2>
+            <h2>Kansei Rental</h2>
             <p class="text-muted">Masuk ke akun Anda</p>
         </div>
 
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="text-center">
             <small class="text-muted">
                 <i class="bi bi-shield-check me-1"></i>
-                Rental Mobil JDM Terpercaya
+                Rental Mobil Kansei Rental Terpercaya
             </small>
         </div>
     </div>
@@ -151,3 +151,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         updateAuthThemeIcon(savedTheme);
     });
 </script>
+

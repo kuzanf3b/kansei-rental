@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="auth-logo">
             <i class="bi bi-person-plus-fill"></i>
             <h2>Daftar Akun</h2>
-            <p class="text-muted">Bergabung dengan RJDM</p>
+            <p class="text-muted">Bergabung dengan RKansei Rental</p>
         </div>
 
         <!-- Tab Navigation -->
@@ -285,3 +285,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         updateAuthThemeIcon(savedTheme);
     });
 </script>
+

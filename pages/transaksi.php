@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Transaksi Page - Table View untuk Member, Kanban Board untuk Admin/Petugas
 // File ini di-include dari index.php, jadi $conn dan $_SESSION sudah tersedia
 
@@ -253,321 +253,201 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
     </div>
 </div>
 
-<?php if ($is_member): ?>
-    <!-- Member View: Table -->
-    <div class="content-card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table data-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Mobil</th>
-                            <th>Tanggal Ambil</th>
-                            <th>Tanggal Kembali</th>
-                            <th>Supir</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $no = $offset + 1;
-                        while ($row = $result->fetch_assoc()):
-                        ?>
-                            <tr>
-                                <td><?php echo $no++; ?></td>
-                                <td>
-                                    <strong><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></strong><br>
-                                    <small class="text-muted"><?php echo htmlspecialchars($row['mobil_nopol']); ?></small>
-                                </td>
-                                <td><?php echo $row['tgl_ambil'] ? date('d M Y', strtotime($row['tgl_ambil'])) : '-'; ?></td>
-                                <td><?php echo $row['tgl_kembali'] ? date('d M Y', strtotime($row['tgl_kembali'])) : '-'; ?></td>
-                                <td>
-                                    <?php if ($row['supir']): ?>
-                                        <span class="badge bg-info">Dengan Supir</span>
-                                    <?php else: ?>
-                                        <span class="badge bg-secondary">Tanpa Supir</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td><strong>Rp <?php echo number_format($row['total'], 0, ',', '.'); ?></strong></td>
-                                <td>
-                                    <?php
-                                    $status_class = [
-                                        'booking' => 'warning',
-                                        'approve' => 'info',
-                                        'ambil' => 'primary',
-                                        'kembali' => 'success'
-                                    ];
-                                    $class = $status_class[$row['status']] ?? 'secondary';
-                                    ?>
-                                    <span class="badge bg-<?php echo $class; ?>"><?php echo ucfirst($row['status']); ?></span>
-                                </td>
-                                <td>
-                                    <?php if (in_array($row['status'], ['booking', 'approve'])): ?>
-                                        <a href="index.php?page=transaksi&cancel=<?php echo $row['id_transaksi']; ?>"
-                                            class="btn btn-sm btn-outline-danger"
-                                            data-confirm="Yakin ingin membatalkan transaksi untuk <?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?>?"
-                                            data-title="Batalkan Transaksi?"
-                                            data-icon="bi-x-circle">
-                                            <i class="bi bi-x-circle"></i> Batalkan
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="text-muted">-</span>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                        <?php if ($result->num_rows === 0): ?>
-                            <tr>
-                                <td colspan="8" class="text-center py-4">
-                                    <i class="bi bi-inbox text-muted" style="font-size: 2rem;"></i>
-                                    <p class="text-muted mb-0 mt-2">Belum ada transaksi</p>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
-<?php else: ?>
-    <!-- Admin/Petugas View: Kanban Board -->
+<div class="mb-4 mt-3 d-flex gap-2 flex-wrap" id="filterContainer">
+    <button class="btn btn-primary filter-btn active" data-filter="all">Semua</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="booking">Booking</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="approve">Approved</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="ambil">Sedang Disewa</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="kembali">Selesai</button>
+</div>
+
+<!-- Transaction Cards (Grid Layout) -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
     <?php
-    // Reset result pointer and organize data by status
-    mysqli_data_seek($result, 0);
-    $transaksi_by_status = [
-        'booking' => [],
-        'approve' => [],
-        'ambil' => [],
-        'kembali' => []
-    ];
-
-    while ($row = $result->fetch_assoc()) {
-        if (isset($transaksi_by_status[$row['status']])) {
-            $transaksi_by_status[$row['status']][] = $row;
-        }
-    }
-
-    $status_config = [
-        'booking' => ['label' => 'Booking', 'icon' => 'bi-clock', 'color' => 'warning', 'next' => 'approve', 'action' => 'Setujui', 'btn_color' => 'warning'],
-        'approve' => ['label' => 'Approved', 'icon' => 'bi-check-circle', 'color' => 'info', 'next' => 'ambil', 'action' => 'Konfirmasi Ambil', 'btn_color' => 'info'],
-        'ambil' => ['label' => 'Sedang Disewa', 'icon' => 'bi-car-front', 'color' => 'primary', 'next' => 'kembali', 'action' => 'Catat Kembali', 'btn_color' => 'success'],
-        'kembali' => ['label' => 'Selesai', 'icon' => 'bi-check-all', 'color' => 'success', 'next' => null, 'action' => null, 'btn_color' => null]
-    ];
-
-    $total_trans = array_sum(array_map('count', $transaksi_by_status));
-    ?>
-
-    <?php if ($total_trans === 0): ?>
-        <div class="empty-state">
-            <i class="bi bi-inbox"></i>
-            <h3>Belum Ada Transaksi</h3>
-            <p>Data transaksi akan muncul di sini setelah member melakukan booking.</p>
+    mysqli_data_seek($result, 0); // reset pointer
+    if ($result->num_rows === 0): ?>
+        <div class="col-12 w-100 mt-5">
+            <div class="text-center p-5 rounded-4 shadow-sm" style="background: var(--bg-card); border: 1px solid var(--border-color);">
+                <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                <h4 class="mt-3 text-muted">Belum ada transaksi</h4>
+                <p class="text-muted">Data transaksi akan muncul di sini setelah aktivitas pemesanan dilakukan.</p>
+            </div>
         </div>
     <?php else: ?>
-        <!-- Kanban Board -->
-        <div class="kanban-board">
-            <?php foreach ($status_config as $status => $config): ?>
-                <div class="kanban-column">
-                    <!-- Column Header -->
-                    <div class="kanban-column-header kanban-header-<?php echo $config['color']; ?>">
-                        <div class="kanban-header-content">
-                            <i class="bi <?php echo $config['icon']; ?>"></i>
-                            <div>
-                                <div class="kanban-title"><?php echo $config['label']; ?></div>
-                            </div>
+        <?php while ($row = $result->fetch_assoc()): 
+            $gambar = $row['foto'] ? 'uploads/mobil/' . $row['foto'] : 'assets/img/car-placeholder.jpg';
+            $hari = 1;
+            if ($row['tgl_ambil'] && $row['tgl_kembali']) {
+                $date1 = new DateTime($row['tgl_ambil']);
+                $date2 = new DateTime($row['tgl_kembali']);
+                $interval = $date1->diff($date2);
+                $hari = $interval->days + 1;
+            }
+            $status_class = ['booking' => 'warning', 'approve' => 'info', 'ambil' => 'primary', 'kembali' => 'success'];
+            $class = $status_class[$row['status']] ?? 'secondary';
+        ?>
+        <div class="col card-col-item" data-status="<?php echo $row['status']; ?>">
+            <div class="card h-100" style="border-top: 4px solid var(--<?php echo $class; ?>-color);">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-<?php echo $class; ?> fs-6 rounded-pill px-3 py-2 <?php echo ($class=='warning'||$class=='info')?'text-dark':'text-white'; ?>">
+                            <?php echo ucfirst($row['status']); ?>
+                        </span>
+                        <?php if ($row['supir']): ?>
+                            <span class="badge bg-secondary fs-7"><i class="bi bi-person-fill me-1"></i>Dengan Supir</span>
+                        <?php else: ?>
+                            <span class="badge bg-light text-dark border fs-7"><i class="bi bi-person-x-fill me-1"></i>Tanpa Supir</span>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
+                        <img src="<?php echo htmlspecialchars($gambar); ?>" alt="<?php echo htmlspecialchars($row['brand']); ?>" class="rounded-3 shadow-sm me-3" style="width: 85px; height: 65px; object-fit: cover;">
+                        <div>
+                            <h5 class="mb-1 fw-bold text-primary" style="color: var(--text-primary) !important;"><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></h5>
+                            <span class="text-muted fs-7"><i class="bi bi-car-front ms-1"></i> <?php echo htmlspecialchars($row['mobil_nopol']); ?></span>
                         </div>
-                        <span class="kanban-count"><?php echo count($transaksi_by_status[$status]); ?></span>
+                    </div>
+                    
+                    <?php if (!$is_member): ?>
+                    <div class="mb-3 p-2 rounded-3 text-white" style="background: var(--bg-highlight);">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 24px; height: 24px; font-size: 0.75rem;">
+                                    <?php echo strtoupper(substr($row['nama_member'], 0, 1)); ?>
+                                </div>
+                                <span class="fw-semibold" style="font-size: 0.85rem; color: var(--text-primary);"><?php echo htmlspecialchars($row['nama_member']); ?></span>
+                            </div>
+                            <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-telephone"></i> <?php echo htmlspecialchars($row['telp']); ?></span>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 0.85rem; color: var(--text-secondary);">
+                        <span><i class="bi bi-calendar-event me-1"></i>Ambil</span>
+                        <span class="fw-medium text-end" style="color: var(--text-primary);"><?php echo $row['tgl_ambil'] ? date('d M Y', strtotime($row['tgl_ambil'])) : '-'; ?></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4" style="font-size: 0.85rem; color: var(--text-secondary);">
+                        <span><i class="bi bi-calendar-check me-1"></i>Kembali</span>
+                        <span class="fw-medium text-end" style="color: var(--text-primary);"><?php echo $row['tgl_kembali'] ? date('d M Y', strtotime($row['tgl_kembali'])) : '-'; ?> (<?php echo $hari; ?> hari)</span>
                     </div>
 
-                    <!-- Column Cards -->
-                    <div class="kanban-cards">
-                        <?php if (empty($transaksi_by_status[$status])): ?>
-                            <div class="kanban-empty">
-                                <i class="bi bi-inbox"></i>
-                                <span>Tidak ada transaksi</span>
+                    <?php if ($row['status'] === 'kembali' && !empty($row['tgl_kembali_aktual'])): ?>
+                        <div class="p-3 rounded-3 mb-4 mt-auto" style="background: var(--bg-input); border: 1px dashed var(--border-color);">
+                            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.8rem; color: var(--text-primary);">
+                                <span>Dikembalikan:</span>
+                                <span class="fw-semibold"><?php echo date('d M Y', strtotime($row['tgl_kembali_aktual'])); ?></span>
                             </div>
-                        <?php else: ?>
-                            <?php foreach ($transaksi_by_status[$status] as $row):
-                                $gambar = $row['foto'] ? 'uploads/mobil/' . $row['foto'] : 'assets/img/car-placeholder.jpg';
-                                $hari = 1;
-                                if ($row['tgl_ambil'] && $row['tgl_kembali']) {
-                                    $date1 = new DateTime($row['tgl_ambil']);
-                                    $date2 = new DateTime($row['tgl_kembali']);
-                                    $interval = $date1->diff($date2);
-                                    $hari = $interval->days + 1;
-                                }
-                            ?>
-                                <div class="kanban-card">
-                                    <!-- Card Header with Car Image -->
-                                    <div class="kanban-card-header">
-                                        <img src="<?php echo htmlspecialchars($gambar); ?>"
-                                            alt="<?php echo htmlspecialchars($row['brand']); ?>"
-                                            class="kanban-car-img">
-                                        <div class="kanban-car-info">
-                                            <h4><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></h4>
-                                            <span class="kanban-nopol"><?php echo htmlspecialchars($row['mobil_nopol']); ?></span>
-                                        </div>
-                                        <?php if ($row['supir']): ?>
-                                            <div class="kanban-supir-badge" title="Dengan Supir">
-                                                <i class="bi bi-person-fill"></i>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <!-- Member Info -->
-                                    <div class="kanban-card-member">
-                                        <div class="kanban-member-avatar"><?php echo strtoupper(substr($row['nama_member'], 0, 1)); ?></div>
-                                        <div class="kanban-member-info">
-                                            <span class="kanban-member-name"><?php echo htmlspecialchars($row['nama_member']); ?></span>
-                                            <span class="kanban-member-phone"><i class="bi bi-phone"></i> <?php echo htmlspecialchars($row['telp']); ?></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Dates -->
-                                    <div class="kanban-card-dates">
-                                        <div class="kanban-date">
-                                            <span class="kanban-date-label">Ambil</span>
-                                            <span class="kanban-date-value"><?php echo $row['tgl_ambil'] ? date('d M Y', strtotime($row['tgl_ambil'])) : '-'; ?></span>
-                                        </div>
-                                        <div class="kanban-date-arrow">
-                                            <i class="bi bi-arrow-right"></i>
-                                            <small><?php echo $hari; ?> hari</small>
-                                        </div>
-                                        <div class="kanban-date">
-                                            <span class="kanban-date-label">Kembali</span>
-                                            <span class="kanban-date-value"><?php echo $row['tgl_kembali'] ? date('d M Y', strtotime($row['tgl_kembali'])) : '-'; ?></span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Total -->
-                                    <div class="kanban-card-total">
-                                        <span class="kanban-total-label">Total Biaya</span>
-                                        <span class="kanban-total-value">Rp <?php echo number_format($row['total'], 0, ',', '.'); ?></span>
-                                    </div>
-
-                                    <?php if ($status === 'kembali' && !empty($row['tgl_kembali_aktual'])): ?>
-                                        <!-- Return Info -->
-                                        <div class="kanban-return-info">
-                                            <div class="kanban-return-row">
-                                                <span>Dikembalikan:</span>
-                                                <span><?php echo date('d M Y', strtotime($row['tgl_kembali_aktual'])); ?></span>
-                                            </div>
-                                            <div class="kanban-return-row">
-                                                <span>Kondisi:</span>
-                                                <span><?php echo htmlspecialchars($row['kondisi_mobil'] ?? '-'); ?></span>
-                                            </div>
-                                            <?php if ($row['denda'] > 0): ?>
-                                                <div class="kanban-return-row text-danger">
-                                                    <span>Denda:</span>
-                                                    <span>Rp <?php echo number_format($row['denda'], 0, ',', '.'); ?></span>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <!-- Card Actions -->
-                                    <div class="kanban-card-actions">
-                                        <?php if ($config['next']): ?>
-                                            <?php if ($status === 'ambil'): ?>
-                                                <a href="index.php?page=kembali&transaksi_id=<?php echo $row['id_transaksi']; ?>"
-                                                    class="kanban-btn kanban-btn-<?php echo $config['btn_color']; ?>">
-                                                    <i class="bi bi-box-arrow-in-left"></i> <?php echo $config['action']; ?>
-                                                </a>
-                                            <?php else: ?>
-                                                <a href="index.php?page=transaksi&update_status=<?php echo $row['id_transaksi']; ?>"
-                                                    class="kanban-btn kanban-btn-<?php echo $config['btn_color']; ?>"
-                                                    data-status-change="true"
-                                                    data-current-status="<?php echo $status; ?>"
-                                                    data-new-status="<?php echo $config['next']; ?>"
-                                                    data-trans-id="<?php echo $row['id_transaksi']; ?>"
-                                                    data-car-info="<?php echo htmlspecialchars($row['brand'] . ' ' . $row['type'] . ' (' . $row['mobil_nopol'] . ')'); ?>"
-                                                    data-member-name="<?php echo htmlspecialchars($row['nama_member']); ?>">
-                                                    <i class="bi bi-arrow-right-circle"></i> <?php echo $config['action']; ?>
-                                                </a>
-                                            <?php endif; ?>
-                                        <?php endif; ?>
-                                        <a href="index.php?page=transaksi&delete=<?php echo $row['id_transaksi']; ?>"
-                                            class="kanban-btn kanban-btn-danger"
-                                            data-confirm="Yakin ingin menghapus transaksi untuk <?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?> - <?php echo htmlspecialchars($row['nama_member']); ?>?"
-                                            data-title="Hapus Transaksi?">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
-                                    </div>
+                            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.8rem; color: var(--text-primary);">
+                                <span class="text-muted">Kondisi:</span>
+                                <span class="fw-semibold text-end"><?php echo htmlspecialchars($row['kondisi_mobil'] ?? '-'); ?></span>
+                            </div>
+                            <?php if ($row['denda'] > 0): ?>
+                                <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top border-danger" style="font-size: 0.85rem;">
+                                    <span class="text-danger fw-medium">Denda:</span>
+                                    <span class="fw-bold text-danger">Rp <?php echo number_format($row['denda'], 0, ',', '.'); ?></span>
                                 </div>
-                            <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="mt-auto"></div>
+                    <?php endif; ?>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-3" style="border-color: var(--border-color) !important;">
+                        <span class="text-muted" style="font-size: 0.85rem;">Total Biaya</span>
+                        <span class="fw-bold fs-5" style="color: var(--primary-color);">Rp <?php echo number_format($row['total'], 0, ',', '.'); ?></span>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-transparent p-3 border-top" style="border-color: var(--border-color) !important;">
+                    <div class="d-flex gap-2">
+                        <?php if ($is_member): ?>
+                            <?php if (in_array($row['status'], ['booking', 'approve'])): ?>
+                                <a href="index.php?page=transaksi&cancel=<?php echo $row['id_transaksi']; ?>"
+                                   class="btn btn-outline-danger w-100 btn-sm py-2"
+                                   onclick="return confirm('Yakin membatalkan transaksi <?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?>?');">
+                                   <i class="bi bi-x-circle me-1"></i> Batalkan Booking
+                                </a>
+                            <?php else: ?>
+                                <button class="btn btn-secondary w-100 btn-sm py-2 opacity-50" disabled><i class="bi bi-check-circle me-1"></i> Selesai</button>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php
+                            $status_cfg = [
+                                'booking' => ['next' => 'approve', 'action' => 'Setujui', 'btn_color' => 'warning'],
+                                'approve' => ['next' => 'ambil', 'action' => 'Konfirmasi Ambil', 'btn_color' => 'info'],
+                                'ambil' => ['next' => 'kembali', 'action' => 'Selesaikan', 'btn_color' => 'primary'],
+                                'kembali' => ['next' => null, 'action' => null, 'btn_color' => 'success']
+                            ];
+                            $cfg = $status_cfg[$row['status']];
+                            ?>
+                            <?php if ($cfg['next']): ?>
+                                <a href="index.php?page=transaksi&update_status=<?php echo $row['id_transaksi']; ?>"
+                                   class="btn btn-<?php echo $cfg['btn_color']; ?> flex-grow-1 btn-sm py-2 text-<?php echo ($cfg['btn_color']=='warning'||$cfg['btn_color']=='info')?'dark':'white'; ?>"
+                                   onclick="return confirm('Update status ke <?php echo ucfirst($cfg['next']); ?>?');">
+                                   <i class="bi bi-arrow-right-circle me-1"></i> <?php echo $cfg['action']; ?>
+                                </a>
+                            <?php endif; ?>
+                            
+                            <a href="index.php?page=transaksi&delete=<?php echo $row['id_transaksi']; ?>"
+                               class="btn btn-outline-danger btn-sm py-2 px-3"
+                               onclick="return confirm('Hapus transaksi secara permanen?');"
+                               title="Hapus">
+                               <i class="bi bi-trash"></i>
+                            </a>
                         <?php endif; ?>
                     </div>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-<?php endif; ?>
-
-<!-- Pagination (only for member view) -->
-<?php if ($is_member && $total_pages > 1): ?>
-    <nav class="mt-4">
-        <ul class="pagination justify-content-center">
-            <?php if ($current_page > 1): ?>
-                <li class="page-item">
-                    <a class="page-link" href="index.php?page=transaksi&pg=<?php echo $current_page - 1; ?>">
-                        <i class="bi bi-chevron-left"></i>
-                    </a>
-                </li>
-            <?php endif; ?>
-
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                <li class="page-item <?php echo $i === $current_page ? 'active' : ''; ?>">
-                    <a class="page-link" href="index.php?page=transaksi&pg=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
-
-            <?php if ($current_page < $total_pages): ?>
-                <li class="page-item">
-                    <a class="page-link" href="index.php?page=transaksi&pg=<?php echo $current_page + 1; ?>">
-                        <i class="bi bi-chevron-right"></i>
-                    </a>
-                </li>
-            <?php endif; ?>
-        </ul>
-    </nav>
-<?php endif; ?>
-
-<!-- Status Change Modal -->
-<div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
-        <div class="modal-content status-modal-content">
-            <button type="button" class="confirm-close-btn" data-bs-dismiss="modal" aria-label="Close">
-                <i class="bi bi-x-lg"></i>
-            </button>
-            <div class="status-modal-body">
-                <div class="status-icon-wrapper">
-                    <div class="status-icon-bg"></div>
-                    <div class="status-icon">
-                        <i class="bi bi-arrow-repeat"></i>
-                    </div>
-                </div>
-                <h4 class="status-title" id="statusModalTitle">Ubah Status Transaksi</h4>
-                <p class="status-message" id="statusMessage">Apakah Anda yakin ingin mengubah status transaksi ini?</p>
-                <div class="status-transition">
-                    <span class="status-badge" id="currentStatusBadge">Booking</span>
-                    <span class="status-arrow"><i class="bi bi-arrow-right"></i></span>
-                    <span class="status-badge" id="newStatusBadge">Approved</span>
-                </div>
-                <div class="status-actions">
-                    <button type="button" class="status-btn status-btn-cancel" data-bs-dismiss="modal">
-                        <i class="bi bi-x-lg"></i>
-                        <span>Batal</span>
-                    </button>
-                    <a href="#" class="status-btn status-btn-confirm" id="statusConfirmAction">
-                        <i class="bi bi-check-lg"></i>
-                        <span>Ya, Ubah</span>
-                    </a>
-                </div>
             </div>
         </div>
-    </div>
+        <?php endwhile; ?>
+    <?php endif; ?>
 </div>
+
+<?php if ($is_member && (!isset($total_pages) || (isset($total_pages) && $total_pages > 1))): ?>
+<!-- Pagination (Member Only) -->
+<div class="mt-5 d-flex justify-content-center">
+    <nav>
+        <ul class="pagination pagination-sm shadow-sm" style="--bs-pagination-bg: var(--bg-card); --bs-pagination-border-color: var(--border-color); --bs-pagination-color: var(--text-primary); --bs-pagination-hover-bg: var(--bg-hover); --bs-pagination-hover-border-color: var(--border-color); --bs-pagination-hover-color: var(--primary-color); --bs-pagination-active-bg: var(--primary-color); --bs-pagination-active-border-color: var(--primary-color);">
+            <li class="page-item <?php echo ($current_page <= 1) ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=transaksi&pg=<?php echo $current_page - 1; ?>"><i class="bi bi-chevron-left"></i></a>
+            </li>
+            <?php 
+            $tot_pg = isset($total_pages) ? $total_pages : 1;
+            for ($i = 1; $i <= $tot_pg; $i++): ?>
+                <li class="page-item <?php echo ($current_page == $i) ? 'active' : ''; ?>">
+                    <a class="page-link" href="?page=transaksi&pg=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+            <li class="page-item <?php echo ($current_page >= $tot_pg) ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=transaksi&pg=<?php echo $current_page + 1; ?>"><i class="bi bi-chevron-right"></i></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<?php endif; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card-col-item');
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterButtons.forEach(b => b.classList.remove('active', 'btn-primary'));
+            filterButtons.forEach(b => b.classList.add('btn-outline-primary'));
+            this.classList.remove('btn-outline-primary');
+            this.classList.add('active', 'btn-primary');
+
+            const filter = this.dataset.filter;
+            cards.forEach(card => {
+                if (filter === 'all' || card.dataset.status === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>

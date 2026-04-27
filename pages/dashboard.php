@@ -48,13 +48,13 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
             <div class="hero-content">
                 <div class="hero-badge">
                     <i class="bi bi-car-front-fill"></i>
-                    <span>Selamat Datang di Rental JDM!</span>
+                    <span>Selamat Datang di Kansei Rental!</span>
                 </div>
                 <h1 class="hero-title">
                     Halo, <span class="highlight"><?= $nama_lengkap ?></span>!
                 </h1>
                 <p class="hero-subtitle">
-                    Nikmati pengalaman rental mobil JDM terbaik dengan koleksi mobil Jepang legendaris.
+                    Nikmati pengalaman rental mobil Kansei Rental terbaik dengan koleksi mobil Jepang legendaris.
                     Pelayanan profesional dan harga terjangkau untuk perjalanan Anda.
                 </p>
                 <div class="hero-buttons">
@@ -81,7 +81,7 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
             </div>
             <div class="hero-image">
                 <div class="hero-car-bg"></div>
-                <img src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=600&h=400&fit=crop" alt="JDM Car" class="hero-car">
+                <img src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=600&h=400&fit=crop" alt="Kansei Rental Car" class="hero-car">
                 <div class="hero-floating-card top">
                     <i class="bi bi-shield-check"></i>
                     <div>
@@ -124,7 +124,7 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
                     Kami Menyediakan <span class="highlight">Layanan Rental</span> Mobil Berkualitas
                 </h2>
                 <p class="section-desc">
-                    Rental JDM adalah layanan rental mobil yang mengkhususkan diri pada mobil-mobil Jepang berkualitas tinggi.
+                    Kansei Rental adalah layanan rental mobil yang mengkhususkan diri pada mobil-mobil Jepang berkualitas tinggi.
                     Dengan armada yang terawat dan tim profesional, kami siap memberikan pengalaman berkendara terbaik untuk Anda.
                 </p>
                 <div class="about-features">
@@ -209,7 +209,7 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
                         <i class="bi bi-search"></i>
                     </div>
                     <h3>Pilih Mobil</h3>
-                    <p>Jelajahi koleksi mobil JDM kami dan pilih yang sesuai dengan kebutuhan Anda.</p>
+                    <p>Jelajahi koleksi mobil Kansei Rental kami dan pilih yang sesuai dengan kebutuhan Anda.</p>
                 </div>
                 <div class="step-card">
                     <div class="step-number">02</div>
@@ -240,7 +240,7 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
                 <h2 class="section-title">
                     Pilihan <span class="highlight">Mobil Terbaik</span> Kami
                 </h2>
-                <p class="section-subtitle">Scroll untuk melihat semua koleksi mobil JDM kami</p>
+                <p class="section-subtitle">Scroll untuk melihat semua koleksi mobil Kansei Rental kami</p>
             </div>
 
             <!-- Infinite Carousel -->
@@ -567,3 +567,4 @@ if ($mobil_list && mysqli_num_rows($mobil_list) > 0) {
         </section>
     </div>
 <?php endif; ?>
+

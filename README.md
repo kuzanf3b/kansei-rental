@@ -1,6 +1,6 @@
-# Rental JDM
+# Kansei Rental
 
-Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (Japanese Domestic Market). Dibangun menggunakan **PHP**, **CSS**, **JS**.
+Aplikasi web **Kansei Rental** untuk pengelolaan penyewaan kendaraan bertema Kansei Rental (Japanese Domestic Market). Dibangun menggunakan **PHP**, **CSS**, **JS**.
 
 ## Fitur (contoh — sesuaikan)
 
@@ -29,8 +29,8 @@ Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (J
 1. Clone repository:
 
    ```bash
-   git clone https://github.com/kuzanf3b/rental-jdm.git
-   cd rental-jdm
+   git clone https://github.com/kuzanf3b/kansei-rental.git
+   cd kansei-rental
    ```
 
 2. Siapkan database _(jika ada)_:
@@ -43,7 +43,7 @@ Aplikasi web **Rental JDM** untuk pengelolaan penyewaan kendaraan bertema JDM (J
 
 4. Jalankan via web server:
    - Jika pakai XAMPP/Laragon/WAMP: taruh folder project ke `/www` lalu akses:
-     - `http://localhost/rental-jdm`
+     - `http://localhost/kansei-rental`
    - Atau gunakan built-in server PHP:
 
      ```bash

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 // KONEKSI DATABASE
@@ -208,7 +208,7 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RJDM - <?= ucfirst($page) ?></title>
+    <title>Kansei Rental - <?= ucfirst($page) ?></title>
     <link rel="icon" type="image/svg+xml" href="./assets/car-white.svg" />
 
     <!-- Bootstrap CSS -->
@@ -253,7 +253,7 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
 
             <a href="index.php?page=home" class="logo">
                 <i class="bi bi-car-front-fill"></i>
-                <span>Rental JDM</span>
+                <span>Kansei Rental</span>
             </a>
 
             <div class="nav-menu" id="navMenu">
@@ -281,79 +281,144 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
             <?php include "pages/home.php"; ?>
         </div>
     <?php else: ?>
-        <!-- Logged In User - Top Navbar -->
-        <nav class="top-navbar">
-            <!-- Hamburger Menu for Mobile -->
-            <button class="hamburger" onclick="toggleNavMenu()">
-                <i class="bi bi-list"></i>
-            </button>
-
-            <a href="index.php?page=dashboard" class="logo">
-                <i class="bi bi-car-front-fill"></i>
-                <span>Rental JDM</span>
-            </a>
-
-            <!-- Navigation Menu -->
-            <div class="nav-menu" id="navMenu">
-                <a class="nav-link <?= $page == 'dashboard' ? 'active' : '' ?>" href="index.php?page=dashboard">
-                    <i class="bi bi-house-fill"></i><span>Home</span>
+        <?php if ($_SESSION['user_level'] != 'member'): ?>
+            <!-- Admin & Petugas - Sidebar -->
+            <div class="sidebar" id="sidebarMenu">
+                <a href="index.php?page=dashboard" class="logo">
+                    <i class="bi bi-car-front-fill"></i>
+                    <span>Kansei Rental</span>
                 </a>
-                <a class="nav-link <?= $page == 'mobil' ? 'active' : '' ?>" href="index.php?page=mobil">
-                    <i class="bi bi-car-front-fill"></i><span>Mobil</span>
-                </a>
-                <?php if ($_SESSION['user_level'] != 'member'): ?>
-                    <a class="nav-link <?= $page == 'member' ? 'active' : '' ?>" href="index.php?page=member">
-                        <i class="bi bi-people-fill"></i><span>Member</span>
+
+                <!-- Navigation Menu -->
+                <div class="nav-menu">
+                    <a class="nav-link <?= $page == 'dashboard' ? 'active' : '' ?>" href="index.php?page=dashboard">
+                        <i class="bi bi-house-fill"></i><span>Dashboard</span>
                     </a>
-                <?php endif; ?>
-                <a class="nav-link <?= $page == 'transaksi' ? 'active' : '' ?>" href="index.php?page=transaksi">
-                    <i class="bi bi-receipt"></i><span>Transaksi <?= $_SESSION['user_level'] == 'member' ? 'Saya' : '' ?></span>
-                </a>
-                <?php if ($_SESSION['user_level'] != 'member'): ?>
+                    <a class="nav-link <?= $page == 'mobil' ? 'active' : '' ?>" href="index.php?page=mobil">
+                        <i class="bi bi-car-front-fill"></i><span>Data Mobil</span>
+                    </a>
+                    <a class="nav-link <?= $page == 'member' ? 'active' : '' ?>" href="index.php?page=member">
+                        <i class="bi bi-people-fill"></i><span>Data Member</span>
+                    </a>
+                    <a class="nav-link <?= $page == 'transaksi' ? 'active' : '' ?>" href="index.php?page=transaksi">
+                        <i class="bi bi-receipt"></i><span>Data Transaksi</span>
+                    </a>
                     <a class="nav-link <?= $page == 'kembali' ? 'active' : '' ?>" href="index.php?page=kembali">
-                        <i class="bi bi-arrow-return-left"></i><span>Kembali</span>
+                        <i class="bi bi-arrow-return-left"></i><span>Pengembalian</span>
                     </a>
                     <a class="nav-link <?= $page == 'bayar' ? 'active' : '' ?>" href="index.php?page=bayar">
-                        <i class="bi bi-cash-stack"></i><span>Bayar</span>
+                        <i class="bi bi-cash-stack"></i><span>Pembayaran</span>
                     </a>
-                <?php endif; ?>
-                <?php if ($_SESSION['user_level'] == 'admin'): ?>
-                    <a class="nav-link <?= $page == 'user' ? 'active' : '' ?>" href="index.php?page=user">
-                        <i class="bi bi-person-gear"></i><span>User</span>
+                    <?php if ($_SESSION['user_level'] == 'admin'): ?>
+                        <a class="nav-link <?= $page == 'user' ? 'active' : '' ?>" href="index.php?page=user">
+                            <i class="bi bi-person-gear"></i><span>Data User</span>
+                        </a>
+                    <?php endif; ?>
+                    <a class="nav-link <?= $page == 'ct' ? 'active' : '' ?>" href="index.php?page=ct">
+                        <i class="bi bi-lightbulb"></i><span>Comp. Thinking</span>
                     </a>
-                <?php endif; ?>
+                </div>
+
+                <div class="user-section">
+                    <div class="user-profile">
+                        <div class="user-avatar" title="<?= $_SESSION['username'] ?>">
+                            <?= strtoupper(substr($_SESSION['username'], 0, 1)) ?>
+                        </div>
+                        <div class="user-info">
+                            <span class="username"><?= $_SESSION['nama'] ?? $_SESSION['username'] ?></span>
+                            <span class="role"><span class="online-badge"></span><?= ucfirst($_SESSION['user_level']) ?></span>
+                        </div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="theme-switcher" id="themeSwitcherSidebar" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                            <i class="bi bi-moon-stars-fill" id="themeIconSidebar"></i>
+                        </button>
+                        <a href="index.php?page=logout" class="btn-logout" title="Logout">
+                            <i class="bi bi-box-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <div class="user-section">
-                <button class="theme-switcher" id="themeSwitcher" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-                    <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+            <!-- Hamburger Menu for Mobile (Sidebar) -->
+            <button class="hamburger" onclick="toggleSidebarMenu()" style="position: fixed; top: 15px; left: 15px; z-index: 1003; background: var(--bg-card); border-radius: var(--radius-md); padding: 8px;">
+                <i class="bi bi-list" style="color: var(--text-primary);"></i>
+            </button>
+
+            <!-- Main Content -->
+            <div class="main-content has-sidebar">
+                <?php
+                // Include page content
+                $allowed_pages = ['dashboard', 'mobil', 'member', 'transaksi', 'kembali', 'bayar', 'user'];
+
+                if (in_array($page, $allowed_pages)) {
+                    include "pages/{$page}.php";
+                } else {
+                    include "pages/dashboard.php";
+                }
+                ?>
+            </div>
+
+        <?php else: ?>
+            <!-- Logged In User (Member) - Top Navbar -->
+            <nav class="top-navbar">
+                <!-- Hamburger Menu for Mobile -->
+                <button class="hamburger" onclick="toggleNavMenu()">
+                    <i class="bi bi-list"></i>
                 </button>
-                <div class="user-info">
-                    <span class="username"><?= $_SESSION['nama'] ?? $_SESSION['username'] ?></span>
-                    <span class="role"><span class="online-badge"></span><?= ucfirst($_SESSION['user_level']) ?></span>
-                </div>
-                <div class="user-avatar" title="<?= $_SESSION['username'] ?>">
-                    <?= strtoupper(substr($_SESSION['username'], 0, 1)) ?>
-                </div>
-                <a href="index.php?page=logout" class="btn-logout" title="Logout">
-                    <i class="bi bi-box-arrow-left"></i>
+
+                <a href="index.php?page=dashboard" class="logo">
+                    <i class="bi bi-car-front-fill"></i>
+                    <span>Kansei Rental</span>
                 </a>
+
+                <!-- Navigation Menu -->
+                <div class="nav-menu" id="navMenu">
+                    <a class="nav-link <?= $page == 'dashboard' ? 'active' : '' ?>" href="index.php?page=dashboard">
+                        <i class="bi bi-house-fill"></i><span>Home</span>
+                    </a>
+                    <a class="nav-link <?= $page == 'mobil' ? 'active' : '' ?>" href="index.php?page=mobil">
+                        <i class="bi bi-car-front-fill"></i><span>Mobil</span>
+                    </a>
+                    <a class="nav-link <?= $page == 'transaksi' ? 'active' : '' ?>" href="index.php?page=transaksi">
+                        <i class="bi bi-receipt"></i><span>Transaksi Saya</span>
+                    </a>
+                    <a class="nav-link <?= $page == 'ct' ? 'active' : '' ?>" href="index.php?page=ct">
+                        <i class="bi bi-lightbulb"></i><span>Comp. Thinking</span>
+                    </a>
+                </div>
+
+                <div class="user-section">
+                    <button class="theme-switcher" id="themeSwitcher" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                        <i class="bi bi-moon-stars-fill" id="themeIcon"></i>
+                    </button>
+                    <div class="user-info">
+                        <span class="username"><?= $_SESSION['nama'] ?? $_SESSION['username'] ?></span>
+                        <span class="role"><span class="online-badge"></span><?= ucfirst($_SESSION['user_level']) ?></span>
+                    </div>
+                    <div class="user-avatar" title="<?= $_SESSION['username'] ?>">
+                        <?= strtoupper(substr($_SESSION['username'], 0, 1)) ?>
+                    </div>
+                    <a href="index.php?page=logout" class="btn-logout" title="Logout">
+                        <i class="bi bi-box-arrow-left"></i>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <?php
+                // Include page content
+                $allowed_pages = ['dashboard', 'mobil', 'transaksi'];
+
+                if (in_array($page, $allowed_pages)) {
+                    include "pages/{$page}.php";
+                } else {
+                    include "pages/dashboard.php";
+                }
+                ?>
             </div>
-        </nav>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <?php
-            // Include page content
-            $allowed_pages = ['dashboard', 'mobil', 'member', 'transaksi', 'kembali', 'bayar', 'user'];
-
-            if (in_array($page, $allowed_pages)) {
-                include "pages/{$page}.php";
-            } else {
-                include "pages/dashboard.php";
-            }
-            ?>
-        </div>
+        <?php endif; ?>
     <?php endif; ?>
 
     <!-- Bootstrap JS -->

@@ -1,5 +1,5 @@
 /**
- * Modal Utilities for Rental JDM
+ * Modal Utilities for Kansei Rental
  * Handles delete confirmation and status change modals
  */
 
@@ -181,3 +181,4 @@ function reinitModals() {
   DeleteModal.bindDeleteButtons();
   StatusModal.bindStatusButtons();
 }
+
