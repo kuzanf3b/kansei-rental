@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 
 // KONEKSI DATABASE
@@ -314,6 +314,9 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
                             <i class="bi bi-person-gear"></i><span>Data User</span>
                         </a>
                     <?php endif; ?>
+                    <a class="nav-link <?= $page == 'ct' ? 'active' : '' ?>" href="index.php?page=ct">
+                        <i class="bi bi-lightbulb"></i><span>Comp. Thinking</span>
+                    </a>
                 </div>
 
                 <div class="user-section">
@@ -379,6 +382,9 @@ if (isset($_SESSION['user_id']) && $page == 'home') {
                     </a>
                     <a class="nav-link <?= $page == 'transaksi' ? 'active' : '' ?>" href="index.php?page=transaksi">
                         <i class="bi bi-receipt"></i><span>Transaksi Saya</span>
+                    </a>
+                    <a class="nav-link <?= $page == 'ct' ? 'active' : '' ?>" href="index.php?page=ct">
+                        <i class="bi bi-lightbulb"></i><span>Comp. Thinking</span>
                     </a>
                 </div>
 
