@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Transaksi Page - Table View untuk Member, Kanban Board untuk Admin/Petugas
 // File ini di-include dari index.php, jadi $conn dan $_SESSION sudah tersedia
 
@@ -253,7 +253,179 @@ $stats = $stats_stmt->get_result()->fetch_assoc();
     </div>
 </div>
 
-$code
+
+<div class="mb-4 mt-3 d-flex gap-2 flex-wrap" id="filterContainer">
+    <button class="btn btn-primary filter-btn active" data-filter="all">Semua</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="booking">Booking</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="approve">Approved</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="ambil">Sedang Disewa</button>
+    <button class="btn btn-outline-primary filter-btn" data-filter="kembali">Selesai</button>
+</div>
+
+<!-- Transaction Cards (Grid Layout) -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    <?php
+    mysqli_data_seek($result, 0); // reset pointer
+    if ($result->num_rows === 0): ?>
+        <div class="col-12 w-100 mt-5">
+            <div class="text-center p-5 rounded-4 shadow-sm" style="background: var(--bg-card); border: 1px solid var(--border-color);">
+                <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                <h4 class="mt-3 text-muted">Belum ada transaksi</h4>
+                <p class="text-muted">Data transaksi akan muncul di sini setelah aktivitas pemesanan dilakukan.</p>
+            </div>
+        </div>
+    <?php else: ?>
+        <?php while ($row = $result->fetch_assoc()): 
+            $gambar = $row['foto'] ? 'uploads/mobil/' . $row['foto'] : 'assets/img/car-placeholder.jpg';
+            $hari = 1;
+            if ($row['tgl_ambil'] && $row['tgl_kembali']) {
+                $date1 = new DateTime($row['tgl_ambil']);
+                $date2 = new DateTime($row['tgl_kembali']);
+                $interval = $date1->diff($date2);
+                $hari = $interval->days + 1;
+            }
+            $status_class = ['booking' => 'warning', 'approve' => 'info', 'ambil' => 'primary', 'kembali' => 'success'];
+            $class = $status_class[$row['status']] ?? 'secondary';
+        ?>
+        <div class="col card-col-item" data-status="<?php echo $row['status']; ?>">
+            <div class="card h-100" style="border-top: 4px solid var(--<?php echo $class; ?>-color);">
+                <div class="card-body p-4 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-<?php echo $class; ?> fs-6 rounded-pill px-3 py-2 <?php echo ($class=='warning'||$class=='info')?'text-dark':'text-white'; ?>">
+                            <?php echo ucfirst($row['status']); ?>
+                        </span>
+                        <?php if ($row['supir']): ?>
+                            <span class="badge bg-secondary fs-7"><i class="bi bi-person-fill me-1"></i>Dengan Supir</span>
+                        <?php else: ?>
+                            <span class="badge bg-light text-dark border fs-7"><i class="bi bi-person-x-fill me-1"></i>Tanpa Supir</span>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-4 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
+                        <img src="<?php echo htmlspecialchars($gambar); ?>" alt="<?php echo htmlspecialchars($row['brand']); ?>" class="rounded-3 shadow-sm me-3" style="width: 85px; height: 65px; object-fit: cover;">
+                        <div>
+                            <h5 class="mb-1 fw-bold text-primary" style="color: var(--text-primary) !important;"><?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?></h5>
+                            <span class="text-muted fs-7"><i class="bi bi-car-front ms-1"></i> <?php echo htmlspecialchars($row['mobil_nopol']); ?></span>
+                        </div>
+                    </div>
+                    
+                    <?php if (!$is_member): ?>
+                    <div class="mb-3 p-2 rounded-3 text-white" style="background: var(--bg-highlight);">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 24px; height: 24px; font-size: 0.75rem;">
+                                    <?php echo strtoupper(substr($row['nama_member'], 0, 1)); ?>
+                                </div>
+                                <span class="fw-semibold" style="font-size: 0.85rem; color: var(--text-primary);"><?php echo htmlspecialchars($row['nama_member']); ?></span>
+                            </div>
+                            <span class="text-muted" style="font-size: 0.75rem;"><i class="bi bi-telephone"></i> <?php echo htmlspecialchars($row['telp']); ?></span>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 0.85rem; color: var(--text-secondary);">
+                        <span><i class="bi bi-calendar-event me-1"></i>Ambil</span>
+                        <span class="fw-medium text-end" style="color: var(--text-primary);"><?php echo $row['tgl_ambil'] ? date('d M Y', strtotime($row['tgl_ambil'])) : '-'; ?></span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4" style="font-size: 0.85rem; color: var(--text-secondary);">
+                        <span><i class="bi bi-calendar-check me-1"></i>Kembali</span>
+                        <span class="fw-medium text-end" style="color: var(--text-primary);"><?php echo $row['tgl_kembali'] ? date('d M Y', strtotime($row['tgl_kembali'])) : '-'; ?> (<?php echo $hari; ?> hari)</span>
+                    </div>
+
+                    <?php if ($row['status'] === 'kembali' && !empty($row['tgl_kembali_aktual'])): ?>
+                        <div class="p-3 rounded-3 mb-4 mt-auto" style="background: var(--bg-input); border: 1px dashed var(--border-color);">
+                            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.8rem; color: var(--text-primary);">
+                                <span>Dikembalikan:</span>
+                                <span class="fw-semibold"><?php echo date('d M Y', strtotime($row['tgl_kembali_aktual'])); ?></span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-1" style="font-size: 0.8rem; color: var(--text-primary);">
+                                <span class="text-muted">Kondisi:</span>
+                                <span class="fw-semibold text-end"><?php echo htmlspecialchars($row['kondisi_mobil'] ?? '-'); ?></span>
+                            </div>
+                            <?php if ($row['denda'] > 0): ?>
+                                <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top border-danger" style="font-size: 0.85rem;">
+                                    <span class="text-danger fw-medium">Denda:</span>
+                                    <span class="fw-bold text-danger">Rp <?php echo number_format($row['denda'], 0, ',', '.'); ?></span>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php else: ?>
+                        <div class="mt-auto"></div>
+                    <?php endif; ?>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-3" style="border-color: var(--border-color) !important;">
+                        <span class="text-muted" style="font-size: 0.85rem;">Total Biaya</span>
+                        <span class="fw-bold fs-5" style="color: var(--primary-color);">Rp <?php echo number_format($row['total'], 0, ',', '.'); ?></span>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-transparent p-3 border-top" style="border-color: var(--border-color) !important;">
+                    <div class="d-flex gap-2">
+                        <?php if ($is_member): ?>
+                            <?php if (in_array($row['status'], ['booking', 'approve'])): ?>
+                                <a href="index.php?page=transaksi&cancel=<?php echo $row['id_transaksi']; ?>"
+                                   class="btn btn-outline-danger w-100 btn-sm py-2"
+                                   onclick="return confirm('Yakin membatalkan transaksi <?php echo htmlspecialchars($row['brand'] . ' ' . $row['type']); ?>?');">
+                                   <i class="bi bi-x-circle me-1"></i> Batalkan Booking
+                                </a>
+                            <?php else: ?>
+                                <button class="btn btn-secondary w-100 btn-sm py-2 opacity-50" disabled><i class="bi bi-check-circle me-1"></i> Selesai</button>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php
+                            $status_cfg = [
+                                'booking' => ['next' => 'approve', 'action' => 'Setujui', 'btn_color' => 'warning'],
+                                'approve' => ['next' => 'ambil', 'action' => 'Konfirmasi Ambil', 'btn_color' => 'info'],
+                                'ambil' => ['next' => 'kembali', 'action' => 'Selesaikan', 'btn_color' => 'primary'],
+                                'kembali' => ['next' => null, 'action' => null, 'btn_color' => 'success']
+                            ];
+                            $cfg = $status_cfg[$row['status']];
+                            ?>
+                            <?php if ($cfg['next']): ?>
+                                <a href="index.php?page=transaksi&update_status=<?php echo $row['id_transaksi']; ?>"
+                                   class="btn btn-<?php echo $cfg['btn_color']; ?> flex-grow-1 btn-sm py-2 text-<?php echo ($cfg['btn_color']=='warning'||$cfg['btn_color']=='info')?'dark':'white'; ?>"
+                                   onclick="return confirm('Update status ke <?php echo ucfirst($cfg['next']); ?>?');">
+                                   <i class="bi bi-arrow-right-circle me-1"></i> <?php echo $cfg['action']; ?>
+                                </a>
+                            <?php endif; ?>
+                            
+                            <a href="index.php?page=transaksi&delete=<?php echo $row['id_transaksi']; ?>"
+                               class="btn btn-outline-danger btn-sm py-2 px-3"
+                               onclick="return confirm('Hapus transaksi secara permanen?');"
+                               title="Hapus">
+                               <i class="bi bi-trash"></i>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endwhile; ?>
+    <?php endif; ?>
+</div>
+
+<?php if ($is_member && (!isset($total_pages) || (isset($total_pages) && $total_pages > 1))): ?>
+<!-- Pagination (Member Only) -->
+<div class="mt-5 d-flex justify-content-center">
+    <nav>
+        <ul class="pagination pagination-sm shadow-sm" style="--bs-pagination-bg: var(--bg-card); --bs-pagination-border-color: var(--border-color); --bs-pagination-color: var(--text-primary); --bs-pagination-hover-bg: var(--bg-hover); --bs-pagination-hover-border-color: var(--border-color); --bs-pagination-hover-color: var(--primary-color); --bs-pagination-active-bg: var(--primary-color); --bs-pagination-active-border-color: var(--primary-color);">
+            <li class="page-item <?php echo ($current_page <= 1) ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=transaksi&pg=<?php echo $current_page - 1; ?>"><i class="bi bi-chevron-left"></i></a>
+            </li>
+            <?php 
+            $tot_pg = isset($total_pages) ? $total_pages : 1;
+            for ($i = 1; $i <= $tot_pg; $i++): ?>
+                <li class="page-item <?php echo ($current_page == $i) ? 'active' : ''; ?>">
+                    <a class="page-link" href="?page=transaksi&pg=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+            <li class="page-item <?php echo ($current_page >= $tot_pg) ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=transaksi&pg=<?php echo $current_page + 1; ?>"><i class="bi bi-chevron-right"></i></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<?php endif; ?>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -279,4 +451,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
