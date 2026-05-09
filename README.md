@@ -1,75 +1,75 @@
 # Kansei Rental
 
-Aplikasi web **Kansei Rental** untuk pengelolaan penyewaan kendaraan bertema Kansei Rental (Japanese Domestic Market). Dibangun menggunakan **PHP**, **CSS**, **JS**.
+The **Kansei Rental** web application is designed for managing vehicle rentals with a focus on Kansei Rental (Japanese Domestic Market). Built using **PHP**, **CSS**, and **JS**.
 
-## Fitur (contoh — sesuaikan)
+## Features (example — adjust accordingly)
 
-- Manajemen data kendaraan (tambah/ubah/hapus)
-- Manajemen pelanggan
-- Pencatatan transaksi sewa & pengembalian
-- Perhitungan total biaya sewa (berdasarkan durasi, denda, dll.)
-- Halaman admin & laporan
+- Vehicle data management (add/edit/delete)
+- Customer management
+- Rental & return transaction recording
+- Total rental cost calculation (based on duration, penalties, etc.)
+- Admin dashboard & reporting
 
-## Teknologi
+## Technologies
 
 - **PHP** (backend)
-- **CSS** (tampilan)
-- **JS** (logic simple)
+- **CSS** (frontend)
+- **JS** (simple logic)
 - **Database**: MySQL/MariaDB
 
-## Persyaratan
+## Requirements
 
-- PHP 7.4+ _(sesuaikan dengan versi yang dipakai)_
+- PHP 7.4+ _(adjust to the version used)_
 - Web server (Apache/Nginx)
 - MySQL/MariaDB
 - Git
 
-## Cara Menjalankan (Local)
+## How to Run (Local)
 
-1. Clone repository:
+1. Clone the repository:
 
    ```bash
    git clone https://github.com/kuzanf3b/kansei-rental.git
    cd kansei-rental
    ```
 
-2. Siapkan database _(jika ada)_:
-   - Buat database, misalnya: `rental_jdm`
-   - Import file SQL (`rental_jdm.sql`)
+2. Set up the database _(if applicable):_
+   - Create a database, e.g., `rental_jdm`
+   - Import the SQL file (`rental_jdm.sql`)
 
-3. Konfigurasi koneksi database:
-   - Cari file konfigurasi (`index.php`)
-   - Isi host, user, password, dan nama database
+3. Configure the database connection:
+   - Locate the configuration file (`index.php`)
+   - Fill in the host, user, password, and database name
 
-4. Jalankan via web server:
-   - Jika pakai XAMPP/Laragon/WAMP: taruh folder project ke `/www` lalu akses:
+4. Run via a web server:
+   - If using XAMPP/Laragon/WAMP: place the project folder in `/www` and access:
      - `http://localhost/kansei-rental`
-   - Atau gunakan built-in server PHP:
+   - Or use PHP's built-in server:
 
      ```bash
      php -S localhost:8000
      ```
 
-     Lalu buka `http://localhost:8000`
+     Then open `http://localhost:8000`
 
-## Struktur Folder (opsional)
+## Folder Structure (optional)
 
 - `assets/css` — CSS folder
 - `assets/js` — JS folder
-- `pages/` — halaman aplikasi
-- `index.php` — entry point aplikasi
+- `pages/` — application pages
+- `index.php` — application entry point
 
-## Akun Login (opsional)
+## Login Accounts (optional)
 
 - Admin: `admin / admin`
 - User: `user / user`
 
-## Kontribusi
+## Contributing
 
-Kontribusi terbuka. Silakan:
+Contributions are welcome. Please:
 
-1. Fork repo ini
-2. Buat branch fitur: `git checkout -b fitur/namafitur`
-3. Commit perubahan: `git commit -m "Tambah fitur ..."`
-4. Push ke branch: `git push origin fitur/namafitur`
-5. Buat Pull Request
+1. Fork this repository
+2. Create a feature branch: `git checkout -b feature/featurename`
+3. Commit your changes: `git commit -m "Add feature ..."`
+4. Push to the branch: `git push origin feature/featurename`
+5. Create a Pull Request
